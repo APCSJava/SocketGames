@@ -1,5 +1,5 @@
 # SocketGames
-Sometimes one simply wants to play a text game across a TCP socket.  For those times, this repository.  
+Sometimes one simply wants to play text games across a TCP socket.  For those times, this project.  
 
 Game classes written for this project should:
 * provide a default constructor,  
