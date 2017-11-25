@@ -9,19 +9,20 @@ import java.io.PrintWriter;
  * @version Fall 2017
  *
  */
-@GameInfo(authors = { "Kent Collins" }, version = "Fall, 2017", gameTitle = "Hi-Low")
+@GameInfo(authors = {"Kent Collins" }, version = "Fall, 2017", gameTitle = "Hi-Low", 
+		description = "Guess my number if I tell you High or Low.")
 public class HiLow implements Servable {
-	
+
 	int target;
 	int lowestGuess;
 	int highestGuess;
 	int numGuesses;
 	int MAX_TARGET = 1_000_000_000; // one in a million
-	
+
 	public HiLow() {
-		target = (int) (Math.random()*MAX_TARGET)+1;
+		target = (int) (Math.random() * MAX_TARGET) + 1;
 		lowestGuess = 0;
-		highestGuess = MAX_TARGET+1;
+		highestGuess = MAX_TARGET + 1;
 		numGuesses = 0;
 	}
 
@@ -29,7 +30,7 @@ public class HiLow implements Servable {
 	public void serve(BufferedReader input, PrintWriter output)
 			throws IOException {
 		HiLow game = new HiLow();
-		output.println("Enter something. 'q' to quit");
+		output.println("Guess a number between 1 and "+MAX_TARGET+". 'q' to quit");
 		String userInput = input.readLine().trim();
 		while (!userInput.equals("q")) {
 			output.println(

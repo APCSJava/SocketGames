@@ -15,4 +15,5 @@ public @interface GameInfo {
 	String gameTitle();
 	String[] authors();
 	String version();
+	String description() default "";
 }

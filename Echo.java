@@ -9,13 +9,15 @@ import java.io.PrintWriter;
  * @version Fall 2017
  *
  */
-@GameInfo(authors = { "Kent Collins" }, version = "Fall, 2017", gameTitle = "An Echo Game")
+@GameInfo(authors = {"Kent Collins" }, version = "Fall, 2017", gameTitle = "An Echo Game", 
+	description = "You say something and I'll repeat it back.")
 public class Echo implements Servable {
 
 	@Override
 	public void serve(BufferedReader input, PrintWriter output)
 			throws IOException {
-		output.println("Started the Echo Game.  Instructions to follow");
+		output.println(
+				"Started the Echo Game.  Instructions to follow");
 		output.println("Enter something. 'q' to quit");
 		String userInput = input.readLine().trim();
 		while (!userInput.equals("q")) {
