@@ -1,0 +1,2 @@
+# SocketGames
+Sometimes one simply wants to play a text game across a TCP socket.  For those time, this repository.  Games written for the repo should include a default constructor, implement the Servable interface, and carry the @GameInfo type annotation.  Game class files thus outfitted and placed into the server working directory will be detected automatically and made available for play.  If no port number is provided when launching the server, a default value of 9090 is used.
