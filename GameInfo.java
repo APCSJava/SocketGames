@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Inherited
 public @interface GameInfo {
-	String gameTitle();
-	String[] authors();
-	String version();
-	String description() default "";
+	String gameTitle() default "Untitled";
+	String[] authors() default "No author information";
+	String version() default "No version information";
+	String description() default "No description provided";
 }

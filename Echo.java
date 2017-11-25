@@ -22,7 +22,7 @@ public class Echo implements Servable {
 		String userInput = input.readLine().trim();
 		while (!userInput.equals("q")) {
 			output.println(
-					"you said " + userInput + ".  Say 'q' to exit");
+					"you said \"" + userInput + "\".  Say 'q' to exit");
 			userInput = input.readLine().trim();
 		}
 		output.println("Exiting the " + this.getClass().getName()
