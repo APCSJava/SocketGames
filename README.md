@@ -12,4 +12,4 @@ The server may be launched as follows: <b> java SocketServer <i>tcp_port</i> </b
 
 Access a running server from a remote shell or terminal by, for example, <b>telnet <i>server_ip_address tcp_port</i></b>. 
 
-Two "games" are available as examples -- Echo and HiLo.
+Two "games" are available as examples -- Echo and HighLow.
