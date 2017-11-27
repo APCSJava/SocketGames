@@ -30,6 +30,7 @@ public class ClassFinder {
 	 * @return a list holding all classes that implement Servable
 	 * @throws ClassNotFoundException
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List<Class<Servable>> findServableClasses()
 			throws ClassNotFoundException {
 		List<Class<Servable>> servableClasses = new ArrayList<Class<Servable>>();

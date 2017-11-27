@@ -29,6 +29,7 @@ public class HighLow implements Servable {
 	@Override
 	public void serve(BufferedReader input, PrintWriter output)
 			throws IOException {
+		@SuppressWarnings("unused")
 		HighLow game = new HighLow();
 		output.println("Guess a number between 1 and "+MAX_TARGET+". Or press 'q' to quit");
 		String userInput = input.readLine().trim();
