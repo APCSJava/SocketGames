@@ -15,5 +15,5 @@ The server may be launched as follows: <b> java GameServer <i>tcp_port</i> </b> 
 Access a running server from a remote shell or terminal by, for example, <b>telnet <i>server_ip_address tcp_port</i></b>. 
 
 Two "games" are available as examples -- Echo and HighLow.  These games have not been precompiled and, so, must first be compiled locally in order to be discoverable by the server.
-<b> javac Echo.java </b>
-<b> javac HighLow.java </b>
+* <b> javac Echo.java </b>
+* <b> javac HighLow.java </b>
