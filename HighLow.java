@@ -3,7 +3,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /***
- * Provides a sample of a Servable class.
+ * A game for guessing one number out of a million -- can it be done in a
+ * reasonable number of tries?
+ * 
+ * An example implementation of the Servable interface
  * 
  * @author kentcollins
  * @version Fall 2017
@@ -18,6 +21,7 @@ public class HighLow implements Servable {
 	private int highBound;
 	private int numGuesses;
 	private boolean gameWon;
+	private String promptString;
 	private int MAX_TARGET = 1_000_000; // one in a million
 
 	public HighLow() {
@@ -30,85 +34,34 @@ public class HighLow implements Servable {
 
 	@Override
 	public void serve(BufferedReader input, PrintWriter output) throws IOException {
-		@SuppressWarnings("unused")
-		HighLow game = new HighLow();
-
-		output.println(buildInitialPrompt());
+		setInitialPrompt();
+		output.println(promptString);
 		String userInput = input.readLine().trim();
 
 		while (!gameWon) {
-			int theirGuess = evaluateInput(userInput);
-			if (theirGuess == -1) {
-				output.println(buildQuitMessage());
-				break;
-			}
-			else if (theirGuess == 0) {
-				output.println(buildErrorMessage(userInput));
+			int guessCode = evaluateUserInput(userInput);
+			if (guessCode == -1) { // they chose to quit
+				setQuitPrompt();
+				output.println(promptString);
+				break; // exit this loop
+			} else if (guessCode == target) { // they have won the game
+				numGuesses++;
+				setCongratulationsPrompt();
+				output.println(promptString);
+				gameWon = true;
+			} else if (guessCode == 0) { // their number isn't a valid choice
+				setErrorPrompt(userInput);
+				output.println(promptString);
+				userInput = input.readLine().trim();
+				continue; // begin next iteration
+			} else {
+				numGuesses++;
+				updateBounds(guessCode);
+				setSuggestionPrompt();
+				output.println(promptString);
 				userInput = input.readLine().trim();
 			}
-			numGuesses++;
-			if (theirGuess == target) {
-				output.println(buildCongratulationsString());
-				break;
-			} else {
-				output.println(buildSuggestion());
-
-			}
-			userInput = input.readLine().trim();
-
-			
 		}
-	}
-
-	private String buildCongratulationsString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private void handleGuess(int theirGuess) {
-		if (theirGuess < target) {
-			output.println("I'm sorry but " + theirGuess + " is too low.  Try guessing higher.");
-			if (theirGuess > lowBound)
-				lowBound = theirGuess;
-		} else if (theirGuess > target) {
-			output.println("I'm sorry but " + theirGuess + " is too high.  Try guessing lower.");
-			if (theirGuess < highBound)
-				highBound = theirGuess;
-		} else {
-			gameWon = true;
-			output.println("You guessed it exactly!  You used " + numGuesses + " guesses.");
-			if (numGuesses < 20)
-				output.println("You're pretty lucky, dontcha know?");
-			else if (numGuesses < 25)
-				output.println("You are pretty good at this!");
-			else
-				output.println("Finally -- I can't believe you needed " + numGuesses + " guesses!");
-			break;
-		}
-		output.println(buildSuggestion());		
-	}
-
-	private String buildErrorMessage(String errorGuess) {
-		String s = "I'm sorry, but "+errorGuess+" is not a valid guess";
-		s += "Guess a number between 1 and " + MAX_TARGET + " or press 'q' to quit";
-		return s;
-	}
-
-	private String buildQuitMessage() {
-		String s = "Thanks for playing High-Low.  ";
-		s += "You used "+numGuesses+(numGuesses>1?" guesses.":" guess.");
-		s += "Try again, if you think you can do better.";
-		return s;
-	}
-
-	private String buildInitialPrompt() {
-		return "Guess a number between 1 and " + MAX_TARGET + " or press 'q' to quit";
-	}
-
-	private String buildSuggestion() {
-		String s1 = "The answer lies between " + (lowBound + 1) + " and " + (highBound - 1) + ".";
-		s1 += "  You have used " + numGuesses + (numGuesses == 1 ? " guess" : " guesses");
-		return s1;
 	}
 
 	/**
@@ -120,14 +73,60 @@ public class HighLow implements Servable {
 	 *            the user's input
 	 * @return a valid number; 0 for an invalid number; -1 for the quit signal
 	 */
-	private int evaluateInput(String s) {
+	private int evaluateUserInput(String s) {
 		if (s.toLowerCase().equals("q"))
 			return -1;
 		try {
 			int guess = Integer.parseInt(s);
-			return guess;
+			if (0 < guess && guess <= MAX_TARGET) {
+				return guess;
+			} else
+				return 0;
 		} catch (NumberFormatException e) {
+			// couldn't parse their input as a number
 			return 0;
+		}
+	}
+
+	private void setInitialPrompt() {
+		promptString = "Guess a number between 1 and " + MAX_TARGET + " or press 'q' to quit";
+	}
+
+	private void setCongratulationsPrompt() {
+		promptString = "You guessed it exactly!  You used " + numGuesses + " guesses.";
+	}
+
+	private void setQuitPrompt() {
+		String s = "Thanks for playing High-Low.  ";
+		s += "You tried " + numGuesses + (numGuesses > 1 ? " guesses" : " guess");
+		s += " but did not win.  The target was " + target;
+		s += "\nTry again, if you think you can do better.";
+		promptString = s;
+	}
+
+	private void setErrorPrompt(String errorGuess) {
+		String s = "I'm sorry, but " + errorGuess + " is not a valid guess";
+		s += "\nGuess a number between 1 and " + MAX_TARGET + " or press 'q' to quit";
+		promptString = s;
+	}
+
+	private void setSuggestionPrompt() {
+		String s1 = "The answer lies between " + (lowBound) + " and " + (highBound) + ".";
+		s1 += "  \nYou have used " + numGuesses + (numGuesses == 1 ? " guess" : " guesses");
+		promptString = s1;
+	}
+
+	/**
+	 * Evaluates a guess and updates the higher and lower bounds, as appropriate.
+	 * This tracks the nearest guesses made above and below the target.
+	 * 
+	 * @param guessCode
+	 */
+	private void updateBounds(int guessCode) {
+		if (guessCode < target && guessCode > lowBound) {
+			lowBound = guessCode;
+		} else if (guessCode > target && guessCode < highBound) {
+			highBound = guessCode;
 		}
 	}
 }
