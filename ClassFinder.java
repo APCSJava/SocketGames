@@ -24,7 +24,7 @@ public class ClassFinder {
 	}
 
 	/**
-	 * Collects all files in the current working directory which implement the
+	 * Collects from the working directory all files that implement the
 	 * Servable interface
 	 * 
 	 * @return a list holding all classes that implement Servable
@@ -52,6 +52,11 @@ public class ClassFinder {
 		return servableClasses;
 	}
 
+	/**
+	 * Returns members of the authors array in a well formed String
+	 * @param authors
+	 * @return comma separated list of authors
+	 */
 	private static String formatAuthorString(String[] authors) {
 		String authorString = "";
 		for (int i = 0; i<authors.length-1; i++) {
@@ -63,6 +68,14 @@ public class ClassFinder {
 		return authorString;
 	}
 
+	/**
+	 * Use for verifying classpath is suitable for loading games
+	 * 
+	 * @param args
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
 	public static void main(String[] args)
 			throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException {

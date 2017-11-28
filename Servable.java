@@ -3,13 +3,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /***
- * Represents a game.
+ * Available interface for classes that read from and write to the indicated
+ * network streams.
  * 
  * @author kentcollins
  *
  */
 public interface Servable {
 
-	void serve(BufferedReader input, PrintWriter output) throws IOException;
+	void serve(BufferedReader input, PrintWriter output)
+			throws IOException;
 
 }

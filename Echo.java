@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /***
- * Provides a sample of a Servable class.
+ * Provides an extremely sample of a Servable class.
  * 
  * @author kentcollins
  * @version Fall 2017
