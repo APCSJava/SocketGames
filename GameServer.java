@@ -129,6 +129,6 @@ public class GameServer {
 		InetAddress remoteMachine = socket.getInetAddress();
 		String remoteHost = remoteMachine.getHostName();
 		System.out.println(
-				"Socket connection established: " + remoteHost);
+				"Socket connection established with " + remoteHost);
 	}
 }
