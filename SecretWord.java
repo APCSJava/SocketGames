@@ -23,7 +23,7 @@ public class SecretWord implements Servable {
 	private final String[] goodbyes = {
 			"Oh well, better luck next time.",
 			"Sorry, but you didn't win.  Have a go again, later.",
-			"Think about it for a while then come on back.  You can get this.",
+			"Think about it for a while then try again.  You can get this.",
 			"Hint: If you follow my instructions exactly, you can win ;-)" };
 
 	public SecretWord() {
@@ -43,7 +43,7 @@ public class SecretWord implements Servable {
 				return; // end the serve method, thus ending the game
 			} else {
 				output.println("You said '" + userInput
-						+ "' but that isn't the secret word.");
+						+ "' but that is not the secret word.");
 				output.println(prompt);
 				userInput = input.readLine().trim();
 			}
