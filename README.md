@@ -16,6 +16,6 @@ Access a running server from a remote shell or terminal by, for example:
 * <b>telnet <i>server_ip_address tcp_port</i></b>, or  
 * <b>nc <i>server_ip_address tcp_port</i></b> // macOS 10.13 removed telnet
 
-Two "games" are available as examples -- Echo and HighLow.  These games have not been precompiled and, so, must first be compiled locally in order to be discoverable by the server.
-* <b> javac Echo.java </b>
+Two "games" are available as examples -- SecretWord and HighLow.  These games are provided as source code and must be compiled locally in order to be discovered by the server.
+* <b> javac SecretWord.java </b>
 * <b> javac HighLow.java </b>
