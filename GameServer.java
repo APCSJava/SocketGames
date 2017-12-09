@@ -1,11 +1,7 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
 
 /***
  * A single connection socket game server. Identifies games that can be served,
@@ -34,84 +30,14 @@ public class GameServer {
 				// the following call blocks until a connection is made
 				System.out.println(
 						"Game server listening for connections on port "
-								+ socketRequestListener.getLocalPort());
+								+ socketRequestListener
+										.getLocalPort());
 				Socket socket = socketRequestListener.accept();
 
 				// verify the socket connection has been opened
 				printConnectionInfo(socket);
-				List<Class<Servable>> games = ClassFinder
-						.findServableClasses();
-				try {
-					PrintWriter out = new PrintWriter(
-							socket.getOutputStream(), true);
-					BufferedReader br = new BufferedReader(
-							new InputStreamReader(
-									socket.getInputStream()));
-					out.println(
-							"The following games are available: ");
-					if (games.size() == 0) {
-						out.println("None");
-						break;
-					} else {
-						for (int i = 0; i < games.size(); i++) {
-							out.println(i + "\t"
-									+ games.get(i).getName());
-						}
-						out.println(
-								"Enter game number or 'q' to exit ... ");
-					}
-					String input = br.readLine().trim()
-							.toLowerCase();
-					while (!checkValidInteger(input)
-							&& !input.equals("q")) {
-						out.println(input
-								+ " is not acceptable.  Let's try again.");
-						out.println(
-								"Please enter the game number or 'q' to exit ... ");
-						input = br.readLine().trim().toLowerCase();
-					}
-					if ("q".equals(input)) {
-						out.println("Okay.  Thanks for playing!");
-						socket.close();
-						continue;
-					}
-					int requestedGame = Integer.parseInt(input);
-					try {
-						Servable game1 = games.get(requestedGame)
-								.newInstance();
-						System.out.println(
-								"Started something " + game1);
-						game1.serve(br, out);
-						System.out.println("Concluded the game.");
-					} catch (IndexOutOfBoundsException e) {
-						out.println(
-								"Game not found.  Please try again.");
-						socket.close();
-						continue;
-					}
-
-				} finally {
-					// must tidy up
-					socket.close();
-				}
-				// verify the socket connection has been closed
-				printConnectionInfo(socket);
+				new Thread(new GameThread(socket)).start();
 			}
-		} catch (IOException | ClassNotFoundException
-				| InstantiationException
-				| IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static boolean checkValidInteger(String s) {
-		try {
-			int i = Integer.parseInt(s);
-			if (i < 0)
-				return false;
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
 		}
 	}
 
