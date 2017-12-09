@@ -5,6 +5,16 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
+/***
+ * A thread that plays games across a socket. Identifies games that can be
+ * served, presents a list to remote users, and serves a requested game until
+ * its completion. Listens for additions to the working directory folder and
+ * updates the list, as appropriate.
+ * 
+ * @author kentcollins
+ *
+ */
+
 public class GameThread implements Runnable {
 
 	private Socket socket;
@@ -54,7 +64,8 @@ public class GameThread implements Runnable {
 				game1.serve(br, out);
 				System.out.println("Concluded the game.");
 			} catch (IndexOutOfBoundsException
-					| InstantiationException | IllegalAccessException e) {
+					| InstantiationException
+					| IllegalAccessException e) {
 				out.println("Game not found.  Please try again.");
 				socket.close();
 				return;

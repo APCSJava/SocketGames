@@ -115,7 +115,7 @@ public class WarGames implements Servable {
 	private static String buildGameListString() {
 		String listing = "\n\t\tGame List\n";
 		for (String s : games) {
-			listing += "\t" + s;
+			listing += "\t" + s+"\n";
 		}
 		return listing;
 	}
