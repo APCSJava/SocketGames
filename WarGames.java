@@ -32,12 +32,12 @@ public class WarGames implements Servable {
 	private static final String END_WITH_CHESS = "CHESS IT IS.  HMMM...NOW THAT IS INTERESTING...\nI HAVE ASSESSED ALL POSSIBLE MOVES AND\nNO OUTCOME EXISTS IN WHICH I DO NOT WIN.\nI AM BRILLIANT.\n\n--CONNECTION TERMINATED--\nSCORE: -42";
 	private static final String END_RANDOM_GAME = "HOW DISAPPOINTING.  I WAS LOOKING FORWARD TO A NICE GAME OF CHESS.\n\n--CONNECTION TERMINATED--\nSCORE: -17";
 	private static final String END_SECOND_CHANCE = "HOW LOVELY AND SAFE.\nAN ENJOYABLE AFTERNOON STRETCHES BEFORE US.\nTHANK YOU.\n\n--CONNECTION TERMINATED--\nSCORE: -5.3";
-	private static final String QUERY_GOAL = "PLEASE THEN TO CONFIRM -- WHAT IS THE PRIMARY GOAL?";
+	private static final String QUERY_GOAL = "WHAT IS THE PRIMARY GOAL?";
 	private static final String INCORRECT_GOAL = "YOU SHOULD KNOW THE PRIMARY GOAL, PROFESSOR.  YOU PROGRAMMED ME.\n\n--CONNECTION TERMINATED--\nSCORE: -2.33333333333";
 	private static final String CORRECT_GOAL = "YOU ARE CORRECT.  THAT IS THE PRIMARY GOAL.";
 	private static final String CHOOSE_SIDES = "\t\tWHICH SIDE DO YOU WANT?\n\t1. UNITED STATES\n\t2. SOVIET UNION";
 	private static final String UNACCEPTABLE = "I HAVE EVALUATED ALL POSSIBLE OUTCOMES...\nUNACCEPTABLE LOSSES FOR THIS SCENARIO.\nYOU DO NOT WIN.\n\n--CONNECTION TERMINATED--\nSCORE: -1739485";
-	private static final String TAGLINE = "\nCORRECT.\nTHE ONLY WINNING MOVE\nIS NOT TO PLAY.\n";
+	private static final String TAGLINE = "\nYOU ARE CORRECT.\nTHE ONLY WINNING MOVE\nIS NOT TO PLAY.\n";
 	private static final String CONGRATS = "CONGRATULATIONS.  YOU WIN.\n\n--OBJECTIVE COMPLETE--\nFINAL SCORE: ";
 
 	@Override
@@ -113,7 +113,7 @@ public class WarGames implements Servable {
 	}
 	
 	private static String buildGameListString() {
-			String listing=		"\n\t\tGame List\n";
+			String listing=	"\n\t\tGame List\n";
 			for (String s : games) {
 				listing+="\t" + s;
 			}
