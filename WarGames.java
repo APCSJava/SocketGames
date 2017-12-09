@@ -22,14 +22,14 @@ public class WarGames implements Servable {
 	private static final String LOGON_PROMPT = "IMSAI 8080\nSATURDAY, MAY 9, 1987\nLOGON:";
 	private static final String NO_ID = "IDENTIFICATION NOT RECOGNIZED BY SYSTEM.\n\n--CONNECTION TERMINATED--\nSCORE: -200";
 	private static final String GREETINGS = "GREETINGS PROFESSOR FALKEN.";
-	private static final String NO_HELLO = "NOT EVEN GOING TO SAY HELLO?\nAFTER ALL THIS TIME?\n\n--CONNECTION TERMINATED--\nSCORE: -146";
+	private static final String NO_HELLO = "NOT EVEN GOING TO SAY HELLO\nAFTER ALL THIS TIME?\n\n--CONNECTION TERMINATED--\nSCORE: -146";
 	private static final String ASK_PLAYER_HEALTH = "HOW ARE YOU FEELING TODAY?";
-	private static final String NO_RECIPROCITY = "I AM FEELING WELL.  THANK YOU FOR ASKING.\n\n--CONNECTION TERMINATED--\nSCORE: -97";
+	private static final String NO_RECIPROCITY = "I AM FEELING WELL, THANKS FOR ASKING.\nOH ... YOU DIDN'T.\n\n--CONNECTION TERMINATED--\nSCORE: -97";
 	private static final String TELL_MY_HEALTH = "EXCELLENT.  IT'S BEEN A LONG TIME.";
 	private static final String SUGGEST_GAME = "FASCINATING.  SHALL WE PLAY A GAME?";
 	private static final String SUGGEST_CHESS = "HOW ABOUT A NICE GAME OF CHESS?";
 	private static final String URGE_CHESS = "WOULDN'T YOU PREFER A GOOD GAME OF CHESS?";
-	private static final String END_WITH_CHESS = "CHESS IT IS.  HMMM...NOW THAT IS INTERESTING...\nI HAVE ASSESSED ALL POSSIBLE MOVES AND\nTHERE EXISTS NO OUTCOME IN WHICH I DO NOT WIN.\nI AM BRILLIANT.\n\n--CONNECTION TERMINATED--\nSCORE: -42";
+	private static final String END_WITH_CHESS = "CHESS IT IS.  HMMM...NOW THAT IS INTERESTING...\nI HAVE ASSESSED ALL POSSIBLE MOVES AND\nNO OUTCOME EXISTS IN WHICH I DO NOT WIN.\nI AM BRILLIANT.\n\n--CONNECTION TERMINATED--\nSCORE: -42";
 	private static final String END_RANDOM_GAME = "HOW DISAPPOINTING.  I WAS LOOKING FORWARD TO A NICE GAME OF CHESS.\n\n--CONNECTION TERMINATED--\nSCORE: -17";
 	private static final String END_SECOND_CHANCE = "HOW LOVELY AND SAFE.\nAN ENJOYABLE AFTERNOON STRETCHES BEFORE US.\nTHANK YOU.\n\n--CONNECTION TERMINATED--\nSCORE: -5.3";
 	private static final String QUERY_GOAL = "PLEASE THEN TO CONFIRM -- WHAT IS THE PRIMARY GOAL?";
@@ -63,17 +63,12 @@ public class WarGames implements Servable {
 		}
 		output.println(TELL_MY_HEALTH);
 		response = input.readLine().trim().toLowerCase();
-		if (!(response.contains("list")
-				|| response.contains("games"))) {
+		if (!wantsListOfGames(response)) {
 			output.println(SUGGEST_GAME);
 			response = input.readLine().trim().toLowerCase();
 		}
-		if ((response.contains("list")
-				|| response.contains("games"))) {
-			output.println("\n\t\tGame List\n");
-			for (String s : games) {
-				output.println("\t" + s);
-			}
+		if (wantsListOfGames(response)) {
+			output.println(buildGameListString());
 		} else {
 			output.println(SUGGEST_CHESS);
 		}
@@ -111,6 +106,18 @@ public class WarGames implements Servable {
 
 	private int getRandomPositiveScore() {
 		return Math.abs((int) (Math.random() * Integer.MAX_VALUE));
+	}
+	
+	private boolean wantsListOfGames(String s) {
+		return s.contains("list") || s.contains("games");
+	}
+	
+	private static String buildGameListString() {
+			String listing=		"\n\t\tGame List\n";
+			for (String s : games) {
+				listing+="\t" + s;
+			}
+			return listing;
 	}
 
 }
