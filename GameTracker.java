@@ -10,7 +10,7 @@ import java.util.Map;
 public class GameTracker {
 
 	private static List<Class<Servable>> gameList;
-	private static Map<Class<Servable>,GameInfo> gameInfo;
+	private static Map<Class<Servable>, GameInfo> gameInfo;
 
 	/**
 	 * Looks inside the current working directory and collects all file names having
@@ -31,8 +31,8 @@ public class GameTracker {
 	private static String buildGameListMenu() {
 		String s = "\tGame List\n";
 		int i = 0;
-		for (Class<Servable> c: gameList) {
-			s+=(i++)+"\t"+c.getName()+"\n";
+		for (Class<Servable> c : gameList) {
+			s += (i++) + "\t" + c.getName() + "\n";
 		}
 		return s;
 	}
@@ -103,8 +103,9 @@ public class GameTracker {
 	public static void main(String[] args)
 			throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException {
-		List<Class<Servable>> classes = findServableClasses();
-		for (Class<Servable> c : classes) {
+		//List<Class<Servable>> classes = findServableClasses();
+		initialize();
+		for (Class<Servable> c : gameInfo.keySet()) {
 			Annotation[] annotations = c.getAnnotations();
 			for (Annotation a : annotations) {
 				if (a instanceof GameInfo) {
@@ -120,6 +121,7 @@ public class GameTracker {
 			Date d = new Date(f.lastModified());
 			System.out.println("Last modified :" + d);
 		}
+		System.out.println("Initialization complete.  Map is "+gameInfo);
 	}
 
 	/**
@@ -151,13 +153,26 @@ public class GameTracker {
 		return servableClasses;
 	}
 
-	/** Initializes the game database
+	/**
+	 * Initializes the game database
 	 * 
 	 */
 	public static void initialize() {
 		try {
 			gameInfo = new HashMap<Class<Servable>, GameInfo>();
 			gameList = findServableClasses();
+			for (Class<Servable> c : gameList) {
+				Annotation[] annotations = c.getAnnotations();
+				for (Annotation a : annotations) {
+					if (a instanceof GameInfo) {
+						GameInfo info = (GameInfo) a;
+						gameInfo.put(c, info);
+					} else {
+						gameInfo.put(c, null);
+					}
+				}
+			}
+
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
