@@ -3,13 +3,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.List;
 
 /***
- * A thread that plays games across a socket. Identifies games that can be
- * served, presents a list to remote users, and serves a requested game until
- * its completion. Listens for additions to the working directory folder and
- * updates the list, as appropriate.
+ * Sends menu options and reads the user's selection. If the selection is for a
+ * different menu, displays the new menu. If the selection is for a specific
+ * game, serves the game. This thread loops until the selection "q" is received,
+ * at which point the socket is closed and the thread completes.
  * 
  * @author kentcollins
  *
@@ -25,76 +24,36 @@ public class GameThread implements Runnable {
 
 	@Override
 	public void run() {
-		List<Class<Servable>> games;
-		try {
-			games = ClassFinder.findServableClasses();
-			PrintWriter out = new PrintWriter(
-					socket.getOutputStream(), true);
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(socket.getInputStream()));
-			out.println("The following games are available: ");
-			if (games.size() == 0) {
-				out.println("None");
-				socket.close();
-				return;
-			} else {
-				for (int i = 0; i < games.size(); i++) {
-					out.println(i + "\t" + games.get(i).getName());
+		try (PrintWriter out = new PrintWriter(
+				socket.getOutputStream(), true);
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(
+								socket.getInputStream()))) {
+			String activeMenu = null;
+			String userSelection = "i";
+			while (!userSelection.equals("q")) {
+				Object o = GameTracker.handleInput(userSelection);
+				if (o instanceof String) {
+					activeMenu = (String) o;
+				} else if (o instanceof Servable) {
+					((Servable) o).serve(br, out);
+				} else {
+					out.println("Didn't understand the input "+userSelection+".  Press Enter/Return to try again.");
+					br.readLine(); // they acknowledge error
 				}
-				out.println("Enter game number or 'q' to exit ... ");
-			}
-			String input = br.readLine().trim().toLowerCase();
-			while (!checkValidInteger(input) && !input.equals("q")) {
-				out.println(input
-						+ " is not acceptable.  Let's try again.");
-				out.println(
-						"Please enter the game number or 'q' to exit ... ");
-				input = br.readLine().trim().toLowerCase();
-			}
-			if ("q".equals(input)) {
-				out.println("Okay.  Thanks for playing!");
-				socket.close();
-				return;
-			}
-			int requestedGame = Integer.parseInt(input);
-			try {
-				Servable game1 = games.get(requestedGame)
-						.newInstance();
-				System.out.println("Started something " + game1);
-				game1.serve(br, out);
-				System.out.println("Concluded the game.");
-			} catch (IndexOutOfBoundsException
-					| InstantiationException
-					| IllegalAccessException e) {
-				out.println("Game not found.  Please try again.");
-				socket.close();
-				return;
+				out.println(activeMenu);
+				userSelection = br.readLine().trim().toLowerCase();
 			}
 
-		} catch (IOException | ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
+		} catch (IOException e1) {
+			System.out.println("IOException while running the game thread.");
 			e1.printStackTrace();
 		} finally {
-			// must tidy up
 			try {
 				socket.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("GameThread attempting to close a closed socket");
 			}
 		}
-		// verify the socket connection has been closed
 	}
-
-	private static boolean checkValidInteger(String s) {
-		try {
-			int i = Integer.parseInt(s);
-			if (i < 0)
-				return false;
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-
 }

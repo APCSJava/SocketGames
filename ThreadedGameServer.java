@@ -25,11 +25,10 @@ public class ThreadedGameServer {
 				desiredPort)) {
 			System.out.println(
 					"Server running on port " + desiredPort);
+			GameTracker.initializeGameList();
 			while (true) {
-
 				// the following call blocks until a connection is made
 				Socket socket = socketRequestListener.accept();
-
 				// verify the socket connection has been opened
 				printConnectionInfo(socket);
 				new Thread(new GameThread(socket)).start();

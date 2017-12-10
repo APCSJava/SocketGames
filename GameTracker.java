@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ClassFinder {
+public class GameTracker {
+
+	private static List<Class<Servable>> gameList;
 
 	/**
 	 * Looks inside the current working directory and collects all file names having
@@ -24,8 +26,8 @@ public class ClassFinder {
 	}
 
 	/**
-	 * Collects from the working directory all files that implement the
-	 * Servable interface
+	 * Collects from the working directory all files that implement the Servable
+	 * interface
 	 * 
 	 * @return a list holding all classes that implement Servable
 	 * @throws ClassNotFoundException
@@ -51,20 +53,68 @@ public class ClassFinder {
 		}
 		return servableClasses;
 	}
+	
+	private static String buildGameListMenu() {
+		String s = "\tGame List\n";
+		int i = 0;
+		for (Class<Servable> c: gameList) {
+			s+=(i++)+"\t"+c.getName()+"\n";
+		}
+		return s;
+	}
+
+	// verify that parameter refers to a game in the game bank
+	public static boolean checkValidInteger(String s) {
+		try {
+			int i = Integer.parseInt(s);
+			if (i < 0)
+				return false;
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Examines user selection and returns either a String holding a menu, a new
+	 * instance of the requested game, or null if neither of the above makes sense.
+	 * 
+	 * @param userSelection
+	 * @return an object representing a menu string, a game instance or null
+	 */
+	public static Object handleInput(String userSelection) {
+		Object o = null;
+		if (GameTracker.checkValidInteger(userSelection)) {
+			try {
+				o = gameList.get(Integer.parseInt(userSelection))
+						.newInstance();
+			} catch (NumberFormatException | InstantiationException
+					| IllegalAccessException e) {
+				// game not instantiated -- leave object null
+				e.printStackTrace();
+			}
+		} else {
+			o = buildGameListMenu();
+		}
+		return o;
+	}
 
 	/**
 	 * Returns members of the authors array in a well formed String
+	 * 
 	 * @param authors
 	 * @return comma separated list of authors
 	 */
 	private static String formatAuthorString(String[] authors) {
 		String authorString = "";
-		for (int i = 0; i<authors.length-1; i++) {
-			authorString+=authors[i];
-			if (i<authors.length-2) authorString+=", ";
-			else authorString+=" and "; // no Oxford commas
+		for (int i = 0; i < authors.length - 1; i++) {
+			authorString += authors[i];
+			if (i < authors.length - 2)
+				authorString += ", ";
+			else
+				authorString += " and "; // no Oxford commas
 		}
-		authorString+=authors[authors.length-1];
+		authorString += authors[authors.length - 1];
 		return authorString;
 	}
 
@@ -85,14 +135,28 @@ public class ClassFinder {
 			for (Annotation a : annotations) {
 				if (a instanceof GameInfo) {
 					GameInfo info = (GameInfo) a;
-					String authors=formatAuthorString(info.authors());
-					System.out.println(info.gameTitle()+". Written by "+authors+ ".  Version: "+info.version());
+					String authors = formatAuthorString(
+							info.authors());
+					System.out.println(info.gameTitle()
+							+ ". Written by " + authors
+							+ ".  Version: " + info.version());
 				}
 			}
-			File f = new File(c.getName()+".class");
+			File f = new File(c.getName() + ".class");
 			Date d = new Date(f.lastModified());
-			System.out.println("Last modified :"+d);
+			System.out.println("Last modified :" + d);
 		}
+	}
 
+	/** Initializes the game database
+	 * 
+	 */
+	public static void initializeGameList() {
+		try {
+			gameList = findServableClasses();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
