@@ -3,11 +3,14 @@ import java.io.FilenameFilter;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameTracker {
 
 	private static List<Class<Servable>> gameList;
+	private static Map<Class<Servable>,GameInfo> gameInfo;
 
 	/**
 	 * Looks inside the current working directory and collects all file names having
@@ -25,35 +28,6 @@ public class GameTracker {
 		return files;
 	}
 
-	/**
-	 * Collects from the working directory all files that implement the Servable
-	 * interface
-	 * 
-	 * @return a list holding all classes that implement Servable
-	 * @throws ClassNotFoundException
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List<Class<Servable>> findServableClasses()
-			throws ClassNotFoundException {
-		List<Class<Servable>> servableClasses = new ArrayList<Class<Servable>>();
-		for (File f : findClassFilesInWorkingDirectory()) {
-			String nameWithExtension = f.getName();
-			int idx = nameWithExtension.lastIndexOf(".class");
-			Class classObj = Class
-					.forName(nameWithExtension.substring(0, idx));
-			Class[] interfaces = classObj.getInterfaces();
-			if (interfaces.length > 0) {
-				for (Class c : interfaces) {
-					if (Servable.class.isAssignableFrom(c)) {
-						servableClasses.add(classObj);
-						break;
-					}
-				}
-			}
-		}
-		return servableClasses;
-	}
-	
 	private static String buildGameListMenu() {
 		String s = "\tGame List\n";
 		int i = 0;
@@ -148,11 +122,41 @@ public class GameTracker {
 		}
 	}
 
+	/**
+	 * Collects from the working directory all files that implement the Servable
+	 * interface
+	 * 
+	 * @return a list holding all classes that implement Servable
+	 * @throws ClassNotFoundException
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static List<Class<Servable>> findServableClasses()
+			throws ClassNotFoundException {
+		List<Class<Servable>> servableClasses = new ArrayList<Class<Servable>>();
+		for (File f : findClassFilesInWorkingDirectory()) {
+			String nameWithExtension = f.getName();
+			int idx = nameWithExtension.lastIndexOf(".class");
+			Class classObj = Class
+					.forName(nameWithExtension.substring(0, idx));
+			Class[] interfaces = classObj.getInterfaces();
+			if (interfaces.length > 0) {
+				for (Class c : interfaces) {
+					if (Servable.class.isAssignableFrom(c)) {
+						servableClasses.add(classObj);
+						break;
+					}
+				}
+			}
+		}
+		return servableClasses;
+	}
+
 	/** Initializes the game database
 	 * 
 	 */
-	public static void initializeGameList() {
+	public static void initialize() {
 		try {
+			gameInfo = new HashMap<Class<Servable>, GameInfo>();
 			gameList = findServableClasses();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
