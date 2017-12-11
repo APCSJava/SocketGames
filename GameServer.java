@@ -10,10 +10,10 @@ import java.util.logging.Logger;
  * 
  * K Collins, Fall 2017
  */
-public class ThreadedGameServer {
+public class GameServer {
 
 	final static Logger LOGGER = Logger
-			.getLogger(ThreadedGameServer.class.getName());
+			.getLogger(GameServer.class.getName());
 
 	/**
 	 * Opens a port to listen for incoming requests. When a request is received,

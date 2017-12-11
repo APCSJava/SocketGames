@@ -46,17 +46,17 @@ public class GameThread implements Runnable {
 				out.println(activeMenu);
 				userSelection = br.readLine().trim().toLowerCase();
 			}
-			ThreadedGameServer.LOGGER.info("Connection with "
+			GameServer.LOGGER.info("Connection with "
 					+ socket.getInetAddress() + " closed normally.");
 
 		} catch (IOException | NullPointerException e1) {
-			ThreadedGameServer.LOGGER.warning(socket.getInetAddress()
+			GameServer.LOGGER.warning(socket.getInetAddress()
 					+ " ended connection abruptly.");
 		} finally {
 			try {
 				socket.close();
 			} catch (IOException e) {
-				ThreadedGameServer.LOGGER.info(
+				GameServer.LOGGER.info(
 						"GameThread attempting to close a closed socket");
 			}
 		}
