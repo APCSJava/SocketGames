@@ -29,11 +29,12 @@ public class GameTracker {
 	}
 
 	private static String buildGameListMenu() {
-		String s = "\tGame List\n";
+		String s = "*****\tGame List\n";
 		int i = 0;
 		for (Class<Servable> c : gameList) {
 			s += (i++) + "\t" + c.getName() + "\n";
 		}
+		s+="\nEnter the number of the game to play or 'q' to exit.";
 		return s;
 	}
 
