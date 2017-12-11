@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class ThreadedGameServer {
 
-	public final static Logger LOGGER = Logger
+	final static Logger LOGGER = Logger
 			.getLogger(ThreadedGameServer.class.getName());
 
 	/**

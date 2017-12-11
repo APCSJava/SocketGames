@@ -38,21 +38,26 @@ public class GameThread implements Runnable {
 				} else if (o instanceof Servable) {
 					((Servable) o).serve(br, out);
 				} else {
-					out.println("Didn't understand the input "+userSelection+".  Press Enter/Return to try again.");
+					out.println("Didn't understand the input "
+							+ userSelection
+							+ ".  Press Enter/Return to try again.");
 					br.readLine(); // they acknowledge error
 				}
 				out.println(activeMenu);
 				userSelection = br.readLine().trim().toLowerCase();
 			}
+			ThreadedGameServer.LOGGER.info("Connection with "
+					+ socket.getInetAddress() + " closed normally.");
 
-		} catch (IOException e1) {
-			System.out.println("IOException while running the game thread.");
-			e1.printStackTrace();
+		} catch (IOException | NullPointerException e1) {
+			ThreadedGameServer.LOGGER.warning(socket.getInetAddress()
+					+ " ended connection abruptly.");
 		} finally {
 			try {
 				socket.close();
 			} catch (IOException e) {
-				System.out.println("GameThread attempting to close a closed socket");
+				ThreadedGameServer.LOGGER.info(
+						"GameThread attempting to close a closed socket");
 			}
 		}
 	}
