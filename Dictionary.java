@@ -17,7 +17,7 @@ public final class Dictionary {
 
 	private static Map<Integer, List<String>> mapBySize;
 	private static Map<Character, List<String>> mapByFirstCharacter;
-	private static List<String> wordList;
+	private static List<String> immutableList;
 
 	static {
 		List<String> words = new ArrayList<String>();
@@ -28,15 +28,19 @@ public final class Dictionary {
 		} catch (IOException e) {
 			// use the phrase 'no dictionary loaded' to populate the dictionary
 		}
-		wordList = Collections.unmodifiableList(words);
-		mapBySize = wordList.stream()
+		immutableList = Collections.unmodifiableList(words);
+		mapBySize = words.stream()
 				.collect(Collectors.groupingBy(s -> s.length()));
-		mapByFirstCharacter = wordList.stream()
+		mapByFirstCharacter = words.stream()
 				.collect(Collectors.groupingBy(s -> s.charAt(0)));
 	}
 
 	private Dictionary() {
 		// no, you do NOT get to make an instance. Use the static methods.
+	}
+
+	public static List<String> getImmutableList() {
+		return immutableList;
 	}
 
 	/**
@@ -105,8 +109,8 @@ public final class Dictionary {
 	 * @return a random word from the entire dictionary
 	 */
 	public static String random() {
-		int randomIndex = (int) (Math.random() * wordList.size());
-		return wordList.get(randomIndex);
+		int randomIndex = (int) (Math.random() * immutableList.size());
+		return immutableList.get(randomIndex);
 	}
 
 	/**
@@ -124,7 +128,7 @@ public final class Dictionary {
 				"Random word z: " + randomByFirstCharacter('z'));
 		System.out.println(
 				"Random word z: " + randomByFirstLetter("z"));
-
+		System.out.println(getImmutableList().get(9));
 	}
 
 }
