@@ -1,3 +1,7 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +18,13 @@ public final class Dictionary {
 	private static Map<Character, List<String>> mapByFirstCharacter;
 
 	static {
-		// intialize class fields
+		try {
+			String filename = "google-10000-english-usa-no-swears.txt";
+			List<String> wordList = Files.readAllLines(Paths.get(filename));
+			System.out.println(wordList.get(5));
+		} catch (IOException e) {
+			
+		}
 	}
 
 	private Dictionary() {
@@ -54,11 +64,12 @@ public final class Dictionary {
 	}
 
 	/**
-	 * Return a random word of at least a minimum size and up to a
-	 * maximum size.
+	 * Return a random word of at least a minimum size and up to a maximum size.
 	 * 
-	 * @param min the minimum length of a qualifying word
-	 * @param max the maximum length of a qualifying word
+	 * @param min
+	 *            the minimum length of a qualifying word
+	 * @param max
+	 *            the maximum length of a qualifying word
 	 * @return
 	 */
 	public static String randomBySize(int min, int max) {
