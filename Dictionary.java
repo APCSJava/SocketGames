@@ -26,7 +26,7 @@ public final class Dictionary {
 			String filename = "google-10000-english-usa-no-swears.txt";
 			words = Files.readAllLines(Paths.get(filename));
 		} catch (IOException e) {
-			// use the phrase 'no dictionary loaded' to populate the dictionary
+			// the phrase 'no dictionary loaded' will populate the dictionary
 		}
 		immutableList = Collections.unmodifiableList(words);
 		mapBySize = words.stream()
