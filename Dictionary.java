@@ -16,11 +16,12 @@ public final class Dictionary {
 
 	private static Map<Integer, List<String>> mapBySize;
 	private static Map<Character, List<String>> mapByFirstCharacter;
+	private static List<String> wordList;
 
 	static {
 		try {
 			String filename = "google-10000-english-usa-no-swears.txt";
-			List<String> wordList = Files.readAllLines(Paths.get(filename));
+			wordList = Files.readAllLines(Paths.get(filename));
 			mapBySize = wordList.stream().collect(Collectors.groupingBy(s->s.length()));
 			mapByFirstCharacter = wordList.stream().collect(Collectors.groupingBy(s->s.charAt(0)));
 			System.out.println(wordList.get(5));
