@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,15 +20,19 @@ public final class Dictionary {
 	private static List<String> wordList;
 
 	static {
+		List<String> words = new ArrayList<String>();
+		words.add("no dictionary loaded");
 		try {
 			String filename = "google-10000-english-usa-no-swears.txt";
-			wordList = Files.readAllLines(Paths.get(filename));
-			mapBySize = wordList.stream().collect(Collectors.groupingBy(s->s.length()));
-			mapByFirstCharacter = wordList.stream().collect(Collectors.groupingBy(s->s.charAt(0)));
-			System.out.println(wordList.get(5));
+			words = Files.readAllLines(Paths.get(filename));
 		} catch (IOException e) {
-			
+			// use the phrase 'no dictionary loaded' to populate the dictionary
 		}
+		wordList = Collections.unmodifiableList(words);
+		mapBySize = wordList.stream()
+				.collect(Collectors.groupingBy(s -> s.length()));
+		mapByFirstCharacter = wordList.stream()
+				.collect(Collectors.groupingBy(s -> s.charAt(0)));
 	}
 
 	private Dictionary() {
@@ -48,6 +53,16 @@ public final class Dictionary {
 		int size = words.size();
 		int randomIndex = (int) (Math.random() * size);
 		return words.get(randomIndex);
+	}
+
+	/**
+	 * Change the single letter string into a Character and delegate
+	 * 
+	 * @param s
+	 * @return a random word beginning with s
+	 */
+	public static String randomByFirstLetter(String s) {
+		return randomByFirstCharacter(s.charAt(0));
 	}
 
 	/**
@@ -82,6 +97,34 @@ public final class Dictionary {
 		}
 		int randomIndex = (int) (Math.random() * words.size());
 		return words.get(randomIndex);
+	}
+
+	/**
+	 * Returns a random word, no constraints
+	 * 
+	 * @return a random word from the entire dictionary
+	 */
+	public static String random() {
+		int randomIndex = (int) (Math.random() * wordList.size());
+		return wordList.get(randomIndex);
+	}
+
+	/**
+	 * For testing.
+	 * 
+	 * @param args
+	 *            unused
+	 */
+	public static void main(String[] args) {
+		System.out.println("Random word: " + random());
+		System.out.println("Random word 4: " + randomBySize(4));
+		System.out
+				.println("Random word 2 - 4: " + randomBySize(2, 4));
+		System.out.println(
+				"Random word z: " + randomByFirstCharacter('z'));
+		System.out.println(
+				"Random word z: " + randomByFirstLetter("z"));
+
 	}
 
 }
