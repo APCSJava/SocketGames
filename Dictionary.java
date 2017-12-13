@@ -1,10 +1,10 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /***
  * Library of methods for retrieving words from an English dictionary.
@@ -21,6 +21,8 @@ public final class Dictionary {
 		try {
 			String filename = "google-10000-english-usa-no-swears.txt";
 			List<String> wordList = Files.readAllLines(Paths.get(filename));
+			mapBySize = wordList.stream().collect(Collectors.groupingBy(s->s.length()));
+			mapByFirstCharacter = wordList.stream().collect(Collectors.groupingBy(s->s.charAt(0)));
 			System.out.println(wordList.get(5));
 		} catch (IOException e) {
 			
