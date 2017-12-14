@@ -10,7 +10,7 @@ import java.util.Map;
 public class GameTracker {
 
 	private static List<Class<Servable>> gameList;
-	private static Map<Class<Servable>, GameInfo> gameInfo;
+	private static Map<Class<Servable>, String> gameInfo;
 
 	/**
 	 * Looks inside the current working directory and collects all file names having
@@ -160,14 +160,14 @@ public class GameTracker {
 	 */
 	public static void initialize() {
 		try {
-			gameInfo = new HashMap<Class<Servable>, GameInfo>();
+			gameInfo = new HashMap<Class<Servable>, String>();
 			gameList = findServableClasses();
 			for (Class<Servable> c : gameList) {
 				Annotation[] annotations = c.getAnnotations();
 				for (Annotation a : annotations) {
 					if (a instanceof GameInfo) {
 						GameInfo info = (GameInfo) a;
-						gameInfo.put(c, info);
+						gameInfo.put(c, formatGameInfoString(info));
 					} else {
 						gameInfo.put(c, null);
 					}
@@ -178,5 +178,14 @@ public class GameTracker {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static String formatGameInfoString(GameInfo g) {
+		String s = "========== ";
+		s+="\t"+g.gameTitle() +"\n";
+		s+="\t"+g.description()+"\n";
+		s+="\t"+formatAuthorString(g.authors());
+		s+="\t"+g.version();
+		return s;
 	}
 }
