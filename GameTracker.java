@@ -66,7 +66,7 @@ public class GameTracker {
 			} catch (NumberFormatException | InstantiationException
 					| IllegalAccessException e) {
 				// game not instantiated -- leave object null
-				e.printStackTrace();
+				return e;
 			}
 		} else {
 			o = buildGameListMenu();

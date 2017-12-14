@@ -8,7 +8,7 @@ import java.net.Socket;
  * Sends menu options and reads the user's selection. If the selection is for a
  * different menu, displays the new menu. If the selection is for a specific
  * game, serves the game. This thread loops until the selection "q" is received,
- * at which point the socket is closed and the thread completes.
+ * at which point the socket is closed and the thread terminates.
  * 
  * @author kentcollins
  *
@@ -37,19 +37,25 @@ public class GameThread implements Runnable {
 					activeMenu = (String) o;
 				} else if (o instanceof Servable) {
 					((Servable) o).serve(br, out);
+				} else if (o instanceof Exception) {
+					out.println(
+							"An error occurred while attempting to start the game.");
 				} else {
 					out.println("Didn't understand the input "
-							+ userSelection
-							+ ".  Press Enter/Return to try again.");
-					br.readLine(); // they acknowledge error
+							+ userSelection + ".");
 				}
+				out.println("Press Enter/Return to continue.");
+				br.readLine(); // they acknowledge error
+
 				out.println(activeMenu);
 				userSelection = br.readLine().trim().toLowerCase();
 			}
 			GameServer.LOGGER.info("Connection with "
 					+ socket.getInetAddress() + " closed normally.");
 
-		} catch (IOException | NullPointerException e1) {
+		} catch (IOException |
+
+				NullPointerException e1) {
 			GameServer.LOGGER.warning(socket.getInetAddress()
 					+ " ended connection abruptly.");
 		} finally {
