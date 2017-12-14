@@ -188,4 +188,9 @@ public class GameTracker {
 		s+="\t"+g.version();
 		return s;
 	}
+	
+	public static String getGameInfo(Class<Servable> c) {
+		if (gameInfo.containsKey(c)) return gameInfo.get(c);
+		return c+" -- no game information available";
+	}
 }

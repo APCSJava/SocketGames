@@ -22,6 +22,7 @@ public class GameThread implements Runnable {
 		this.socket = socket;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		try (PrintWriter out = new PrintWriter(
@@ -40,9 +41,8 @@ public class GameThread implements Runnable {
 					break;
 				Object o = GameTracker.handleUserSelection(choice);
 				if (o instanceof Servable) {
-					out.println("Game selection: "+choice); 
-					// TODO show author info, if available
-					out.println(); // whitespace
+					out.println(GameTracker.getGameInfo((Class<Servable>) o.getClass()));
+					out.println(); // whitespace)
 					((Servable) o).serve(br, out);
 					Thread.sleep(SCROLL_DELAY);
 					out.println(
