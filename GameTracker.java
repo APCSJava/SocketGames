@@ -29,7 +29,7 @@ public class GameTracker {
 	}
 
 	public static String buildGameListMenu() {
-		String s = "*****\tGAME LIST\n";
+		String s = "=====\tGAME LIST\n";
 		int i = 0;
 		for (Class<Servable> c : gameList) {
 			s += (i++) + "\t" + c.getName() + "\n";
@@ -181,7 +181,7 @@ public class GameTracker {
 	}
 	
 	public static String formatGameInfoString(GameInfo g) {
-		String s = "========== ";
+		String s = "=====";
 		s+="\t"+g.gameTitle() +"\n";
 		s+="\t"+g.description()+"\n";
 		s+="\t"+formatAuthorString(g.authors());
