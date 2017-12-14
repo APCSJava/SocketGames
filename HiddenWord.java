@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @GameInfo(authors = {
-"Kent Collins" }, version = "Fall, 2017", gameTitle = "HiddenWord", description = "Sample demonstration of the FRQ.")
+"Kent Collins" }, version = "Fall, 2017", gameTitle = "Hidden Word", description = "A simple demonstration of the FRQ.")
 public class HiddenWord implements Servable {
 	private String word;
 

@@ -10,7 +10,7 @@ import java.io.PrintWriter;
  *
  */
 @GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "WarGames", description = "1983 film fiction.")
+		"Kent Collins" }, version = "Fall, 2017", gameTitle = "WarGames", description = "Some 1983 film fiction.  Be a hero and end the cold war.")
 public class WarGames implements Servable {
 	private static final String[] games = { "FALKEN'S MAZE",
 			"BLACK JACK", "GIN RUMMY", "HEARTS", "BRIDGE",

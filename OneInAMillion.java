@@ -13,7 +13,7 @@ import java.io.PrintWriter;
  *
  */
 @GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "High Low", description = "Can you guess the secret number if I tell you High or Low?")
+		"Kent Collins" }, version = "Fall, 2017", gameTitle = "One in a Million", description = "How many guesses does it take you?")
 public class OneInAMillion implements Servable {
 
 	private int target;
