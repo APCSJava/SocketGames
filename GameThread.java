@@ -16,6 +16,7 @@ import java.net.Socket;
 public class GameThread implements Runnable {
 
 	private Socket socket;
+	private final long SCROLL_DELAY = 500L; // half second delay
 
 	public GameThread(Socket socket) {
 		this.socket = socket;
@@ -32,13 +33,17 @@ public class GameThread implements Runnable {
 			// TODO show author info, if available
 			out.println(); // provide some white space before menu
 			while (true) {
-				out.println(gameMenu);
+				Thread.sleep(SCROLL_DELAY);
+				out.print(gameMenu);  // accept input on same line?
+				out.flush();
 				String choice = br.readLine().trim().toLowerCase();
 				if ("q".equals(choice))
 					break;
 				Object o = GameTracker.handleUserSelection(choice);
 				if (o instanceof Servable) {
+					out.println("Game selection: "+choice+"\n"); // whitespace
 					((Servable) o).serve(br, out);
+					Thread.sleep(SCROLL_DELAY);
 					out.println(
 							"\nThe game is over.  Press Enter to continue.");
 					br.readLine(); // provide opportunity for them to see msg
@@ -60,6 +65,9 @@ public class GameThread implements Runnable {
 				NullPointerException e1) {
 			GameServer.LOGGER.warning(socket.getInetAddress()
 					+ " ended connection abruptly.");
+		} catch (InterruptedException e) {
+			// Likely, because thread was interrupted while sleeping
+			GameServer.LOGGER.warning("Thread interrupted while sleeping."+e);
 		} finally {
 			try {
 				socket.close();
