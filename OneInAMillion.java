@@ -14,7 +14,7 @@ import java.io.PrintWriter;
  */
 @GameInfo(authors = {
 		"Kent Collins" }, version = "Fall, 2017", gameTitle = "High Low", description = "Can you guess the secret number if I tell you High or Low?")
-public class HighLow implements Servable {
+public class OneInAMillion implements Servable {
 
 	private int target;
 	private int lowBound;
@@ -24,7 +24,7 @@ public class HighLow implements Servable {
 	private String promptString;
 	private int MAX_TARGET = 1_000_000; // one in a million
 
-	public HighLow() {
+	public OneInAMillion() {
 		target = (int) (Math.random() * MAX_TARGET) + 1;
 		lowBound = 0;
 		highBound = MAX_TARGET + 1;
