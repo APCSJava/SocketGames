@@ -28,7 +28,7 @@ public class GameTracker {
 		return files;
 	}
 
-	private static String buildGameListMenu() {
+	public static String buildGameListMenu() {
 		String s = "*****\tGAME LIST\n";
 		int i = 0;
 		for (Class<Servable> c : gameList) {
@@ -57,7 +57,7 @@ public class GameTracker {
 	 * @param userSelection
 	 * @return an object representing a menu string, a game instance or null
 	 */
-	public static Object handleInput(String userSelection) {
+	public static Object handleUserSelection(String userSelection) {
 		Object o = null;
 		if (GameTracker.checkValidInteger(userSelection)) {
 			try {

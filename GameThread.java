@@ -6,9 +6,8 @@ import java.net.Socket;
 
 /***
  * Sends menu options and reads the user's selection. If the selection is for a
- * different menu, displays the new menu. If the selection is for a specific
- * game, serves the game. This thread loops until the selection "q" is received,
- * at which point the socket is closed and the thread terminates.
+ * specific game, serves the game. This thread loops until the selection "q" is
+ * received, at which point the socket is closed and the thread terminates.
  * 
  * @author kentcollins
  *
@@ -29,26 +28,29 @@ public class GameThread implements Runnable {
 				BufferedReader br = new BufferedReader(
 						new InputStreamReader(
 								socket.getInputStream()))) {
-			String activeMenu = null;
-			String userSelection = "i";
-			while (!userSelection.equals("q")) {
-				Object o = GameTracker.handleInput(userSelection);
-				if (o instanceof String) {
-					activeMenu = (String) o;
-				} else if (o instanceof Servable) {
+			String gameMenu = GameTracker.buildGameListMenu();
+			// TODO show author info, if available
+			out.println(); // provide some white space before menu
+			while (true) {
+				out.println(gameMenu);
+				String choice = br.readLine().trim().toLowerCase();
+				if ("q".equals(choice))
+					break;
+				Object o = GameTracker.handleUserSelection(choice);
+				if (o instanceof Servable) {
 					((Servable) o).serve(br, out);
+					out.println(
+							"\nThe game is over.  Press Enter to continue.");
+					br.readLine(); // provide opportunity for them to see msg
+					continue;
 				} else if (o instanceof Exception) {
 					out.println(
 							"An error occurred while attempting to start the game.");
 				} else {
-					out.println("Didn't understand the input "
-							+ userSelection + ".");
+					out.println(choice + " is not a valid option.");
 				}
 				out.println("Press Enter/Return to continue.");
-				br.readLine(); // they acknowledge error
-
-				out.println(activeMenu);
-				userSelection = br.readLine().trim().toLowerCase();
+				br.readLine(); // user is ready to continue
 			}
 			GameServer.LOGGER.info("Connection with "
 					+ socket.getInetAddress() + " closed normally.");
