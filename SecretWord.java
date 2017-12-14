@@ -10,7 +10,7 @@ import java.io.PrintWriter;
  *
  */
 @GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "Secret Word", description = "Guess the secret word and win!")
+		"Kent Collins" }, version = "Fall, 2017", gameTitle = "The Secret Word", description = "Guess the secret word and win!")
 public class SecretWord implements Servable {
 
 	private String secret;
