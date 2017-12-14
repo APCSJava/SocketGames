@@ -38,7 +38,7 @@ public class WarGames implements Servable {
 	private static final String CHOOSE_SIDES = "\t\tWHICH SIDE DO YOU WANT?\n\t1. UNITED STATES\n\t2. SOVIET UNION";
 	private static final String UNACCEPTABLE = "I HAVE EVALUATED ALL POSSIBLE OUTCOMES...\nUNACCEPTABLE LOSSES FOR THIS SCENARIO.\nYOU DO NOT WIN.\n\n--CONNECTION TERMINATED--\nSCORE: -1739485";
 	private static final String TAGLINE = "\nYOU ARE CORRECT.\nTHE ONLY WINNING MOVE\nIS NOT TO PLAY.\n";
-	private static final String CONGRATS = "CONGRATULATIONS.  YOU WIN.\n\n--OBJECTIVE COMPLETE--\nFINAL SCORE: ";
+	private static final String CONGRATS = "CONGRATULATIONS.  YOU WIN.\n--OBJECTIVE COMPLETE--\nFINAL SCORE: ";
 
 	@Override
 	public void serve(BufferedReader input, PrintWriter output)
@@ -112,6 +112,10 @@ public class WarGames implements Servable {
 		return s.contains("list") || s.contains("games");
 	}
 
+	/**
+	 * Build list of Falken's games
+	 * @return a formatted list of strings
+	 */
 	private static String buildGameListString() {
 		String listing = "\n\t\tGame List\n";
 		for (String s : games) {
