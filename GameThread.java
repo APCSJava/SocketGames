@@ -30,7 +30,6 @@ public class GameThread implements Runnable {
 						new InputStreamReader(
 								socket.getInputStream()))) {
 			String gameMenu = GameTracker.buildGameListMenu();
-			// TODO show author info, if available
 			out.println(); // provide some white space before menu
 			while (true) {
 				Thread.sleep(SCROLL_DELAY);
@@ -41,7 +40,9 @@ public class GameThread implements Runnable {
 					break;
 				Object o = GameTracker.handleUserSelection(choice);
 				if (o instanceof Servable) {
-					out.println("Game selection: "+choice+"\n"); // whitespace
+					out.println("Game selection: "+choice); 
+					// TODO show author info, if available
+					out.println(); // whitespace
 					((Servable) o).serve(br, out);
 					Thread.sleep(SCROLL_DELAY);
 					out.println(
