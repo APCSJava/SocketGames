@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 "Kent Collins" }, version = "Fall, 2017", gameTitle = "HiddenWord", description = "Sample demonstration of the FRQ.")
 public class HiddenWord implements Servable {
 	private String word;
-	private String hint;
 
 	public HiddenWord(String word) {
 		this.word = word;
@@ -14,13 +13,11 @@ public class HiddenWord implements Servable {
 	
 	public HiddenWord() {
 		this.word = Dictionary.randomBySize(5).toUpperCase();
-		hint = "";
-		for (int i = 0; i<word.length(); i++) {
-			hint+="*";
-		}
 	}
 
 	public String getHint(String guess) {
+		// must decide how to handle incorrect precondition
+
 		String hint = "";
 
 		for (int i = 0; i < word.length(); i++) {
@@ -40,9 +37,14 @@ public class HiddenWord implements Servable {
 	public void serve(BufferedReader in, PrintWriter out)
 			throws IOException {
 		out.println("The word is "+word.length()+" letters long. Take a guess");
-		while (hint.contains("*")) {
+		while (true) {
 			String guess = in.readLine().trim().toUpperCase();
-			hint = getHint(guess);
+			if (guess.length()!=word.length()) {
+				out.println("The guess must be "+word.length()+" long");
+				continue;
+			}
+			String hint = getHint(guess);
+			if (hint.equals(word)) break;
 			out.println("Your hint is "+hint);
 		}
 		out.println("You guessed it!");
