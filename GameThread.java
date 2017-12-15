@@ -83,7 +83,7 @@ public class GameThread implements Runnable {
 		public void println(String s) {
 			super.println(s);
 			if (!s.trim().equals("")) {
-				String first60 = "Sending --> "+socket.getInetAddress()+" "+s.replace("\n", " ").substring(0, 60);
+				String first60 = "Sending --> "+socket.getInetAddress()+" "+s.replace("\n", " ").substring(0, Math.min(60, s.length()));
 				System.out.println(first60);
 			}
 		}
@@ -101,7 +101,7 @@ public class GameThread implements Runnable {
 			try {
 				String s = super.readLine();
 				if (!s.trim().equals("")) {
-					String first60 = "Received <-- "+socket.getInetAddress()+" "+s.replace("\n", " ").substring(0, 60);
+					String first60 = "Received <-- "+socket.getInetAddress()+" "+s.replace("\n", " ").substring(0, Math.min(60,  s.length()));
 					System.out.println(first60);
 				}
 				return s;
