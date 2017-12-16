@@ -7,8 +7,6 @@ public class HiddenWord {
 	
 
 	public String getHint(String guess) {
-		// must decide how to handle incorrect precondition
-
 		String hint = "";
 
 		for (int i = 0; i < word.length(); i++) {
