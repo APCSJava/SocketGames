@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 /***
  * Homage to the 1983 film of the same name.
  * 
- * @author kentcollins
+ * @author K. Collins
  * @version Fall 2017
  *
  */
