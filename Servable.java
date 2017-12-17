@@ -3,11 +3,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /***
- * Available interface for classes that read from and write to the indicated
- * network streams.
+ * Interface for games that read and write across streams.
  * 
  * @author kentcollins
- *
+ * @version Fall, 2017
  */
 public interface Servable {
 
