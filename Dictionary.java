@@ -11,7 +11,8 @@ import java.util.stream.Collectors;
  * Library methods for retrieving words from a source containing Google's 10000
  * most frequently used words in usa english (w/o swear words).
  * 
- * @author kentcollins
+ * @author K. Collins
+ * @version Fall, 2017
  *
  */
 public final class Dictionary {

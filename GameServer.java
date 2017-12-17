@@ -9,7 +9,8 @@ import java.util.logging.Logger;
  * Accepts incoming connections on the indicated port and dispatches them into
  * parallel game threads.
  * 
- * K Collins, Fall 2017
+ * @author K Collins
+ * @version Fall, 2017
  */
 public class GameServer {
 

@@ -15,7 +15,7 @@ import java.net.Socket;
  * Extends PrintWriter and BufferedReader classes to echoed versions that
  * read/write a copy of the input/output streams to the logger, as well.
  * 
- * @author kentcollins
+ * @author K. Collins
  * @version Fall, 2017
  */
 
@@ -105,7 +105,7 @@ public class GameThread implements Runnable {
 						+ socket.getInetAddress() + " "
 						+ s.replace("\n", " ").substring(0,
 								Math.min(60, s.length()));
-				System.out.println(first60);
+				GameServer.LOGGER.info(first60);
 			}
 		}
 
@@ -132,7 +132,7 @@ public class GameThread implements Runnable {
 							+ socket.getInetAddress() + " "
 							+ s.replace("\n", " ").substring(0,
 									Math.min(60, s.length()));
-					System.out.println(first60);
+					GameServer.LOGGER.info(first60);
 				}
 				return s;
 			} catch (IOException e) {

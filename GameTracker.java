@@ -8,6 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/***
+ * Locates playable games within the project directory structure. Maintains a
+ * list of playable games, along with game information collected from class
+ * annotations and high scores stored in a flat file.
+ * 
+ * @author K. Collins
+ * @version Fall, 2017
+ *
+ */
 public class GameTracker {
 
 	private static List<Class<? extends Servable>> gameList;
@@ -38,9 +47,10 @@ public class GameTracker {
 			s += (i++) + "\t" + c.getName();
 			if (hasHighScoreEntry) {
 				HighScore h = highScores.get(c);
-				s+="\t\t"+h.getScore()+"\t\t"+h.getInitials();
+				s += "\t\t" + h.getScore() + "\t\t"
+						+ h.getInitials();
 			}
-			s+="\n";
+			s += "\n";
 		}
 		s += "\nEnter the number of the game to play or 'q' to exit.\n";
 		return s;
@@ -102,39 +112,6 @@ public class GameTracker {
 	}
 
 	/**
-	 * Use for verifying classpath is suitable for loading games
-	 * 
-	 * @param args
-	 * @throws ClassNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 */
-	public static void main(String[] args)
-			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException {
-		// List<Class<Servable>> classes = findServableClasses();
-		initialize();
-		for (Class<? extends Servable> c : gameInfo.keySet()) {
-			Annotation[] annotations = c.getAnnotations();
-			for (Annotation a : annotations) {
-				if (a instanceof GameInfo) {
-					GameInfo info = (GameInfo) a;
-					String authors = formatAuthorString(
-							info.authors());
-					System.out.println(info.gameTitle()
-							+ ". Written by " + authors
-							+ ".  Version: " + info.version());
-				}
-			}
-			File f = new File(c.getName() + ".class");
-			Date d = new Date(f.lastModified());
-			System.out.println("Last modified :" + d);
-		}
-		System.out.println(
-				"Initialization complete.  Map is " + gameInfo);
-	}
-
-	/**
 	 * Collects from the working directory all files that implement the Servable
 	 * interface
 	 * 
@@ -153,14 +130,18 @@ public class GameTracker {
 			Class[] interfaces = classObj.getInterfaces();
 			if (interfaces.length > 0) {
 				for (Class c : interfaces) {
-					if (Servable.class.isAssignableFrom(c) && !Modifier.isAbstract(classObj.getModifiers())) {
+					if (Servable.class.isAssignableFrom(c)
+							&& !Modifier.isAbstract(
+									classObj.getModifiers())) {
 						servableClasses.add(classObj);
 						break;
 					}
 				}
 			}
 		}
-		System.out.println("The following are servable classes "+servableClasses);
+		GameServer.LOGGER.info(
+				"GameTracker detected the following servable classes "
+						+ servableClasses);
 		return servableClasses;
 	}
 
@@ -234,9 +215,7 @@ public class GameTracker {
 	 */
 	private static void writeHighScores() {
 		// TODO Auto-generated method stub
-		
-	}
 
-	
+	}
 
 }

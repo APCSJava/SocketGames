@@ -8,6 +8,9 @@ import java.lang.annotation.Target;
  * A class annotation holding meta information about a game. Providing
  * information with this class annotation allows it to be accessed by the
  * GameTracker and used as an information source when preparing menus.
+ * 
+ * @author K. Collins
+ * @version Fall, 2017
  *
  */
 @Retention(RetentionPolicy.RUNTIME)

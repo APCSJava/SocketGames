@@ -1,7 +1,7 @@
 /***
  * Plain old Java object for associating a score with a player's initials.
  * 
- * @author kentcollins
+ * @author K. Collins
  * @version Fall, 2017
  */
 

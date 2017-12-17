@@ -1,7 +1,7 @@
 /***
  * Base class for games.
  * 
- * @author kentcollins
+ * @author K. Collins
  * @version Fall, 2017
  *
  */
