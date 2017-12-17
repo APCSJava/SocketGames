@@ -25,7 +25,7 @@ public class OneInAMillion extends AbstractGame implements Servable {
 	private int MAX_TARGET = 1_000_000; // one in a million
 
 	public OneInAMillion() {
-		target = 5; // (int) (Math.random() * MAX_TARGET) + 1;
+		target = (int) (Math.random() * MAX_TARGET) + 1;
 		lowBound = 0;
 		highBound = MAX_TARGET + 1;
 		numGuesses = 0;
