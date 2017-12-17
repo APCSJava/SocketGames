@@ -84,7 +84,10 @@ public class GameTracker {
 			} catch (NumberFormatException | InstantiationException
 					| IllegalAccessException e) {
 				// game not instantiated -- leave object null
-				return e;
+				GameServer.LOGGER.warning(e.toString());
+			} catch (IndexOutOfBoundsException e) {
+				// chose a game not on the list
+				GameServer.LOGGER.warning(e.toString());
 			}
 		} else {
 			o = buildGameListMenu();
