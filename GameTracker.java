@@ -39,6 +39,12 @@ public class GameTracker {
 		return files;
 	}
 
+	/**
+	 * Prepares a game menu string displaying the game index, game name, current
+	 * high score, and high score holder's initials.
+	 * 
+	 * @return a menu string displaying information on available games
+	 */
 	public static String buildGameListMenu() {
 		String s = "=====\tGAME LIST\t\tHigh Score\tInitials\n";
 		int i = 0;
@@ -56,7 +62,13 @@ public class GameTracker {
 		return s;
 	}
 
-	// verify that parameter refers to a game in the game bank
+	/**
+	 * Checks that a submitted string can be safely converted to an integer.
+	 * 
+	 * @param s
+	 *            the string to be tested
+	 * @return true if s can be parsed to integer; false, otherwise
+	 */
 	public static boolean checkValidInteger(String s) {
 		try {
 			int i = Integer.parseInt(s);
@@ -149,7 +161,8 @@ public class GameTracker {
 	}
 
 	/**
-	 * Initializes the game database
+	 * Initializes the game database. Should be called on the class when starting
+	 * the application. The GameServer class does this when starting the service.
 	 * 
 	 */
 	public static void initialize() {
@@ -175,6 +188,15 @@ public class GameTracker {
 		}
 	}
 
+	/**
+	 * Takes the information in a GameInfo annotation and prepares it for display.
+	 * For uniformity, games may and should call this method when starting or
+	 * restarting a game.
+	 * 
+	 * @param g
+	 *            a GameInfo reference; a class level annotation on games
+	 * @return a string appropriate for text display of game information
+	 */
 	public static String formatGameInfoString(GameInfo g) {
 		String s = "=====";
 		s += "\t" + g.gameTitle() + "\n";
@@ -184,20 +206,40 @@ public class GameTracker {
 		return s;
 	}
 
+	/**
+	 * Retrieves the GameInfo object associated with this class. The returned object
+	 * is drawn from the game data map collected when the server was initialized.
+	 * 
+	 * @param c
+	 *            the class on which to search for game information
+	 * @return the GameInfo object loaded for the indicated class
+	 */
 	public static String getGameInfo(Class<Servable> c) {
 		if (gameInfo.containsKey(c))
 			return gameInfo.get(c);
 		return c + " -- no game information available";
 	}
 
+	/**
+	 * For the indicated game, get the current high score.
+	 * 
+	 * @param someClass
+	 * @return the current recorded int; Integer.MIN_VALUE, if none found
+	 */
 	public static int getHighScoreValue(
 			Class<? extends AbstractGame> someClass) {
 		if (highScores.containsKey(someClass)) {
 			return highScores.get(someClass).getScore();
 		}
-		return 0;
+		return Integer.MIN_VALUE;
 	}
 
+	/**
+	 * For the indicated game, get the initials of the high score holder.
+	 * 
+	 * @param someClass
+	 * @return an initials string; null, if no string is found
+	 */
 	public static String getHighScoreInitials(
 			Class<? extends AbstractGame> someClass) {
 		if (highScores.containsKey(someClass)) {
@@ -206,6 +248,16 @@ public class GameTracker {
 		return null;
 	}
 
+	/**
+	 * Associates a HighScore object with the indicated game class.
+	 * 
+	 * @param someClass
+	 *            the class for which a new high score has been achieved
+	 * @param value
+	 *            the integer value of the high score
+	 * @param initials
+	 *            the initials of the new record holder
+	 */
 	public static void setHighScore(
 			Class<? extends AbstractGame> someClass, int value,
 			String initials) {
