@@ -65,7 +65,7 @@ public class OneInAMillion extends AbstractGame implements Servable {
 		}
 		// user has won
 		int highestScore = getHighScoreValue();
-		if (numGuesses < highestScore || highestScore == 0) {
+		if (numGuesses < highestScore || highestScore == Integer.MIN_VALUE) {
 			output.println(
 					"Wow!  That's a new high score -- please enter your initials...");
 			String person = input.readLine().trim();
