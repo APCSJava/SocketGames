@@ -6,7 +6,8 @@ import java.net.Socket;
 import java.util.logging.Logger;
 
 /***
- * Spins connection requests into parallel game threads.
+ * Accepts incoming connections on the indicated port and dispatches them into
+ * parallel game threads.
  * 
  * K Collins, Fall 2017
  */
