@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FilenameFilter;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,8 +10,9 @@ import java.util.Map;
 
 public class GameTracker {
 
-	private static List<Class<Servable>> gameList;
-	private static Map<Class<Servable>, String> gameInfo;
+	private static List<Class<? extends Servable>> gameList;
+	private static Map<Class<? extends Servable>, String> gameInfo;
+	private static Map<Class<? extends AbstractGame>, HighScore> highScores;
 
 	/**
 	 * Looks inside the current working directory and collects all file names having
@@ -29,12 +31,18 @@ public class GameTracker {
 	}
 
 	public static String buildGameListMenu() {
-		String s = "=====\tGAME LIST\n";
+		String s = "=====\tGAME LIST\t\tHigh Score\tInitials\n";
 		int i = 0;
-		for (Class<Servable> c : gameList) {
-			s += (i++) + "\t" + c.getName() + "\n";
+		for (Class<? extends Servable> c : gameList) {
+			boolean hasHighScoreEntry = highScores.containsKey(c);
+			s += (i++) + "\t" + c.getName();
+			if (hasHighScoreEntry) {
+				HighScore h = highScores.get(c);
+				s+="\t\t"+h.getScore()+"\t\t"+h.getInitials();
+			}
+			s+="\n";
 		}
-		s+="\nEnter the number of the game to play or 'q' to exit.\n";
+		s += "\nEnter the number of the game to play or 'q' to exit.\n";
 		return s;
 	}
 
@@ -104,9 +112,9 @@ public class GameTracker {
 	public static void main(String[] args)
 			throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException {
-		//List<Class<Servable>> classes = findServableClasses();
+		// List<Class<Servable>> classes = findServableClasses();
 		initialize();
-		for (Class<Servable> c : gameInfo.keySet()) {
+		for (Class<? extends Servable> c : gameInfo.keySet()) {
 			Annotation[] annotations = c.getAnnotations();
 			for (Annotation a : annotations) {
 				if (a instanceof GameInfo) {
@@ -122,7 +130,8 @@ public class GameTracker {
 			Date d = new Date(f.lastModified());
 			System.out.println("Last modified :" + d);
 		}
-		System.out.println("Initialization complete.  Map is "+gameInfo);
+		System.out.println(
+				"Initialization complete.  Map is " + gameInfo);
 	}
 
 	/**
@@ -133,9 +142,9 @@ public class GameTracker {
 	 * @throws ClassNotFoundException
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List<Class<Servable>> findServableClasses()
+	public static List<Class<? extends Servable>> findServableClasses()
 			throws ClassNotFoundException {
-		List<Class<Servable>> servableClasses = new ArrayList<Class<Servable>>();
+		List<Class<? extends Servable>> servableClasses = new ArrayList<Class<? extends Servable>>();
 		for (File f : findClassFilesInWorkingDirectory()) {
 			String nameWithExtension = f.getName();
 			int idx = nameWithExtension.lastIndexOf(".class");
@@ -144,13 +153,14 @@ public class GameTracker {
 			Class[] interfaces = classObj.getInterfaces();
 			if (interfaces.length > 0) {
 				for (Class c : interfaces) {
-					if (Servable.class.isAssignableFrom(c)) {
+					if (Servable.class.isAssignableFrom(c) && !Modifier.isAbstract(classObj.getModifiers())) {
 						servableClasses.add(classObj);
 						break;
 					}
 				}
 			}
 		}
+		System.out.println("The following are servable classes "+servableClasses);
 		return servableClasses;
 	}
 
@@ -160,9 +170,9 @@ public class GameTracker {
 	 */
 	public static void initialize() {
 		try {
-			gameInfo = new HashMap<Class<Servable>, String>();
+			gameInfo = new HashMap<Class<? extends Servable>, String>();
 			gameList = findServableClasses();
-			for (Class<Servable> c : gameList) {
+			for (Class<? extends Servable> c : gameList) {
 				Annotation[] annotations = c.getAnnotations();
 				for (Annotation a : annotations) {
 					if (a instanceof GameInfo) {
@@ -173,24 +183,60 @@ public class GameTracker {
 					}
 				}
 			}
+			highScores = new HashMap<Class<? extends AbstractGame>, HighScore>();
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static String formatGameInfoString(GameInfo g) {
 		String s = "=====";
-		s+="\t"+g.gameTitle() +"\n";
-		s+="\t"+g.description()+"\n";
-		s+="\t"+formatAuthorString(g.authors());
-		s+="\t"+g.version();
+		s += "\t" + g.gameTitle() + "\n";
+		s += "\t" + g.description() + "\n";
+		s += "\t" + formatAuthorString(g.authors());
+		s += "\t" + g.version();
 		return s;
 	}
-	
+
 	public static String getGameInfo(Class<Servable> c) {
-		if (gameInfo.containsKey(c)) return gameInfo.get(c);
-		return c+" -- no game information available";
+		if (gameInfo.containsKey(c))
+			return gameInfo.get(c);
+		return c + " -- no game information available";
 	}
+
+	public static int getHighScoreValue(
+			Class<? extends AbstractGame> someClass) {
+		if (highScores.containsKey(someClass)) {
+			return highScores.get(someClass).getScore();
+		}
+		return 0;
+	}
+
+	public static String getHighScoreInitials(
+			Class<? extends AbstractGame> someClass) {
+		if (highScores.containsKey(someClass)) {
+			return highScores.get(someClass).getInitials();
+		}
+		return null;
+	}
+
+	public static void setHighScore(
+			Class<? extends AbstractGame> someClass, int value,
+			String initials) {
+		highScores.put(someClass, new HighScore(value, initials));
+		writeHighScores();
+	}
+
+	/**
+	 * Write out the high scores to a flat-file so can be loaded later
+	 */
+	private static void writeHighScores() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
 }

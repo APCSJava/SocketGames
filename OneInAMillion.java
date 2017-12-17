@@ -14,7 +14,7 @@ import java.io.PrintWriter;
  */
 @GameInfo(authors = {
 		"Kent Collins" }, version = "Fall, 2017", gameTitle = "One in a Million", description = "How many guesses does it take you?")
-public class OneInAMillion implements Servable {
+public class OneInAMillion extends AbstractGame implements Servable {
 
 	private int target;
 	private int lowBound;
@@ -25,7 +25,7 @@ public class OneInAMillion implements Servable {
 	private int MAX_TARGET = 1_000_000; // one in a million
 
 	public OneInAMillion() {
-		target = (int) (Math.random() * MAX_TARGET) + 1;
+		target = 5; // (int) (Math.random() * MAX_TARGET) + 1;
 		lowBound = 0;
 		highBound = MAX_TARGET + 1;
 		numGuesses = 0;
@@ -33,7 +33,8 @@ public class OneInAMillion implements Servable {
 	}
 
 	@Override
-	public void serve(BufferedReader input, PrintWriter output) throws IOException {
+	public void serve(BufferedReader input, PrintWriter output)
+			throws IOException {
 		setInitialPrompt();
 		output.println(promptString);
 		String userInput = input.readLine().trim();
@@ -43,7 +44,7 @@ public class OneInAMillion implements Servable {
 			if (guessCode == -1) { // they chose to quit
 				setQuitPrompt();
 				output.println(promptString);
-				break; // exit this loop
+				return; // game is over
 			} else if (guessCode == target) { // they have won the game
 				numGuesses++;
 				setCongratulationsPrompt();
@@ -62,6 +63,16 @@ public class OneInAMillion implements Servable {
 				userInput = input.readLine().trim();
 			}
 		}
+		// user has won
+		int highestScore = getHighScoreValue();
+		if (numGuesses < highestScore || highestScore == 0) {
+			output.println("Wow!  That's a new high score -- please enter your initials?");
+			String person = input.readLine().trim();
+			setHighScore(numGuesses, person);
+		}
+		output.println("New high score of " + getHighScoreValue()
+				+ " set by " + getHighScoreInitials());
+
 	}
 
 	/**
@@ -89,30 +100,37 @@ public class OneInAMillion implements Servable {
 	}
 
 	private void setInitialPrompt() {
-		promptString = "Guess a number between 1 and " + MAX_TARGET + " or press 'q' to quit";
+		promptString = "Guess a number between 1 and " + MAX_TARGET
+				+ " or press 'q' to quit";
 	}
 
 	private void setCongratulationsPrompt() {
-		promptString = "You guessed it exactly!  You used " + numGuesses + " guesses.";
+		promptString = "You guessed it exactly!  You used "
+				+ numGuesses + " guesses.";
 	}
 
 	private void setQuitPrompt() {
 		String s = "Thanks for playing High-Low.  ";
-		s += "You tried " + numGuesses + (numGuesses > 1 ? " guesses" : " guess");
+		s += "You tried " + numGuesses
+				+ (numGuesses > 1 ? " guesses" : " guess");
 		s += " but did not win.  The target was " + target;
 		s += "\nTry again, if you think you can do better.";
 		promptString = s;
 	}
 
 	private void setErrorPrompt(String errorGuess) {
-		String s = "I'm sorry, but " + errorGuess + " is not a valid guess";
-		s += "\nGuess a number between 1 and " + MAX_TARGET + " or press 'q' to quit";
+		String s = "I'm sorry, but " + errorGuess
+				+ " is not a valid guess";
+		s += "\nGuess a number between 1 and " + MAX_TARGET
+				+ " or press 'q' to quit";
 		promptString = s;
 	}
 
 	private void setSuggestionPrompt() {
-		String s1 = "The answer lies between " + (lowBound) + " and " + (highBound) + ".";
-		s1 += "  \nYou have used " + numGuesses + (numGuesses == 1 ? " guess" : " guesses");
+		String s1 = "The answer lies between " + (lowBound) + " and "
+				+ (highBound) + ".";
+		s1 += "  \nYou have used " + numGuesses
+				+ (numGuesses == 1 ? " guess" : " guesses");
 		promptString = s1;
 	}
 

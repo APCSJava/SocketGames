@@ -5,24 +5,20 @@
  * @version Fall, 2017
  *
  */
-public abstract class AbstractGame implements Servable {
+public abstract class AbstractGame {
 
-	private static int highScore;
-	private static String highScoreHolder;
-	
-	public static int getHighScore() {
-		return highScore;
+	public final int getHighScoreValue() {
+		return GameTracker.getHighScoreValue(this.getClass());
 	}
 	
-	public static void setHighScore(int score) {
-		highScore = score;
+	public final String getHighScoreInitials() {
+		return GameTracker.getHighScoreInitials(this.getClass());
 	}
 
-	public static String getHighScoreHolder() {
-		return highScoreHolder;
-	}
-
-	public static void setHighScoreHolder(String highScoreHolder) {
-		AbstractGame.highScoreHolder = highScoreHolder;
+	public final void setHighScore(int value, String initials) {
+		if (initials== null || initials.equals("")) initials = "---";
+		else if (initials.length()>3) initials = initials.substring(0, 3).toUpperCase();
+		else initials = initials.toUpperCase();
+		GameTracker.setHighScore(this.getClass(), value, initials);
 	}
 }

@@ -29,11 +29,10 @@ public class GameThread implements Runnable {
 	public void run() {
 		try (PrintWriter out = new EchoWriter(socket.getOutputStream(), true);
 				BufferedReader br = new EchoReader(new InputStreamReader(socket.getInputStream()))) {
-			String gameMenu = GameTracker.buildGameListMenu();
 			out.println(); // provide some white space before menu
 			while (true) {
 				Thread.sleep(SCROLL_DELAY);
-				out.print(gameMenu); // accept input on same line?
+				out.print(GameTracker.buildGameListMenu()); // accept input on same line?
 				out.flush();
 				String choice = br.readLine().trim().toLowerCase();
 				if ("q".equals(choice))
