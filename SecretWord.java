@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 /***
  * Example implementation of a Servable class.
  * 
- * @author kentcollins
+ * @author K. Collins
  * @version Fall 2017
  *
  */
