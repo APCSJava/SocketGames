@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /***
- * Library of methods for retrieving words from an English dictionary.
+ * Library methods for retrieving words from a source containing Google's 10000
+ * most frequently used words in usa english (w/o swear words).
  * 
  * @author kentcollins
  *
@@ -36,9 +37,16 @@ public final class Dictionary {
 	}
 
 	private Dictionary() {
-		// no, you do NOT get to make an instance. Use the static methods.
+		// Nope. Use the static methods.
 	}
 
+	/**
+	 * Returns an immutable version of the word source. Immutability assures that
+	 * while multiple threads can access the reference, no thread has the ability to
+	 * add or remove words.
+	 * 
+	 * @return
+	 */
 	public static List<String> getImmutableList() {
 		return immutableList;
 	}
@@ -60,9 +68,10 @@ public final class Dictionary {
 	}
 
 	/**
-	 * Change the single letter string into a Character and delegate
+	 * Returns a random word beginning with the specified letter
 	 * 
 	 * @param s
+	 *            the initial letter
 	 * @return a random word beginning with s
 	 */
 	public static String randomByFirstLetter(String s) {
@@ -86,7 +95,7 @@ public final class Dictionary {
 	}
 
 	/**
-	 * Return a random word of at least a minimum size and up to a maximum size.
+	 * Return a random word between min and max characters long, inclusive.
 	 * 
 	 * @param min
 	 *            the minimum length of a qualifying word
@@ -104,31 +113,13 @@ public final class Dictionary {
 	}
 
 	/**
-	 * Returns a random word, no constraints
+	 * Returns a random word from the word source
 	 * 
 	 * @return a random word from the entire dictionary
 	 */
 	public static String random() {
-		int randomIndex = (int) (Math.random() * immutableList.size());
+		int randomIndex = (int) (Math.random()
+				* immutableList.size());
 		return immutableList.get(randomIndex);
 	}
-
-	/**
-	 * For testing.
-	 * 
-	 * @param args
-	 *            unused
-	 */
-	public static void main(String[] args) {
-		System.out.println("Random word: " + random());
-		System.out.println("Random word 4: " + randomBySize(4));
-		System.out
-				.println("Random word 2 - 4: " + randomBySize(2, 4));
-		System.out.println(
-				"Random word z: " + randomByFirstCharacter('z'));
-		System.out.println(
-				"Random word z: " + randomByFirstLetter("z"));
-		System.out.println(getImmutableList().get(9));
-	}
-
 }
