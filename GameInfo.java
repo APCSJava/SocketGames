@@ -5,15 +5,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /***
- * An annotation to hold meta information about games.
+ * A class annotation holding meta information about a game. Providing
+ * information with this class annotation allows it to be accessed by the
+ * GameTracker and used as an information source when preparing menus.
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Inherited
 public @interface GameInfo {
 	String gameTitle() default "Untitled";
+
 	String[] authors() default "No author information";
+
 	String version() default "No version information";
+
 	String description() default "No description provided";
 }
