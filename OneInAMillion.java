@@ -6,8 +6,6 @@ import java.io.PrintWriter;
  * A game for guessing one number out of a million -- can it be done in a
  * reasonable number of tries?
  * 
- * An example implementation of the Servable interface
- * 
  * @author K. Collins
  * @version Fall 2017
  *
