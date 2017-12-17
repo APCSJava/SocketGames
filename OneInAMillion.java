@@ -8,7 +8,7 @@ import java.io.PrintWriter;
  * 
  * An example implementation of the Servable interface
  * 
- * @author kentcollins
+ * @author K. Collins
  * @version Fall 2017
  *
  */
@@ -66,7 +66,8 @@ public class OneInAMillion extends AbstractGame implements Servable {
 		// user has won
 		int highestScore = getHighScoreValue();
 		if (numGuesses < highestScore || highestScore == 0) {
-			output.println("Wow!  That's a new high score -- please enter your initials?");
+			output.println(
+					"Wow!  That's a new high score -- please enter your initials...");
 			String person = input.readLine().trim();
 			setHighScore(numGuesses, person);
 		}
