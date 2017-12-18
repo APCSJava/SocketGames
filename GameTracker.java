@@ -1,12 +1,18 @@
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /***
  * Locates playable games within the project directory structure. Maintains a
@@ -22,6 +28,8 @@ public class GameTracker {
 	private static List<Class<? extends Servable>> gameList;
 	private static Map<Class<? extends Servable>, String> gameInfo;
 	private static Map<Class<? extends AbstractGame>, HighScore> highScores;
+	
+	private static final String HIGH_SCORE_FILE = "high-scores.csv";
 
 	/**
 	 * Looks inside the current working directory and collects all file names having
@@ -181,6 +189,7 @@ public class GameTracker {
 				}
 			}
 			highScores = new HashMap<Class<? extends AbstractGame>, HighScore>();
+			loadHighScores();
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -269,8 +278,41 @@ public class GameTracker {
 	 * Write out the high scores to a flat-file so can be loaded later
 	 */
 	private static void writeHighScores() {
-		// TODO Auto-generated method stub
+		Set<String> scoreInfo = new HashSet<String>();
+		Path p = Paths.get(HIGH_SCORE_FILE);
+		for (Class<? extends AbstractGame> c:highScores.keySet()) {
+			String classname = c.getName();
+			HighScore h = highScores.get(c);
+			int i = h.getScore();
+			String initials = h.getInitials();
+			String info = classname+","+i+","+initials;
+			scoreInfo.add(info);
+		}
+		try {
+			Files.write(p, scoreInfo, StandardOpenOption.CREATE);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+	}
+	
+	private static void loadHighScores() {
+		List<String> words = new ArrayList<String>();
+		try {
+			String filename = HIGH_SCORE_FILE;
+			words = Files.readAllLines(Paths.get(filename));
+			for (String s: words) {
+				String[] data = s.trim().split(",");
+				Class<? extends AbstractGame> c = (Class<? extends AbstractGame>) Class.forName(data[0]);
+				int i = Integer.parseInt(data[1]);
+				String initials = data[2];
+				highScores.put(c, new HighScore(i, initials));
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			// oh, well -- no high scores, I guess...
+			e.printStackTrace();
+		}
 	}
 
 }
