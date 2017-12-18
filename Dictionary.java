@@ -20,12 +20,13 @@ public final class Dictionary {
 	private static Map<Integer, List<String>> mapBySize;
 	private static Map<Character, List<String>> mapByFirstCharacter;
 	private static List<String> immutableList;
+	private static final String DEFAULT_DICT = "google-10000-english-usa-no-swears.txt";
 
 	static {
 		List<String> words = new ArrayList<String>();
 		words.add("no dictionary loaded");
 		try {
-			String filename = "google-10000-english-usa-no-swears.txt";
+			String filename = DEFAULT_DICT;
 			words = Files.readAllLines(Paths.get(filename));
 		} catch (IOException e) {
 			// the phrase 'no dictionary loaded' will populate the dictionary
