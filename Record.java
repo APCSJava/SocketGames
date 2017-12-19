@@ -1,15 +1,18 @@
 /***
  * Plain old Java object for associating a score with a player's initials.
  * 
+ * Changed from "high score" to "record score" because sometimes a lower score
+ * is the target.  
+ * 
  * @author K. Collins
  * @version Fall, 2017
  */
 
-public class HighScore {
+public class Record {
 	private int score;
 	private String holder;
 
-	public HighScore(int score, String holder) {
+	public Record(int score, String holder) {
 		this.score = score;
 		this.holder = holder;
 	}
@@ -18,7 +21,7 @@ public class HighScore {
 		return score;
 	}
 
-	public String getInitials() {
+	public String getHolder() {
 		return holder;
 	}
 

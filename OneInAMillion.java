@@ -35,6 +35,7 @@ public class OneInAMillion extends AbstractGame implements Servable {
 			throws IOException {
 		setInitialPrompt();
 		output.println(promptString);
+		GameServer.LOGGER.info("One in a million? "+target);
 		String userInput = input.readLine().trim();
 
 		while (!gameWon) {
@@ -42,7 +43,7 @@ public class OneInAMillion extends AbstractGame implements Servable {
 			if (guessCode == -1) { // they chose to quit
 				setQuitPrompt();
 				output.println(promptString);
-				return; // game is over
+				return; // returning ends the game
 			} else if (guessCode == target) { // they have won the game
 				numGuesses++;
 				setCongratulationsPrompt();
@@ -56,22 +57,30 @@ public class OneInAMillion extends AbstractGame implements Servable {
 			} else {
 				numGuesses++;
 				updateBounds(guessCode);
-				setSuggestionPrompt();
+				if (guessCode < target) {
+					setSuggestionPrompt("Too low.");
+				} else {
+					setSuggestionPrompt("Too high.");
+				}
 				output.println(promptString);
 				userInput = input.readLine().trim();
 			}
 		}
 		// user has won
-		int highestScore = getHighScoreValue();
-		if (numGuesses < highestScore || highestScore == Integer.MIN_VALUE) {
+		if (checkNewHighScore()) {
 			output.println(
 					"Wow!  That's a new high score -- please enter your initials...");
 			String person = input.readLine().trim();
-			setHighScore(numGuesses, person);
+			setRecord(numGuesses, person);
+			output.println(
+					"New high score of " + getRecord().getScore()
+							+ " set by " + getRecord().getHolder());
 		}
-		output.println("New high score of " + getHighScoreValue()
-				+ " set by " + getHighScoreInitials());
+	}
 
+	private boolean checkNewHighScore() {
+		return (getRecord() == null
+				|| numGuesses < getRecord().getScore());
 	}
 
 	/**
@@ -125,12 +134,12 @@ public class OneInAMillion extends AbstractGame implements Servable {
 		promptString = s;
 	}
 
-	private void setSuggestionPrompt() {
-		String s1 = "The answer lies between " + (lowBound) + " and "
+	private void setSuggestionPrompt(String cue) {
+		String s = cue+"  The answer lies between " + (lowBound) + " and "
 				+ (highBound) + ".";
-		s1 += "  \nYou have used " + numGuesses
+		s += "  \nYou have used " + numGuesses
 				+ (numGuesses == 1 ? " guess" : " guesses");
-		promptString = s1;
+		promptString = s;
 	}
 
 	/**

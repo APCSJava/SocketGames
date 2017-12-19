@@ -27,8 +27,8 @@ public class GameTracker {
 
 	private static List<Class<? extends Servable>> gameList;
 	private static Map<Class<? extends Servable>, String> gameInfo;
-	private static Map<Class<? extends AbstractGame>, HighScore> highScores;
-	
+	private static Map<Class<? extends AbstractGame>, Record> highScores;
+
 	private static final String HIGH_SCORE_FILE = "high-scores.csv";
 
 	/**
@@ -54,15 +54,14 @@ public class GameTracker {
 	 * @return a menu string displaying information on available games
 	 */
 	public static String buildGameListMenu() {
-		String s = "=====\tGAME LIST\t\tHigh Score\tInitials\n";
+		String s = "=====\tGAME LIST\t\tRecord Score\tInitials\n";
 		int i = 0;
 		for (Class<? extends Servable> c : gameList) {
 			boolean hasHighScoreEntry = highScores.containsKey(c);
 			s += (i++) + "\t" + c.getName();
 			if (hasHighScoreEntry) {
-				HighScore h = highScores.get(c);
-				s += "\t\t" + h.getScore() + "\t\t"
-						+ h.getInitials();
+				Record r = highScores.get(c);
+				s += "\t\t" + r.getScore() + "\t\t" + r.getHolder();
 			}
 			s += "\n";
 		}
@@ -188,7 +187,7 @@ public class GameTracker {
 					}
 				}
 			}
-			highScores = new HashMap<Class<? extends AbstractGame>, HighScore>();
+			highScores = new HashMap<Class<? extends AbstractGame>, Record>();
 			loadHighScores();
 
 		} catch (ClassNotFoundException e) {
@@ -233,14 +232,14 @@ public class GameTracker {
 	 * For the indicated game, get the current high score.
 	 * 
 	 * @param someClass
-	 * @return the current recorded int; Integer.MIN_VALUE, if none found
+	 * @return the current record; null, if not found
 	 */
-	public static int getHighScoreValue(
+	public static Record getRecord(
 			Class<? extends AbstractGame> someClass) {
 		if (highScores.containsKey(someClass)) {
-			return highScores.get(someClass).getScore();
+			return highScores.get(someClass);
 		}
-		return Integer.MIN_VALUE;
+		return null;
 	}
 
 	/**
@@ -252,25 +251,22 @@ public class GameTracker {
 	public static String getHighScoreInitials(
 			Class<? extends AbstractGame> someClass) {
 		if (highScores.containsKey(someClass)) {
-			return highScores.get(someClass).getInitials();
+			return highScores.get(someClass).getHolder();
 		}
 		return null;
 	}
 
 	/**
-	 * Associates a HighScore object with the indicated game class.
+	 * Associates a Record object with the indicated game class.
 	 * 
 	 * @param someClass
 	 *            the class for which a new high score has been achieved
-	 * @param value
-	 *            the integer value of the high score
-	 * @param initials
-	 *            the initials of the new record holder
+	 * @param record
+	 *            a record indicating the best score and initials of who set
 	 */
 	public static void setHighScore(
-			Class<? extends AbstractGame> someClass, int value,
-			String initials) {
-		highScores.put(someClass, new HighScore(value, initials));
+			Class<? extends AbstractGame> someClass, Record record) {
+		highScores.put(someClass, record);
 		writeHighScores();
 	}
 
@@ -280,12 +276,12 @@ public class GameTracker {
 	private static void writeHighScores() {
 		Set<String> scoreInfo = new HashSet<String>();
 		Path p = Paths.get(HIGH_SCORE_FILE);
-		for (Class<? extends AbstractGame> c:highScores.keySet()) {
+		for (Class<? extends AbstractGame> c : highScores.keySet()) {
 			String classname = c.getName();
-			HighScore h = highScores.get(c);
-			int i = h.getScore();
-			String initials = h.getInitials();
-			String info = classname+","+i+","+initials;
+			Record r = highScores.get(c);
+			int i = r.getScore();
+			String initials = r.getHolder();
+			String info = classname + "," + i + "," + initials;
 			scoreInfo.add(info);
 		}
 		try {
@@ -296,23 +292,23 @@ public class GameTracker {
 		}
 
 	}
-	
+
 	private static void loadHighScores() {
 		List<String> words = new ArrayList<String>();
 		try {
 			String filename = HIGH_SCORE_FILE;
 			words = Files.readAllLines(Paths.get(filename));
-			for (String s: words) {
+			for (String s : words) {
 				String[] data = s.trim().split(",");
-				Class<? extends AbstractGame> c = (Class<? extends AbstractGame>) Class.forName(data[0]);
+				Class<? extends AbstractGame> c = (Class<? extends AbstractGame>) Class
+						.forName(data[0]);
 				int i = Integer.parseInt(data[1]);
 				String initials = data[2];
-				highScores.put(c, new HighScore(i, initials));
+				highScores.put(c, new Record(i, initials));
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			// oh, well -- no high scores, I guess...
 			e.printStackTrace();
 		}
 	}
-
 }

@@ -1,5 +1,6 @@
 /***
- * Base class for games.
+ * Base class for games. Provides methods for saving/retrieving memorable
+ * scores.
  * 
  * @author K. Collins
  * @version Fall, 2017
@@ -8,36 +9,31 @@
 public abstract class AbstractGame {
 
 	/**
-	 * Returns the highest score associated with this class, if present in the
-	 * GameTracker.
+	 * Retrieves the recorded score object associated with this class, if one is
+	 * available.
 	 * 
-	 * @return the current high score, if present; Integer.MIN_VALUE, otherwise
+	 * @return the current record, if present; null, otherwise
 	 */
-	public final int getHighScoreValue() {
-		return GameTracker.getHighScoreValue(this.getClass());
+	public final Record getRecord() {
+		return GameTracker.getRecord(this.getClass());
 	}
 
 	/**
-	 * Returns the initials of the person who set the highest score, if set.
+	 * Registers a game record with the GameTracker.
 	 * 
-	 * @return a three-letter, uppercase string; null, if no high score set
+	 * @param value
+	 *            an integer score
+	 * @param initials
+	 *            the record holder
 	 */
-	public final String getHighScoreInitials() {
-		return GameTracker.getHighScoreInitials(this.getClass());
-	}
-
-	/**
-	 * Sets the high score in the GameTracker to the specified value.
-	 * @param value an integer score
-	 * @param initials the record holder
-	 */
-	public final void setHighScore(int value, String initials) {
+	public final void setRecord(int value, String initials) {
 		if (initials == null || initials.equals(""))
 			initials = "---";
 		else if (initials.length() > 3)
 			initials = initials.substring(0, 3).toUpperCase();
 		else
 			initials = initials.toUpperCase();
-		GameTracker.setHighScore(this.getClass(), value, initials);
+		GameTracker.setHighScore(this.getClass(),
+				new Record(value, initials));
 	}
 }
