@@ -35,7 +35,7 @@ public class OneInAMillion extends AbstractGame implements Servable {
 	public void serve(BufferedReader in, PrintWriter out)
 			throws IOException {
 		out.println(buildInstructionsString());
-		GameServer.LOGGER.info("One in a million? " + target);
+		// GameServer.LOGGER.info("One in a million? " + target);
 		String userInput = in.readLine().trim();
 
 		while (!gameWon) {
@@ -61,7 +61,7 @@ public class OneInAMillion extends AbstractGame implements Servable {
 		// user has won
 		if (checkNewBestScore()) {
 			out.println(
-					"Wow!  That's a new best score -- please enter your initials...");
+					"That's a new best score -- please enter your initials...");
 			String initials = in.readLine().trim();
 			setRecord(numGuesses, initials);
 		}
