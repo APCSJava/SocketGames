@@ -103,15 +103,17 @@ public class OneInAMillion extends AbstractGame implements Servable {
 	}
 
 	private String buildCongratulationsString() {
-		String start = "Finally!  ";
-		if (numGuesses < 30)
-			start = "Not too bad.  ";
-		else if (numGuesses < 25)
-			start = "Good job!  ";
-		else if (numGuesses < 20)
+		String start;
+		if (numGuesses <= 5)
+			start = "Amazing!  ";
+		else if (numGuesses <= 20)
 			start = "Brilliant!  ";
-		else if (numGuesses < 5)
-			start = "Amazing!!  ";
+		else if (numGuesses <= 25)
+			start = "Good job!  ";
+		else if (numGuesses <= 30)
+			start = "Not too bad.  ";
+		else
+			start = "Finally!!  ";
 		return start += "You guessed it using " + numGuesses
 				+ " guesses.";
 	}

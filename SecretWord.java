@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /***
- * Example implementation of a Servable class.
+ * Reference implementation of a Servable class.
  * 
  * @author K. Collins
  * @version Fall 2017
@@ -13,23 +13,10 @@ import java.io.PrintWriter;
 		"Kent Collins" }, version = "Fall, 2017", gameTitle = "The Secret Word", description = "Guess the secret word and win!")
 public class SecretWord implements Servable {
 
-	private String secret;
-	private final String prompt;
-	private final String[] kudos = {
-			"Yay -- you won!  Way to go, you!!",
-			"Amazing.  You're a clever one, you are.",
-			"Did you figure that out by yourself or did you have help?  You WON!",
-			"Brilliant -- but shhhhhh.  Don't give away the secret. ;-)" };
-	private final String[] goodbyes = {
-			"Oh well, better luck next time.",
-			"Sorry, but you didn't win.  Have a go again, later.",
-			"Think about it for a while then try again.  You can get this.",
-			"Hint: If you follow my instructions exactly, you can win ;-)" };
-
-	public SecretWord() {
-		secret = "the secret word";
-		prompt = "Guess the secret word or enter 'q' to quit";
-	}
+	private static final int GUESS_LIMIT = 20;
+	private final String secret = "the secret word";
+	private final String prompt = "Guess the secret word or enter 'q' to quit";
+	private int numGuesses = 0; // explicit initialization -- would be 0 by default
 
 	@Override
 	public void serve(BufferedReader input, PrintWriter output)
@@ -37,7 +24,8 @@ public class SecretWord implements Servable {
 		output.println("Welcome to the Secret Word game.");
 		output.println(prompt);
 		String userInput = input.readLine().trim();
-		while (!userInput.equals("q")) {
+		while (!userInput.equals("q") && numGuesses < GUESS_LIMIT) {
+			numGuesses++;
 			if (userInput.equals(secret)) {
 				output.println(getRandomMessage(kudos));
 				return; // end the serve method, thus ending the game
@@ -50,10 +38,21 @@ public class SecretWord implements Servable {
 		}
 		output.println(getRandomMessage(goodbyes));
 	}
-	
+
 	private String getRandomMessage(String[] array) {
-		int randomChoice = (int) (Math.random()*array.length);
+		int randomChoice = (int) (Math.random() * array.length);
 		String s = array[randomChoice];
 		return s;
 	}
+
+	private final String[] kudos = {
+			"Yay -- you won!  Way to go, you!!",
+			"Amazing.  You're a clever one, you are.",
+			"Did you figure that out by yourself or did you have help?  You WON!",
+			"Brilliant -- but shhhhhh.  Don't give away the secret. ;-)" };
+	private final String[] goodbyes = {
+			"Oh well, better luck next time.",
+			"Sorry, but you didn't win.  Have a go again, later.",
+			"Think about it for a while then try again.  You can get this.",
+			"Hint: If you follow my instructions exactly, you can win ;-)" };
 }

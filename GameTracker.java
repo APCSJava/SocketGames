@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -297,9 +298,11 @@ public class GameTracker {
 				String initials = data[2];
 				bestScores.put(c, new BestScore(i, initials));
 			}
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (NoSuchFileException e) {
 			// oh, well -- no high scores, I guess...
+			GameServer.LOGGER.warning("Best scores file not found.");
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 }
