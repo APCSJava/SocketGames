@@ -252,7 +252,8 @@ public class GameTracker {
 	 *            a record indicating the best score and initials of who set
 	 */
 	public static void setBestScore(
-			Class<? extends AbstractGame> someClass, BestScore record) {
+			Class<? extends AbstractGame> someClass,
+			BestScore record) {
 		bestScores.put(someClass, record);
 		writeBestScores();
 	}
@@ -292,17 +293,22 @@ public class GameTracker {
 			words = Files.readAllLines(Paths.get(filename));
 			for (String s : words) {
 				String[] data = s.trim().split(",");
-				Class<? extends AbstractGame> c = (Class<? extends AbstractGame>) Class
-						.forName(data[0]);
-				int i = Integer.parseInt(data[1]);
-				String initials = data[2];
-				bestScores.put(c, new BestScore(i, initials));
+				if (data.length == 3) {
+					Class<? extends AbstractGame> c = (Class<? extends AbstractGame>) Class
+							.forName(data[0]);
+					int i = Integer.parseInt(data[1]);
+					String initials = data[2];
+					bestScores.put(c, new BestScore(i, initials));
+				}
 			}
 		} catch (NoSuchFileException e) {
 			// oh, well -- no high scores, I guess...
 			GameServer.LOGGER.warning("Best scores file not found.");
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
+			GameServer.LOGGER.warning(
+					"Unable to open the best score for a class.");
+		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 }

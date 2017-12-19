@@ -76,6 +76,7 @@ public class WarGames extends AbstractGame implements Servable {
 		}
 		if (wantsListOfGames(response)) {
 			output.println(buildGameListString());
+			output.println(SUGGEST_CHESS);
 		} else {
 			output.println(SUGGEST_CHESS);
 		}
@@ -148,7 +149,7 @@ public class WarGames extends AbstractGame implements Servable {
 	 * @throws IOException
 	 */
 	private void checkBestScore(int score) throws IOException {
-		if (score > getRecord().getScore()) {
+		if (getRecord() ==null || score > getRecord().getScore()) {
 			output.println(
 					"That's a new high score -- please enter your initials...");
 			String initials = input.readLine().trim();
