@@ -32,43 +32,43 @@ public class OneInAMillion extends AbstractGame implements Servable {
 	}
 
 	@Override
-	public void serve(BufferedReader input, PrintWriter output)
+	public void serve(BufferedReader in, PrintWriter out)
 			throws IOException {
-		output.println(buildInstructionsString());
+		out.println(buildInstructionsString());
 		GameServer.LOGGER.info("One in a million? " + target);
-		String userInput = input.readLine().trim();
+		String userInput = in.readLine().trim();
 
 		while (!gameWon) {
 			int guess = evaluateUserInput(userInput);
 			if (guess == QUIT_CODE) {
-				output.println(buildQuitString());
+				out.println(buildQuitString());
 				return; // ends the serve method and, thus, the game
 			} else if (guess == target) {
 				numGuesses++;
-				output.println(buildCongratulationsString());
+				out.println(buildCongratulationsString());
 				gameWon = true;
 				continue; // bypasses rest of loop
 			} else if (guess == ERROR_CODE) {
-				output.println(buildErrorString(userInput));
+				out.println(buildErrorString(userInput));
 			} else {
 				numGuesses++;
 				updateBounds(guess);
 				String p = guess < target ? "Too low." : "Too high.";
-				output.println(buildSuggestionString(p));
+				out.println(buildSuggestionString(p));
 			}
-			userInput = input.readLine().trim();
+			userInput = in.readLine().trim();
 		}
 		// user has won
-		if (checkNewHighScore()) {
-			output.println(
-					"Wow!  That's a new high score -- please enter your initials...");
-			String person = input.readLine().trim();
-			setRecord(numGuesses, person);
+		if (checkNewBestScore()) {
+			out.println(
+					"Wow!  That's a new best score -- please enter your initials...");
+			String initials = in.readLine().trim();
+			setRecord(numGuesses, initials);
 		}
-		output.println("Thanks for playing!");
+		out.println("Thanks for playing!");
 	}
 
-	private boolean checkNewHighScore() {
+	private boolean checkNewBestScore() {
 		return (getRecord() == null
 				|| numGuesses < getRecord().getScore());
 	}
