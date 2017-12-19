@@ -27,9 +27,9 @@ public class GameTracker {
 
 	private static List<Class<? extends Servable>> gameList;
 	private static Map<Class<? extends Servable>, String> gameInfo;
-	private static Map<Class<? extends AbstractGame>, Record> highScores;
+	private static Map<Class<? extends AbstractGame>, BestScore> bestScores;
 
-	private static final String HIGH_SCORE_FILE = "high-scores.csv";
+	private static final String HIGH_SCORE_FILE = "best-scores.csv";
 
 	/**
 	 * Looks inside the current working directory and collects all file names having
@@ -57,10 +57,10 @@ public class GameTracker {
 		String s = "=====\tGAME LIST\t\tRecord Score\tInitials\n";
 		int i = 0;
 		for (Class<? extends Servable> c : gameList) {
-			boolean hasHighScoreEntry = highScores.containsKey(c);
+			boolean hasHighScoreEntry = bestScores.containsKey(c);
 			s += (i++) + "\t" + c.getName();
 			if (hasHighScoreEntry) {
-				Record r = highScores.get(c);
+				BestScore r = bestScores.get(c);
 				s += "\t\t" + r.getScore() + "\t\t" + r.getHolder();
 			}
 			s += "\n";
@@ -187,8 +187,8 @@ public class GameTracker {
 					}
 				}
 			}
-			highScores = new HashMap<Class<? extends AbstractGame>, Record>();
-			loadHighScores();
+			bestScores = new HashMap<Class<? extends AbstractGame>, BestScore>();
+			loadBestScores();
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -229,56 +229,42 @@ public class GameTracker {
 	}
 
 	/**
-	 * For the indicated game, get the current high score.
+	 * For the indicated game, get the current best score.
 	 * 
 	 * @param someClass
-	 * @return the current record; null, if not found
+	 * @return the current best score; null, if not found
 	 */
-	public static Record getRecord(
+	public static BestScore getRecord(
 			Class<? extends AbstractGame> someClass) {
-		if (highScores.containsKey(someClass)) {
-			return highScores.get(someClass);
+		if (bestScores.containsKey(someClass)) {
+			return bestScores.get(someClass);
 		}
 		return null;
 	}
 
 	/**
-	 * For the indicated game, get the initials of the high score holder.
-	 * 
-	 * @param someClass
-	 * @return an initials string; null, if no string is found
-	 */
-	public static String getHighScoreInitials(
-			Class<? extends AbstractGame> someClass) {
-		if (highScores.containsKey(someClass)) {
-			return highScores.get(someClass).getHolder();
-		}
-		return null;
-	}
-
-	/**
-	 * Associates a Record object with the indicated game class.
+	 * Associates a BestScore with the indicated game class.
 	 * 
 	 * @param someClass
 	 *            the class for which a new high score has been achieved
 	 * @param record
 	 *            a record indicating the best score and initials of who set
 	 */
-	public static void setHighScore(
-			Class<? extends AbstractGame> someClass, Record record) {
-		highScores.put(someClass, record);
-		writeHighScores();
+	public static void setBestScore(
+			Class<? extends AbstractGame> someClass, BestScore record) {
+		bestScores.put(someClass, record);
+		writeBestScores();
 	}
 
 	/**
-	 * Write out the high scores to a flat-file so can be loaded later
+	 * Write out the best scores to a flat-file which can be loaded later
 	 */
-	private static void writeHighScores() {
+	private static void writeBestScores() {
 		Set<String> scoreInfo = new HashSet<String>();
 		Path p = Paths.get(HIGH_SCORE_FILE);
-		for (Class<? extends AbstractGame> c : highScores.keySet()) {
+		for (Class<? extends AbstractGame> c : bestScores.keySet()) {
 			String classname = c.getName();
-			Record r = highScores.get(c);
+			BestScore r = bestScores.get(c);
 			int i = r.getScore();
 			String initials = r.getHolder();
 			String info = classname + "," + i + "," + initials;
@@ -293,7 +279,12 @@ public class GameTracker {
 
 	}
 
-	private static void loadHighScores() {
+	/**
+	 * Retrieve and load the best scores from a csv file. If the file is not
+	 * present, then the best score table is effectively reset.
+	 */
+	@SuppressWarnings("unchecked")
+	private static void loadBestScores() {
 		List<String> words = new ArrayList<String>();
 		try {
 			String filename = HIGH_SCORE_FILE;
@@ -304,7 +295,7 @@ public class GameTracker {
 						.forName(data[0]);
 				int i = Integer.parseInt(data[1]);
 				String initials = data[2];
-				highScores.put(c, new Record(i, initials));
+				bestScores.put(c, new BestScore(i, initials));
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			// oh, well -- no high scores, I guess...

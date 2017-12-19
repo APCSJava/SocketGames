@@ -8,11 +8,11 @@
  * @version Fall, 2017
  */
 
-public class Record {
+public class BestScore {
 	private int score;
 	private String holder;
 
-	public Record(int score, String holder) {
+	public BestScore(int score, String holder) {
 		this.score = score;
 		this.holder = holder;
 	}

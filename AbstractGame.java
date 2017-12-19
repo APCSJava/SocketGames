@@ -14,7 +14,7 @@ public abstract class AbstractGame {
 	 * 
 	 * @return the current record, if present; null, otherwise
 	 */
-	public final Record getRecord() {
+	public final BestScore getRecord() {
 		return GameTracker.getRecord(this.getClass());
 	}
 
@@ -33,7 +33,7 @@ public abstract class AbstractGame {
 			initials = initials.substring(0, 3).toUpperCase();
 		else
 			initials = initials.toUpperCase();
-		GameTracker.setHighScore(this.getClass(),
-				new Record(value, initials));
+		GameTracker.setBestScore(this.getClass(),
+				new BestScore(value, initials));
 	}
 }
