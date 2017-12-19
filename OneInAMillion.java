@@ -21,6 +21,8 @@ public class OneInAMillion extends AbstractGame implements Servable {
 	private boolean gameWon;
 	private String promptString;
 	private int MAX_TARGET = 1_000_000; // one in a million
+	public static final int QUIT = -1;
+	public static final int ERROR = 0;
 
 	public OneInAMillion() {
 		target = (int) (Math.random() * MAX_TARGET) + 1;
@@ -40,7 +42,7 @@ public class OneInAMillion extends AbstractGame implements Servable {
 
 		while (!gameWon) {
 			int guessCode = evaluateUserInput(userInput);
-			if (guessCode == -1) { // they chose to quit
+			if (guessCode == QUIT) { // they chose to quit
 				setQuitPrompt();
 				output.println(promptString);
 				return; // returning ends the game
@@ -49,7 +51,7 @@ public class OneInAMillion extends AbstractGame implements Servable {
 				setCongratulationsPrompt();
 				output.println(promptString);
 				gameWon = true;
-			} else if (guessCode == 0) { // their number isn't a valid choice
+			} else if (guessCode == ERROR) { // their number isn't a valid choice
 				setErrorPrompt(userInput);
 				output.println(promptString);
 				userInput = input.readLine().trim();
@@ -94,16 +96,16 @@ public class OneInAMillion extends AbstractGame implements Servable {
 	 */
 	private int evaluateUserInput(String s) {
 		if (s.toLowerCase().equals("q"))
-			return -1;
+			return QUIT;
 		try {
 			int guess = Integer.parseInt(s);
 			if (0 < guess && guess <= MAX_TARGET) {
 				return guess;
 			} else
-				return 0;
+				return ERROR;
 		} catch (NumberFormatException e) {
 			// couldn't parse their input as a number
-			return 0;
+			return ERROR;
 		}
 	}
 
