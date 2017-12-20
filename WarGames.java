@@ -149,7 +149,7 @@ public class WarGames extends AbstractGame implements Servable {
 	 * @throws IOException
 	 */
 	private void checkBestScore(int score) throws IOException {
-		if (getRecord() ==null || score > getRecord().getScore()) {
+		if (getBestScore() ==null || score > getBestScore().getScore()) {
 			output.println(
 					"That's a new high score -- please enter your initials...");
 			String initials = input.readLine().trim();

@@ -69,8 +69,8 @@ public class OneInAMillion extends AbstractGame implements Servable {
 	}
 
 	private boolean checkNewBestScore() {
-		return (getRecord() == null
-				|| numGuesses < getRecord().getScore());
+		return (getBestScore() == null
+				|| numGuesses < getBestScore().getScore());
 	}
 
 	/**
