@@ -53,6 +53,8 @@ public class GuessingGame extends AbstractGame implements Servable {
 		}
 		int score = word.length() * numGuesses;
 		BestScore current = this.getBestScore();
+		out.println("Nicely done. "+numGuesses+" guesses earns a score of "+score);
+
 		if (current == null || score < current.getScore()) {
 			out.println(score
 					+ " is a new high score.  Please enter your initials...");
