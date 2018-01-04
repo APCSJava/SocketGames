@@ -9,7 +9,10 @@ public class GuessingGame extends AbstractGame implements Servable {
 	private String word;
 	private int numGuesses;
 
-	/** PRECONDITION: parameter is upper case */
+	/** PRECONDITION: parameter is upper case
+	 * 
+	 * @param word - an uppercase word to guess
+	 */
 	public GuessingGame(String word) {
 		this.word = word;
 	}
@@ -19,7 +22,11 @@ public class GuessingGame extends AbstractGame implements Servable {
 		numGuesses = 0;
 	}
 
-	/** PRECONDITION: guess has same length as word, is upper case */
+	/** PRECONDITION: guess has same length as word, is upper case 
+	 * 
+	 * @param guess a word to compare against the hidden word
+	 * @return a hint string 
+	 */
 	public String getHint(String guess) {
 		String hint = "";
 		for (int i = 0; i < word.length(); i++) {
