@@ -47,7 +47,7 @@ public final class Dictionary {
 	 * while multiple threads can access the reference, no thread has the ability to
 	 * add or remove words.
 	 * 
-	 * @return
+	 * @return a reference to an immutable word list
 	 */
 	public static List<String> getImmutableList() {
 		return immutableList;
@@ -103,7 +103,7 @@ public final class Dictionary {
 	 *            the minimum length of a qualifying word
 	 * @param max
 	 *            the maximum length of a qualifying word
-	 * @return
+	 * @return a word meeting the length criteria
 	 */
 	public static String randomBySize(int min, int max) {
 		List<String> words = new ArrayList<String>();

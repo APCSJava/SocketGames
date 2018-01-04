@@ -14,8 +14,7 @@ import java.util.logging.Logger;
  */
 public class GameServer {
 
-	final static Logger LOGGER = Logger
-			.getLogger(GameServer.class.getName());
+	final static Logger LOGGER = Logger.getLogger(GameServer.class.getName());
 
 	/**
 	 * Opens a port to listen for incoming requests. When a request is received,
@@ -25,20 +24,17 @@ public class GameServer {
 	 *            the port to use when listening for connections
 	 * @param args[1]
 	 *            the max number of concurrent connections to accept
-	 * 
+	 * @throws java.io.IOException if unable to read from socket
 	 */
 	public static void main(String[] args) throws IOException {
 		int desiredPort = Integer.parseInt(args[0]);
 		int maxConnections = Integer.parseInt(args[1]);
 		String refuseMessage = "Server limit of " + maxConnections
-				+ ((maxConnections == 1) ? " connection"
-						: " connections")
+				+ ((maxConnections == 1) ? " connection" : " connections")
 				+ " has been reached.  Please try again, later.";
 
-		try (ServerSocket socketRequestListener = new ServerSocket(
-				desiredPort)) {
-			LOGGER.info("Server started.  Port: " + desiredPort
-					+ ".  Capacity: " + maxConnections);
+		try (ServerSocket socketRequestListener = new ServerSocket(desiredPort)) {
+			LOGGER.info("Server started.  Port: " + desiredPort + ".  Capacity: " + maxConnections);
 			GameTracker.initialize();
 			while (true) {
 				// the following call blocks until a connection is made
@@ -51,18 +47,13 @@ public class GameServer {
 				if (numActiveSockets < maxConnections) {
 					new Thread(new GameThread(socket)).start();
 					numActiveSockets++;
-					LOGGER.info("Accepted " + remoteMachine
-							+ ".  Current connections: "
-							+ numActiveSockets);
+					LOGGER.info("Accepted " + remoteMachine + ".  Current connections: " + numActiveSockets);
 				} else {
-					PrintWriter out = new PrintWriter(
-							socket.getOutputStream());
+					PrintWriter out = new PrintWriter(socket.getOutputStream());
 					out.println(refuseMessage);
 					out.close();
 					socket.close();
-					LOGGER.warning("Refused " + remoteMachine
-							+ ".  Current connections: "
-							+ numActiveSockets);
+					LOGGER.warning("Refused " + remoteMachine + ".  Current connections: " + numActiveSockets);
 				}
 			}
 		}

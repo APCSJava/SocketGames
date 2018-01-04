@@ -92,7 +92,7 @@ public class GameTracker {
 	 * Examines user selection and returns either a String holding a menu, a new
 	 * instance of the requested game, or null if neither of the above makes sense.
 	 * 
-	 * @param userSelection
+	 * @param userSelection string representing the user's choice
 	 * @return an object representing a menu string, a game instance or null
 	 */
 	public static Object handleUserSelection(String userSelection) {
@@ -139,7 +139,7 @@ public class GameTracker {
 	 * interface
 	 * 
 	 * @return a list holding all classes that implement Servable
-	 * @throws ClassNotFoundException
+	 * @throws ClassNotFoundException if the requested class is not found
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List<Class<? extends Servable>> findServableClasses()
@@ -232,7 +232,7 @@ public class GameTracker {
 	/**
 	 * For the indicated game, get the current best score.
 	 * 
-	 * @param someClass
+	 * @param someClass a class reference
 	 * @return the current best score; null, if not found
 	 */
 	public static BestScore getRecord(
