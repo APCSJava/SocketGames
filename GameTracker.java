@@ -235,7 +235,7 @@ public class GameTracker {
 	 * @param someClass a class reference
 	 * @return the current best score; null, if not found
 	 */
-	public static BestScore getRecord(
+	public static BestScore getBestScore(
 			Class<? extends AbstractGame> someClass) {
 		if (bestScores.containsKey(someClass)) {
 			return bestScores.get(someClass);
