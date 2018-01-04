@@ -63,7 +63,7 @@ public class OneInAMillion extends AbstractGame implements Servable {
 			out.println(
 					"That's a new best score -- please enter your initials...");
 			String initials = in.readLine().trim();
-			setRecord(numGuesses, initials);
+			setBestScore(numGuesses, initials);
 		}
 		out.println("Thanks for playing!");
 	}

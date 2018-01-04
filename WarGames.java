@@ -153,7 +153,7 @@ public class WarGames extends AbstractGame implements Servable {
 			output.println(
 					"That's a new high score -- please enter your initials...");
 			String initials = input.readLine().trim();
-			setRecord(score, initials);
+			setBestScore(score, initials);
 		}
 	}
 

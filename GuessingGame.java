@@ -59,7 +59,7 @@ public class GuessingGame extends AbstractGame implements Servable {
 			out.println(score
 					+ " is a new high score.  Please enter your initials...");
 			String inits = in.readLine().trim();
-			setRecord(score, inits);
+			setBestScore(score, inits);
 		}
 	}
 }
