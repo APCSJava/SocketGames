@@ -15,7 +15,7 @@ public abstract class AbstractGame {
 	 * @return the current record, if present; null, otherwise
 	 */
 	public final BestScore getBestScore() {
-		return GameTracker.getRecord(this.getClass());
+		return GameTracker.getBestScore(this.getClass());
 	}
 
 	/**
