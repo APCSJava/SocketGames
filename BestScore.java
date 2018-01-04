@@ -1,7 +1,6 @@
 /***
- * Plain old Java object for associating a score with a player's initials.
- * 
- * Sometimes, a lower score is better
+ * Plain old Java object that associates a numeric score with a player's
+ * initials.
  * 
  * @author K. Collins
  * @version Fall, 2017
