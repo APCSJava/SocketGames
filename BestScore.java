@@ -1,7 +1,7 @@
 /***
  * Plain old Java object for associating a score with a player's initials.
  * 
- * Changed to "best score" because sometimes a lower score is better
+ * Sometimes, a lower score is better
  * 
  * @author K. Collins
  * @version Fall, 2017

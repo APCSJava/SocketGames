@@ -9,8 +9,13 @@ import java.net.Socket;
 /***
  * Manages the connection with a remote machine for the lifetime of the thread.
  * Sends menu options and reads the user's selection. If the selection is for a
- * specific game, serves the game; terminates the thread and closes the socket
- * connection on receipt of a 'q'.
+ * specific game, serves the game (see NOTE 1); terminates the thread and closes
+ * the socket connection on receipt of a 'q'.
+ * 
+ * NOTE 1: This class creates a new thread by creating an instance of the
+ * specified class and then invoking serve() on the instance. In practice, this
+ * requires that candidate classes not only implement Servable but also provide
+ * a default (no argument) constructor.
  * 
  * Extends PrintWriter and BufferedReader classes to echoed versions that
  * read/write a copy of the input/output streams to the logger, as well.

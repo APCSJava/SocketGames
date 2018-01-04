@@ -16,9 +16,9 @@ import java.util.Map;
 import java.util.Set;
 
 /***
- * Locates playable games within the project directory structure. Maintains a
- * list of playable games, along with game information collected from class
- * annotations and high scores stored in a flat file.
+ * Locates servable classes within the project directory structure. Maintains a
+ * list of servables, as well as information collected from class type GameInfo
+ * annotations and high scores from a local flat file.
  * 
  * @author K. Collins
  * @version Fall, 2017
