@@ -3,6 +3,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.asl.socketserver.AbstractGame;
+import org.asl.socketserver.BestScore;
 import org.asl.socketserver.GameInfo;
 import org.asl.socketserver.Servable;
 
@@ -15,9 +17,9 @@ import org.asl.socketserver.Servable;
  */
 @GameInfo(authors = {
 		"Kent Collins" }, version = "Fall, 2017", gameTitle = "The Secret Word", description = "Guess the secret word and win!")
-public class SecretWord implements Servable {
+public class SecretWord extends AbstractGame implements Servable {
 
-	private static final int GUESS_LIMIT = 20;
+	private static final int GUESS_LIMIT = 5;
 	private final String secret = "the secret word";
 	private final String prompt = "Guess the secret word or enter 'q' to quit";
 	private int numGuesses = 0; // explicit initialization -- would be 0 by default
@@ -32,6 +34,11 @@ public class SecretWord implements Servable {
 			numGuesses++;
 			if (userInput.equals(secret)) {
 				output.println(getRandomMessage(kudos));
+				output.println("Enter your intials to join the high score board!");
+				String inits = input.readLine().trim();
+				if (getBestScore()!=null) {
+					setBestScore(getBestScore().getScore()+1, inits);
+				} else setBestScore(1, inits);
 				return; // end the serve method, thus ending the game
 			} else {
 				output.println("You said '" + userInput
@@ -56,7 +63,8 @@ public class SecretWord implements Servable {
 			"Brilliant -- but shhhhhh.  Don't give away the secret. ;-)" };
 	private final String[] goodbyes = {
 			"Oh well, better luck next time.",
+			"Take a break -- come back and try again.",
 			"Sorry, but you didn't win.  Have a go again, later.",
-			"Think about it for a while then try again.  You can get this.",
-			"Hint: If you follow my instructions exactly, you can win ;-)" };
+			"Don't over think it.  You can get this.",
+			"Hint: Follow my instructions to the letter ;-)" };
 }

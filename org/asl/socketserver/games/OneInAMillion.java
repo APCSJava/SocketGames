@@ -16,7 +16,7 @@ import org.asl.socketserver.Servable;
  *
  */
 @GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "One in a Million", description = "How many guesses does it take you?")
+		"Kent Collins" }, version = "Fall, 2017", gameTitle = "One in a Million", description = "How many guesses will it take?")
 public class OneInAMillion extends AbstractGame implements Servable {
 
 	private int target;
