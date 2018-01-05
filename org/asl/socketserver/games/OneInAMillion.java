@@ -1,6 +1,11 @@
+package org.asl.socketserver.games;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import org.asl.socketserver.AbstractGame;
+import org.asl.socketserver.GameInfo;
+import org.asl.socketserver.Servable;
 
 /***
  * A game for guessing one number out of a million -- can it be done in a

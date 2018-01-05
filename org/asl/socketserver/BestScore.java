@@ -1,3 +1,4 @@
+package org.asl.socketserver;
 /***
  * Plain old Java object that associates a numeric score with a player's
  * initials.

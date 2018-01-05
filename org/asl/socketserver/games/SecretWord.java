@@ -1,6 +1,10 @@
+package org.asl.socketserver.games;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import org.asl.socketserver.GameInfo;
+import org.asl.socketserver.Servable;
 
 /***
  * Reference implementation of a Servable class.

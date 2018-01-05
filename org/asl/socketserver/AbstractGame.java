@@ -1,3 +1,4 @@
+package org.asl.socketserver;
 /***
  * Base class for games. Provides methods for saving/retrieving memorable
  * scores.

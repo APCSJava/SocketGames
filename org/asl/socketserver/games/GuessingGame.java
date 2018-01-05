@@ -1,6 +1,13 @@
+package org.asl.socketserver.games;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import org.asl.socketserver.AbstractGame;
+import org.asl.socketserver.BestScore;
+import org.asl.socketserver.Dictionary;
+import org.asl.socketserver.GameInfo;
+import org.asl.socketserver.Servable;
 
 @GameInfo(authors = {
 		"Kent Collins" }, version = "Fall, 2017", gameTitle = "GuessingGame", description = "Completed version of HiddenWord FRQ.")
