@@ -1,4 +1,5 @@
 package org.asl.socketserver.games;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,29 +11,33 @@ import org.asl.socketserver.GameInfo;
 import org.asl.socketserver.Servable;
 
 @GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "GuessingGame", description = "Completed version of HiddenWord FRQ.")
+		"Kent Collins" }, version = "Fall, 2017", gameTitle = "Guessing Game", description = "Completed version of HiddenWord FRQ.")
 
 public class GuessingGame extends AbstractGame implements Servable {
 	private String word;
 	private int numGuesses;
 
-	/** PRECONDITION: parameter is upper case
+	/**
+	 * PRECONDITION: parameter is upper case
 	 * 
-	 * @param word - an uppercase word to guess
+	 * @param word
+	 *            - an uppercase word to guess
 	 */
 	public GuessingGame(String word) {
 		this.word = word;
-	}
-
-	public GuessingGame() {
-		word = Dictionary.randomBySize(5, 8).toUpperCase();
 		numGuesses = 0;
 	}
 
-	/** PRECONDITION: guess has same length as word, is upper case 
+	public GuessingGame() {
+		this(Dictionary.randomBySize(5, 8).toUpperCase());
+	}
+
+	/**
+	 * PRECONDITION: guess has same length as word, is upper case
 	 * 
-	 * @param guess a word to compare against the hidden word
-	 * @return a hint string 
+	 * @param guess
+	 *            a word to compare against the hidden word
+	 * @return a hint string
 	 */
 	public String getHint(String guess) {
 		String hint = "";
@@ -51,8 +56,16 @@ public class GuessingGame extends AbstractGame implements Servable {
 	@Override
 	public void serve(BufferedReader in, PrintWriter out)
 			throws IOException {
-		out.println(
-				"Make a guess and I'll show you where you have the correct letters.  Letters that belong in the word but not in the given location will be marked by a '+'");
+		StringBuilder sb = new StringBuilder();
+		sb.append(
+				"Try to guess the hidden word and I'll mark your guess as follows:\n");
+		sb.append(
+				"Each letter appearing in the word at its guessed location will be revealed. \n");
+		sb.append(
+				"Each letter appearing in the word at a different location will be marked a '+'\n");
+		sb.append(
+				"Each letter not appearing in the word at any location will be marked a '*'");
+		out.println(sb.toString());
 		String guess = "";
 		while (!word.equals(guess)) {
 			while (guess == null || guess.equals("")
@@ -67,7 +80,8 @@ public class GuessingGame extends AbstractGame implements Servable {
 		}
 		int score = word.length() * numGuesses;
 		BestScore current = this.getBestScore();
-		out.println("Nicely done. "+numGuesses+" guesses earns a score of "+score);
+		out.println("Nicely done. " + numGuesses
+				+ " guesses earns a score of " + score);
 
 		if (current == null || score < current.getScore()) {
 			out.println(score
