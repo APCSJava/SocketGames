@@ -59,14 +59,13 @@ public class GameTracker {
 	 * @return a menu string displaying information on available games
 	 */
 	public static String buildGameListMenu() {
-		String s = "=====\tGAME LIST\t\tRecord Score\tInitials\n";
+		String s = String.format("%-8s%-25s%-13s%-3s%n", "=======", "GAME", "BEST SCORE", "INITIALS");
 		int i = 0;
 		for (Class<? extends Servable> c : gameList) {
-			boolean hasHighScoreEntry = bestScores.containsKey(c);
-			s += (i++) + "\t" + c.getSimpleName();
-			if (hasHighScoreEntry) {
+			s += String.format("%7d%s%-25s", i++," ", c.getSimpleName());
+			if (bestScores.containsKey(c)) {
 				BestScore r = bestScores.get(c);
-				s += "\t\t" + r.getScore() + "\t\t" + r.getHolder();
+				s += String.format("%10d%s%3s",r.getScore(),"    ", r.getHolder());
 			}
 			s += "\n";
 		}
@@ -149,9 +148,7 @@ public class GameTracker {
 	public static List<Class<? extends Servable>> findServableClasses() throws ClassNotFoundException {
 		List<Class<? extends Servable>> servableClasses = new ArrayList<Class<? extends Servable>>();
 		for (File f : findClassFilesInPackage()) {
-			System.out.println(f);
 			String nameWithExtension = f.getName();
-			System.out.println(nameWithExtension);
 			int idx = nameWithExtension.lastIndexOf(".class");
 			String searchString = nameWithExtension.substring(0, idx);
 			Class classObj = Class.forName("org.asl.socketserver.games."+searchString);
