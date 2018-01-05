@@ -15,7 +15,7 @@ import org.asl.socketserver.Servable;
  *
  */
 @GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "WarGames", description = "Some 1983 film fiction.  Be a hero and end the cold war.")
+		"Kent Collins" }, version = "Fall, 2017", gameTitle = "War Games", description = "A little bit of 1983 film fiction.  Be a hero and end the cold war.")
 public class WarGames extends AbstractGame implements Servable {
 	private static final String[] games = { "FALKEN'S MAZE",
 			"BLACK JACK", "GIN RUMMY", "HEARTS", "BRIDGE",
