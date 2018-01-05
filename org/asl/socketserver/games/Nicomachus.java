@@ -14,7 +14,7 @@ import org.asl.socketserver.Servable;
  *
  */
 @GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "Nicomachus", description = "I can guess your number!")
+		"Kent Collins" }, version = "Fall, 2017", gameTitle = "Nicomachus - Mystic Math", description = "Pick a secret number and I will divine your selection!")
 public class Nicomachus implements Servable {
 
 	private int mod3;
