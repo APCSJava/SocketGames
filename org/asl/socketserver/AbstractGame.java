@@ -9,6 +9,8 @@ package org.asl.socketserver;
  */
 public abstract class AbstractGame {
 
+	private String name;
+	
 	/**
 	 * Retrieves the recorded score object associated with this class, if one is
 	 * available.
@@ -36,5 +38,23 @@ public abstract class AbstractGame {
 			initials = initials.toUpperCase();
 		GameTracker.setBestScore(this.getClass(),
 				new BestScore(value, initials));
+	}
+
+	/**
+	 * Retrieve the name of the game.  
+	 * 
+	 * @return the string name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Set the name of this game.
+	 * 
+	 * @param name the new name
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 }
