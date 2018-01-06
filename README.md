@@ -15,7 +15,7 @@ Compiled class files meeting these criteria and stored in the org/asl/socketserv
 
 A running server may be accessed from a remote shell or terminal using netcat, telnet, etc. For example: 
 * <b>netcat localhost 9090</b> // connect to a server running on the same machine using port 9090  
-* <b>telnet 10.30.5.46 4187</b> // connect to a remote server at address 10.30.4.46 over port 4187
+* <b>netcat 10.30.5.46 4187</b> // connect to a remote server at address 10.30.4.46 over port 4187
 * // the port number specified by the client must match the port number used when starting the server
 
 ## Notes for compiling and running inside an IDE (Eclipse, say)
