@@ -45,8 +45,7 @@ public class GameThread implements Runnable {
 			out.println(); // provide some white space before menu
 			while (true) {
 				Thread.sleep(SCROLL_DELAY);
-				out.print(GameTracker.buildGameListMenu()); // accept input on same line?
-				out.flush();
+				out.println(GameTracker.handleUserSelection("")); 
 				String choice = br.readLine().trim().toLowerCase();
 				if ("q".equals(choice))
 					break;

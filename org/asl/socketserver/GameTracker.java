@@ -31,6 +31,7 @@ public class GameTracker {
 	private static List<Class<? extends Servable>> gameList;
 	private static Map<Class<? extends Servable>, GameInfo> gameInfo;
 	private static Map<Class<? extends AbstractGame>, BestScore> bestScores;
+	private static String gameMenu;
 
 	private static final String HIGH_SCORE_FILE = "best-scores.csv";
 
@@ -81,7 +82,7 @@ public class GameTracker {
 			int maxIndex = Math.min(description.length(), 68);
 			s += description.substring(0, maxIndex) + "\n";
 		}
-		s += "\nEnter the number of the game to play or 'q' to exit.\n";
+		s += "\nEnter the number of the game to play or 'q' to exit.";
 		return s;
 	}
 
@@ -126,7 +127,7 @@ public class GameTracker {
 				GameServer.LOGGER.warning(e.toString());
 			}
 		} else {
-			o = buildGameListMenu();
+			o = gameMenu;
 		}
 		return o;
 	}
@@ -214,6 +215,7 @@ public class GameTracker {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		gameMenu = buildGameListMenu();
 	}
 
 	/**
@@ -264,7 +266,8 @@ public class GameTracker {
 	}
 
 	/**
-	 * Associates a BestScore with the indicated game class.
+	 * Associates a BestScore with the indicated game class. Refreshes the game menu
+	 * so that it will display the modified best score.
 	 * 
 	 * @param someClass
 	 *            the class for which a new high score has been achieved
@@ -275,6 +278,7 @@ public class GameTracker {
 			Class<? extends AbstractGame> someClass,
 			BestScore record) {
 		bestScores.put(someClass, record);
+		gameMenu = buildGameListMenu();
 		writeBestScores();
 	}
 
