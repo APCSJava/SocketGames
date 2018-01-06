@@ -1,15 +1,19 @@
 # SocketGames
 Sometimes one simply wants to play text games across a TCP socket.  For those times, this project (requires Java8 or higher). 
 
-Game classes written for this project should:
-* provide a default constructor, (to permit instantiation as a thread)
-* extend AbstractGame, (to standardize setting/retrieving best score data)
-* assign a @GameInfo class type annotation, (provides content for menus)  
+The project consists of two packages:
+org.asl.socketserver which contains the server and necessary supporting classes
+org.asl.socketserver.games which contains game source code or class files
+
+Game classes written for this project should abide by the following four constraints:
+* provide a default constructor (to permit no-arg instantiation inside a thread)
 * implement the Servable interface (thread life is bounded by Servable.serve())
+* extend AbstractGame (to enable setting/retrieving best score data)
+* annotate the class with a @GameInfo annotation (provides content for menus)  
 
-Compiled class files meeting these criteria will be detected automatically and made available for play. 
+Compiled class files meeting these criteria and stored in the org/asl/socketserver/games folder will be identified automatically by the server and made available for play. 
 
-Access a running server from a remote shell or terminal by, for example: 
+A running server may be accessed from a remote shell or terminal by: 
 * <b>netcat <i>server_ip_address tcp_port</i></b>, or  
 * <b>nc <i>server_ip_address tcp_port</i></b> 
 * // other tools, such as 'telnet' may be used, if available on the client platform
@@ -25,6 +29,6 @@ This will compile not only the server but all related and dependent classes in t
 To compile all classes in the games folder:
 * <b> javac org/asl/socketserver/games/*.java</b>
 
-The server may then be launched as follows:
+Launch the compiled server as follows:
 * <b>java org/asl/socketserver/GameServer 9090 5</b> 
 // launches the server on port 9090 and accepts up to 5 simultaneous connections
