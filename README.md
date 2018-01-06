@@ -21,5 +21,5 @@ The server must be compiled before it can be run.  If you are compiling from the
 
 To compile all classes in the games folder, <b> javac org/asl/socketserver/games/*.java</b>
 
-The server may then be launched as follows: <b> java <i>fully-qualified-name-of-server</i> <i>tcp_port</i> <i>num_threaded_connections</i> </b>
-* java org/asl/socketserver/GameServer 9090 5 // launches the service on port 9090 and accepts up to 5 simultaneous connections
+The server may then be launched as follows:
+* <b>java org/asl/socketserver/GameServer 9090 5</b> // launches the server on port 9090 and accepts up to 5 simultaneous connections
