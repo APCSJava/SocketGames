@@ -15,7 +15,7 @@ import org.asl.socketserver.Servable;
  *
  */
 @GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "War Games", description = "A little bit of 1983 film fiction.  Be a hero and end the cold war.")
+		"Kent Collins" }, version = "Fall, 2017", gameTitle = "War Games", description = "A little bit of 1983 film fiction.  Be a hero.  End the cold war.")
 public class WarGames extends AbstractGame implements Servable {
 	private static final String[] games = { "FALKEN'S MAZE",
 			"BLACK JACK", "GIN RUMMY", "HEARTS", "BRIDGE",
@@ -40,7 +40,7 @@ public class WarGames extends AbstractGame implements Servable {
 	private static final String QUERY_GOAL = "WHAT IS THE PRIMARY GOAL?";
 	private static final String INCORRECT_GOAL = "YOU SHOULD KNOW THE PRIMARY GOAL, PROFESSOR.  YOU PROGRAMMED ME.\n\n--CONNECTION TERMINATED--\nSCORE: -2";
 	private static final String CORRECT_GOAL = "YOU ARE CORRECT.  THAT IS THE PRIMARY GOAL.";
-	private static final String CHOOSE_SIDES = "\t\tWHICH SIDE DO YOU WANT?\n\t1. UNITED STATES\n\t2. SOVIET UNION";
+	private static final String CHOOSE_SIDES = "\tWHICH SIDE DO YOU WANT?\n\t1. UNITED STATES\n\t2. SOVIET UNION";
 	private static final String UNACCEPTABLE = "I HAVE EVALUATED ALL POSSIBLE OUTCOMES...\nUNACCEPTABLE LOSSES FOR THIS SCENARIO.\nYOU DO NOT WIN.\n\n--CONNECTION TERMINATED--\nSCORE: -1739485";
 	private static final String TAGLINE = "\nYOU ARE CORRECT.\nTHE ONLY WINNING MOVE\nIS NOT TO PLAY.\n";
 	private static final String CONGRATS = "CONGRATULATIONS.  YOU WIN.\n--OBJECTIVE COMPLETE--\nFINAL SCORE: ";
