@@ -64,11 +64,11 @@ public class GameTracker {
 	 */
 	public static String buildGameListMenu() {
 		// TODO adhere to 80-char column limit
-		String s = String.format("%-8s%-25s%-13s%-3s%n", "=======",
+		String s = String.format("%-8s%-50s%-13s%-3s%n", "=======",
 				"GAME", "BEST SCORE", "INITIALS");
 		int i = 0;
 		for (Class<? extends Servable> c : gameList) {
-			s += String.format("%7d%s%-25s", i++, " ",
+			s += String.format("%7d%s%-50s", i++, " ",
 					gameInfo.get(c).gameTitle());
 			if (bestScores.containsKey(c)) {
 				BestScore r = bestScores.get(c);
@@ -76,8 +76,10 @@ public class GameTracker {
 						r.getHolder());
 			}
 			s += "\n";
-			s += String.format("%12s", " ")
-					+ gameInfo.get(c).description() + "\n";
+			s += String.format("%12s", " ");
+			String description = gameInfo.get(c).description();
+			int maxIndex = Math.min(description.length(), 68);
+			s += description.substring(0, maxIndex) + "\n";
 		}
 		s += "\nEnter the number of the game to play or 'q' to exit.\n";
 		return s;
