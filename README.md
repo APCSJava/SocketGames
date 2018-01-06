@@ -18,10 +18,10 @@ A running server may be accessed from a remote shell or terminal by:
 * <b>nc <i>server_ip_address tcp_port</i></b> 
 * // other tools, such as 'telnet' may be used, if available on the client platform
 
-# Notes for compiling and running inside an IDE (Eclipse, say)
+## Notes for compiling and running inside an IDE (Eclipse, say)
 The main application class is GameServer.  It requires two command line arguments -- the port number and the maximum number of connections to accept.  In Eclipse, go to "Run Configurations ..." and under the Arguments tab, enter "9090 5", for example, to run the server on port 9090 and accept a maximum of 5 simultaneous connections.
 
-# Notes for compiling and running outside of an IDE (command line)
+## Notes for compiling and running outside of an IDE (command line)
 The server must be compiled before it can be run.  If you are compiling from the root folder of the distribution, this will take a form such as: 
 * <b> javac org/asl/socketserver/GameServer.java</b>.  
 This will compile not only the server but all related and dependent classes in the org.asl.socketserver package. 
