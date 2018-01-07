@@ -5,7 +5,7 @@ The project consists of two packages:
 org.asl.socketserver which contains the server and necessary supporting classes
 org.asl.socketserver.games which contains game source code or class files
 
-Game classes written for this project should abide by the following four constraints:
+Game classes written for this project should abide by the following four guidelines:
 * provide a default constructor (to permit no-arg instantiation inside a thread)
 * implement the Servable interface (thread life is bounded by Servable.serve())
 * extend AbstractGame (to enable setting/retrieving best score data)
@@ -32,3 +32,5 @@ To compile all classes in the games folder:
 Launch the compiled server as follows:
 * <b>java org/asl/socketserver/GameServer 9090 5</b> 
 // launches the server on port 9090 and accepts up to 5 simultaneous connections
+* <b>java org/asl/socketserver/GameServer</b> 
+// launches the server on an arbitrary, open port (check System.out for details) with a capacity of 10 users.

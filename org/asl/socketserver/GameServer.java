@@ -1,4 +1,5 @@
 package org.asl.socketserver;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -15,27 +16,44 @@ import java.util.logging.Logger;
  */
 public class GameServer {
 
-	final static Logger LOGGER = Logger.getLogger(GameServer.class.getName());
+	final static Logger LOGGER = Logger
+			.getLogger(GameServer.class.getName());
+	final static int DEFAULT_PORT_NUM = 0; // if not specified, choose random
+	final static int DEFAULT_MAX_USERS = 10; // if not specified, allow 10
 
 	/**
-	 * Opens a port to listen for incoming requests. When a request is received,
-	 * wraps the resulting socket connection in a new thread and starts the process.
+	 * Opens a server port to listen for incoming requests. When a request is
+	 * received, accepts the connection, wraps it in a thread, and starts the thread
+	 * process.
 	 * 
 	 * @param args[0]
-	 *            the port to use when listening for connections
+	 *            the port to use when listening for connections; if no command line
+	 *            arguments are provided, uses the default
 	 * @param args[1]
-	 *            the max number of concurrent connections to accept
-	 * @throws java.io.IOException if unable to read from socket
+	 *            the max number of concurrent connections to accept; if no command
+	 *            line arguments, uses the default
+	 * @throws java.io.IOException
+	 *             if unable to read from socket
 	 */
 	public static void main(String[] args) throws IOException {
-		int desiredPort = Integer.parseInt(args[0]);
-		int maxConnections = Integer.parseInt(args[1]);
+		int desiredPort = DEFAULT_PORT_NUM;
+		int maxConnections = DEFAULT_MAX_USERS;
+		try {
+			desiredPort = Integer.parseInt(args[0]);
+			maxConnections = Integer.parseInt(args[1]);
+		} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+		} finally {
+		}
 		String refuseMessage = "Server limit of " + maxConnections
-				+ ((maxConnections == 1) ? " connection" : " connections")
+				+ ((maxConnections == 1) ? " connection"
+						: " connections")
 				+ " has been reached.  Please try again, later.";
 
-		try (ServerSocket socketRequestListener = new ServerSocket(desiredPort)) {
-			LOGGER.info("Server started.  Port: " + desiredPort + ".  Capacity: " + maxConnections);
+		try (ServerSocket socketRequestListener = new ServerSocket(
+				desiredPort)) {
+			LOGGER.info("Server started on port: " + socketRequestListener.getLocalPort()
+					+ ".  Maximum simultaneous users: "
+					+ maxConnections);
 			GameTracker.initialize();
 			while (true) {
 				// the following call blocks until a connection is made
@@ -48,13 +66,18 @@ public class GameServer {
 				if (numActiveSockets < maxConnections) {
 					new Thread(new GameThread(socket)).start();
 					numActiveSockets++;
-					LOGGER.info("Accepted " + remoteMachine + ".  Current connections: " + numActiveSockets);
+					LOGGER.info("Accepted " + remoteMachine
+							+ ".  Current connections: "
+							+ numActiveSockets);
 				} else {
-					PrintWriter out = new PrintWriter(socket.getOutputStream());
+					PrintWriter out = new PrintWriter(
+							socket.getOutputStream());
 					out.println(refuseMessage);
 					out.close();
 					socket.close();
-					LOGGER.warning("Refused " + remoteMachine + ".  Current connections: " + numActiveSockets);
+					LOGGER.warning("Refused " + remoteMachine
+							+ ".  Current connections: "
+							+ numActiveSockets);
 				}
 			}
 		}
