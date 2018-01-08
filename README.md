@@ -18,6 +18,10 @@ A running server may be accessed from a remote shell or terminal using netcat, t
 * <b>netcat 10.30.5.46 4187</b> // connect to a remote server at address 10.30.4.46 over port 4187
 * // the port number specified by the client must match the port number used when starting the server
 
+## Documentation
+Compiled Javadoc for the project is available here: https://apcsjava.github.io/SocketGames/
+
+
 ## Notes for compiling and running inside an IDE (Eclipse, say)
 The main application class is GameServer.  It requires two command line arguments -- the port number and the maximum number of connections to accept.  In Eclipse, go to "Run Configurations ..." and under the Arguments tab, enter "9090 5", for example, to run the server on port 9090 and accept a maximum of 5 simultaneous connections.
 
@@ -35,5 +39,3 @@ Launch the compiled server as follows:
 * <b>java org/asl/socketserver/GameServer</b> 
 // launches the server on an arbitrary, open port (check System.out for details) with a capacity of 10 users.
 
-## Documentation
-Compiled Javadoc for the project is available here: https://apcsjava.github.io/SocketGames/
