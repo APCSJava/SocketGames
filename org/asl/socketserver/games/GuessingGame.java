@@ -7,11 +7,11 @@ import java.io.PrintWriter;
 import org.asl.socketserver.AbstractGame;
 import org.asl.socketserver.BestScore;
 import org.asl.socketserver.Dictionary;
-import org.asl.socketserver.GameInfo;
+import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
-@GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "Guessing Game", description = "Adapted from the HiddenWord FRQ.")
+@MenuInfo(authors = {
+		"Kent Collins" }, version = "Fall, 2017", title = "Guessing Game", description = "Adapted from the HiddenWord FRQ.")
 
 public class GuessingGame extends AbstractGame implements Servable {
 	private String word;

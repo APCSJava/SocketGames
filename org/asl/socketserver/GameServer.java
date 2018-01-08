@@ -8,8 +8,9 @@ import java.net.Socket;
 import java.util.logging.Logger;
 
 /***
- * Accepts incoming connections on the indicated port and dispatches them into
- * parallel game threads.
+ * Accepts incoming network connection requests and dispatches them onto
+ * parallel game threads. The port number to monitor and the maximum number of
+ * simultaneous threads are both configurable as command line arguments.
  * 
  * @author K Collins
  * @version Fall, 2017
@@ -22,9 +23,9 @@ public class GameServer {
 	final static int DEFAULT_MAX_USERS = 10; // if not specified, allow 10
 
 	/**
-	 * Opens a server port to listen for incoming requests. When a request is
-	 * received, accepts the connection, wraps it in a thread, and starts the thread
-	 * process.
+	 * Opens a server port to listen for incoming network requests. When a request
+	 * is received, accepts the connection, wraps the resulting socket in a thread,
+	 * and starts the thread process.
 	 * 
 	 * @param args[0]
 	 *            the port to use when listening for connections; if no command line
@@ -41,7 +42,8 @@ public class GameServer {
 		try {
 			desiredPort = Integer.parseInt(args[0]);
 			maxConnections = Integer.parseInt(args[1]);
-		} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+		} catch (ArrayIndexOutOfBoundsException
+				| NumberFormatException e) {
 		} finally {
 		}
 		String refuseMessage = "Server limit of " + maxConnections
@@ -51,7 +53,8 @@ public class GameServer {
 
 		try (ServerSocket socketRequestListener = new ServerSocket(
 				desiredPort)) {
-			LOGGER.info("Server started on port: " + socketRequestListener.getLocalPort()
+			LOGGER.info("Server started on port: "
+					+ socketRequestListener.getLocalPort()
 					+ ".  Maximum simultaneous users: "
 					+ maxConnections);
 			GameTracker.initialize();

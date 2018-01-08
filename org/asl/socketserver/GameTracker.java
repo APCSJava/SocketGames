@@ -19,8 +19,8 @@ import java.util.Set;
 
 /***
  * Locates servable classes within the project directory structure. Maintains a
- * list of servables, as well as information collected from class type GameInfo
- * annotations and high scores from a local flat file.
+ * list of servables, along with information collected from MenuInfo annotations
+ * and associated high scores for each class.
  * 
  * @author K. Collins
  * @version Fall, 2017
@@ -29,7 +29,7 @@ import java.util.Set;
 public class GameTracker {
 
 	private static List<Class<? extends Servable>> gameList;
-	private static Map<Class<? extends Servable>, GameInfo> gameInfo;
+	private static Map<Class<? extends Servable>, MenuInfo> menuInfo;
 	private static Map<Class<? extends AbstractGame>, BestScore> bestScores;
 	private static String gameMenu;
 
@@ -70,7 +70,7 @@ public class GameTracker {
 		int i = 0;
 		for (Class<? extends Servable> c : gameList) {
 			s += String.format("%7d%s%-50s", i++, " ",
-					gameInfo.get(c).gameTitle());
+					menuInfo.get(c).title());
 			if (bestScores.containsKey(c)) {
 				BestScore r = bestScores.get(c);
 				s += String.format("%10d%s%3s", r.getScore(), "    ",
@@ -78,7 +78,7 @@ public class GameTracker {
 			}
 			s += "\n";
 			s += String.format("%12s", " ");
-			String description = gameInfo.get(c).description();
+			String description = menuInfo.get(c).description();
 			int maxIndex = Math.min(description.length(), 68);
 			s += description.substring(0, maxIndex) + "\n";
 		}
@@ -195,15 +195,15 @@ public class GameTracker {
 	 */
 	public static void initialize() {
 		try {
-			gameInfo = new HashMap<Class<? extends Servable>, GameInfo>();
+			menuInfo = new HashMap<Class<? extends Servable>, MenuInfo>();
 			gameList = findServableClasses();
 			for (Class<? extends Servable> c : gameList) {
-				gameInfo.put(c, null);
+				menuInfo.put(c, null);
 				Annotation[] annotations = c.getAnnotations();
 				for (Annotation a : annotations) {
-					if (a instanceof GameInfo) {
-						GameInfo info = (GameInfo) a;
-						gameInfo.put(c, info);
+					if (a instanceof MenuInfo) {
+						MenuInfo info = (MenuInfo) a;
+						menuInfo.put(c, info);
 						break;
 					}
 				}
@@ -219,20 +219,18 @@ public class GameTracker {
 	}
 
 	/**
-	 * Takes the information in a GameInfo annotation and prepares it for display.
-	 * For uniformity, games may and should call this method when starting or
-	 * restarting a game.
+	 * Takes the information in a MenuInfo annotation and prepares it for display.
 	 * 
-	 * @param g
-	 *            a GameInfo reference; a class level annotation on games
+	 * @param mi
+	 *            a MenuInfo reference
 	 * @return a string appropriate for text display of game information
 	 */
-	public static String formatGameInfoString(GameInfo g) {
+	public static String formatGameInfoString(MenuInfo mi) {
 		String s = "=====";
-		s += "\t" + g.gameTitle() + "\n";
-		s += "\t" + g.description() + "\n";
-		s += "\t" + formatAuthorString(g.authors());
-		s += "\t" + g.version();
+		s += "\t" + mi.title() + "\n";
+		s += "\t" + mi.description() + "\n";
+		s += "\t" + formatAuthorString(mi.authors());
+		s += "\t" + mi.version();
 		return s;
 	}
 
@@ -245,8 +243,8 @@ public class GameTracker {
 	 * @return the GameInfo object loaded for the indicated class
 	 */
 	public static String getGameInfo(Class<Servable> c) {
-		if (gameInfo.containsKey(c))
-			return formatGameInfoString(gameInfo.get(c));
+		if (menuInfo.containsKey(c))
+			return formatGameInfoString(menuInfo.get(c));
 		return c + " -- no game information available";
 	}
 

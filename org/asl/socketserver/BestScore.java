@@ -1,7 +1,8 @@
 package org.asl.socketserver;
+
 /***
- * Plain old Java object that associates a numeric score with a player's
- * initials.
+ * Plain old Java object that associates a numeric score (integer) with the
+ * player who set the score.
  * 
  * @author K. Collins
  * @version Fall, 2017

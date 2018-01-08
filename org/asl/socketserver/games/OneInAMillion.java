@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.asl.socketserver.AbstractGame;
-import org.asl.socketserver.GameInfo;
+import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
 /***
@@ -15,8 +15,8 @@ import org.asl.socketserver.Servable;
  * @version Fall 2017
  *
  */
-@GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "One in a Million", description = "How many guesses will it take?")
+@MenuInfo(authors = {
+		"Kent Collins" }, version = "Fall, 2017", title = "One in a Million", description = "How many guesses will it take?")
 public class OneInAMillion extends AbstractGame implements Servable {
 
 	private int target;

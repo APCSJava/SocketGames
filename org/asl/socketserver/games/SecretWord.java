@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 
 import org.asl.socketserver.AbstractGame;
 import org.asl.socketserver.BestScore;
-import org.asl.socketserver.GameInfo;
+import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
 /***
@@ -15,8 +15,8 @@ import org.asl.socketserver.Servable;
  * @version Fall 2017
  *
  */
-@GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "The Secret Word", description = "Guess the secret word and win!")
+@MenuInfo(authors = {
+		"Kent Collins" }, version = "Fall, 2017", title = "The Secret Word", description = "Guess the secret word and win!")
 public class SecretWord extends AbstractGame implements Servable {
 
 	private static final int GUESS_LIMIT = 5;

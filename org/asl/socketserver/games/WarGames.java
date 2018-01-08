@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.asl.socketserver.AbstractGame;
-import org.asl.socketserver.GameInfo;
+import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
 /***
@@ -14,8 +14,8 @@ import org.asl.socketserver.Servable;
  * @version Fall 2017
  *
  */
-@GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "War Games", description = "A little bit of 1983 film fiction.  Be a hero.  End the cold war.")
+@MenuInfo(authors = {
+		"Kent Collins" }, version = "Fall, 2017", title = "War Games", description = "A little bit of 1983 film fiction.  Be a hero.  End the cold war.")
 public class WarGames extends AbstractGame implements Servable {
 	private static final String[] games = { "FALKEN'S MAZE",
 			"BLACK JACK", "GIN RUMMY", "HEARTS", "BRIDGE",

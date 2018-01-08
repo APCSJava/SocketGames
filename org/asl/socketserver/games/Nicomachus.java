@@ -3,7 +3,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import org.asl.socketserver.GameInfo;
+import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
 /***
@@ -13,8 +13,8 @@ import org.asl.socketserver.Servable;
  * @version Fall 2017
  *
  */
-@GameInfo(authors = {
-		"Kent Collins" }, version = "Fall, 2017", gameTitle = "Nicomachus - Mystic Math", description = "Pick a secret number and I will divine your selection!")
+@MenuInfo(authors = {
+		"Kent Collins" }, version = "Fall, 2017", title = "Nicomachus - Mystic Math", description = "Pick a secret number and I will divine your selection!")
 public class Nicomachus implements Servable {
 
 	private int mod3;

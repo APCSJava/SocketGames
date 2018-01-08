@@ -1,4 +1,5 @@
 package org.asl.socketserver;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -9,8 +10,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /***
- * Library methods for retrieving words from a source containing Google's 10000
- * most frequently used words in usa english (w/o swear words).
+ * Library that provides methods for retrieving words from a word source. The
+ * default source is Google's 10000 most frequently used words in USA English
+ * (w/o swear words) and is taken from
+ * https://github.com/first20hours/google-10000-english
  * 
  * @author K. Collins
  * @version Fall, 2017
@@ -44,9 +47,11 @@ public final class Dictionary {
 	}
 
 	/**
-	 * Returns an immutable version of the word source. Immutability assures that
-	 * while multiple threads can access the reference, no thread has the ability to
-	 * add or remove words.
+	 * Returns an immutable version of the word source. Immutability is needed so
+	 * that a single copy of the dictionary may be stored in memory and used as a
+	 * common resource by all threads. While every thread can therefore read freely
+	 * from the list, no thread may write to, delete from, or otherwise modify the
+	 * list.
 	 * 
 	 * @return a reference to an immutable word list
 	 */

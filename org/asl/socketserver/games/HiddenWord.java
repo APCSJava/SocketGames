@@ -5,11 +5,11 @@ import java.io.PrintWriter;
 
 import org.asl.socketserver.AbstractGame;
 import org.asl.socketserver.Dictionary;
-import org.asl.socketserver.GameInfo;
+import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
-@GameInfo(authors = {
-"Kent Collins" }, version = "Fall, 2017", gameTitle = "Hidden Word", description = "Bestest game ever!")
+@MenuInfo(authors = {
+"Kent Collins" }, version = "Fall, 2017", title = "Hidden Word", description = "See GuessingGame")
 public class HiddenWord extends AbstractGame implements Servable{
 	private String word;
 	private int numGuesses;

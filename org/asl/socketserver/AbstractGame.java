@@ -25,7 +25,7 @@ public abstract class AbstractGame {
 	 * @param value
 	 *            an integer score
 	 * @param initials
-	 *            the record holder
+	 *            initials of the new record holder (three characters)
 	 */
 	public final void setBestScore(int value, String initials) {
 		if (initials == null || initials.equals(""))
