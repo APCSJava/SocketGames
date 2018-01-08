@@ -34,3 +34,6 @@ Launch the compiled server as follows:
 // launches the server on port 9090 and accepts up to 5 simultaneous connections
 * <b>java org/asl/socketserver/GameServer</b> 
 // launches the server on an arbitrary, open port (check System.out for details) with a capacity of 10 users.
+
+## Documentation
+Compiled Javadoc for the project is available here: https://apcsjava.github.io/SocketGames/J
