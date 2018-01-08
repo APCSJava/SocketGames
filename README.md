@@ -9,7 +9,7 @@ Game classes written for this project should abide by the following four guideli
 * provide a default constructor (to permit no-arg instantiation inside a thread)
 * implement the Servable interface (thread life is bounded by Servable.serve())
 * extend AbstractGame (to enable setting/retrieving best score data)
-* annotate the class with a @GameInfo annotation (provides content for menus)  
+* annotate the class with a @MenuInfo annotation (provides content for menus)  
 
 Compiled class files meeting these criteria and stored in the org/asl/socketserver/games folder will be identified automatically by the server and made available for play. 
 
