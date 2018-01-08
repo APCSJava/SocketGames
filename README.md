@@ -2,8 +2,8 @@
 Sometimes one simply wants to play text games across a TCP socket.  For those times, this project (requires Java8 or higher). 
 
 The project consists of two packages:
-org.asl.socketserver which contains the server and necessary supporting classes
-org.asl.socketserver.games which contains game source code or class files
+* org.asl.socketserver which contains the server framework
+* org.asl.socketserver.games which contains sample games
 
 Game classes written for this project should abide by the following four guidelines:
 * provide a default constructor (to permit no-arg instantiation inside a thread)
