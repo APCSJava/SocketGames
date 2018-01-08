@@ -25,3 +25,6 @@ hs_err_pid*
 *.classpath
 *.project
 *.DS_Store
+
+#Best scores file
+best_scores.csv
