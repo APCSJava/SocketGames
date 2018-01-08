@@ -1,30 +1,44 @@
 package org.asl.socketserver.games;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.asl.socketserver.AbstractGame;
+import org.asl.socketserver.BestScore;
 import org.asl.socketserver.Dictionary;
 import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
 @MenuInfo(authors = {
-"Kent Collins" }, version = "Fall, 2017", title = "Hidden Word", description = "See GuessingGame")
-public class HiddenWord extends AbstractGame implements Servable{
+		"Kent Collins" }, version = "Fall, 2017", title = "Hidden Word", description = "Mastermind meets Hangman.")
+
+public class HiddenWord extends AbstractGame implements Servable {
 	private String word;
 	private int numGuesses;
 
-	/** PRECONDITION: parameter is upper case */
+	/**
+	 * PRECONDITION: parameter is upper case
+	 * 
+	 * @param word
+	 *            - an uppercase word to guess
+	 */
 	public HiddenWord(String word) {
 		this.word = word;
 		numGuesses = 0;
 	}
-	
+
 	public HiddenWord() {
-		this(Dictionary.randomBySize(5).toUpperCase());
+		this(Dictionary.randomBySize(5, 8).toUpperCase());
 	}
 
-	/** PRECONDITION: guess has same length as word, is upper case */
+	/**
+	 * PRECONDITION: guess has same length as word, is upper case
+	 * 
+	 * @param guess
+	 *            a word to compare against the hidden word
+	 * @return a hint string
+	 */
 	public String getHint(String guess) {
 		String hint = "";
 		for (int i = 0; i < word.length(); i++) {
@@ -40,20 +54,40 @@ public class HiddenWord extends AbstractGame implements Servable{
 	}
 
 	@Override
-	public void serve(BufferedReader br, PrintWriter pw) throws IOException {
-		pw.println("Enter a word "+word.length()+" letters long.");
-		String guess = br.readLine().trim().toUpperCase();
-		numGuesses++;
-		while(!guess.equals(word)) {
-			pw.println(this.getHint(guess));
-			guess = br.readLine().trim().toUpperCase();
+	public void serve(BufferedReader in, PrintWriter out)
+			throws IOException {
+		StringBuilder sb = new StringBuilder();
+		sb.append(
+				"Try to guess the hidden word and I'll mark your guess as follows:\n");
+		sb.append(
+				"Each letter appearing in the word at its guessed location will be revealed. \n");
+		sb.append(
+				"Each letter appearing in the word at a different location will be marked a '+'\n");
+		sb.append(
+				"Each letter not appearing in the word at any location will be marked a '*'");
+		out.println(sb.toString());
+		String guess = "";
+		while (!word.equals(guess)) {
+			while (guess == null || guess.equals("")
+					|| guess.length() != word.length()) {
+				out.println("Your guess should be " + word.length()
+						+ " letters long.");
+				guess = in.readLine().trim().toUpperCase();
+			}
 			numGuesses++;
+			out.println(getHint(guess));
+			guess = in.readLine().trim().toUpperCase();
 		}
-		pw.println("Congrat -- you guessed it !  You used "+numGuesses+" guesses.");
-		if (numGuesses<getBestScore().getScore()) {
-			pw.println("Enter your initials, you wonderful thing");
-			String inits = br.readLine().trim().toUpperCase();
-			this.setBestScore(numGuesses, inits);
+		int score = word.length() * numGuesses;
+		BestScore current = this.getBestScore();
+		out.println("Nicely done. " + numGuesses
+				+ " guesses earns a score of " + score);
+
+		if (current == null || score < current.getScore()) {
+			out.println(score
+					+ " is a new high score.  Please enter your initials...");
+			String inits = in.readLine().trim();
+			setBestScore(score, inits);
 		}
 	}
 }
