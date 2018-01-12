@@ -2,12 +2,7 @@ package org.asl.socketserver.games;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Scanner;
 
 import org.asl.socketserver.AbstractGame;
 import org.asl.socketserver.MenuInfo;
@@ -15,8 +10,6 @@ import org.asl.socketserver.Servable;
 
 @MenuInfo(authors = {
 		"Sarah Covey" }, version = "Spring 2018", title = "Queen", description = "Get the queen to the end square.")
-
-
 public class QueenServer extends AbstractGame implements Servable {
 	private Square queen;
 	private boolean forfeit;
