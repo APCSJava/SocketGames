@@ -33,10 +33,12 @@ public class Hangman extends AbstractGame implements Servable {
 
 	@Override
 	public void serve(BufferedReader in, PrintWriter out) throws IOException {
-		out.println("Welcome to Hangman -- try to reveal the hidden word by guessing letters.");
-		out.println("After each guess, I will show you where the letter appears, if it appears,");
-		out.println("or penalize you, if it does not appear.");
-		out.println("The word I am considering is " + hidden.length() + " letters long.\nGuess a letter:");
+		String instructions = "Welcome to Hangman -- try to reveal the hidden word by guessing letters.\n";
+		instructions+="If the letter appears in the word, I will show you where.\n";
+		instructions+="If the letter does not appear, I will assess a strike.\n";
+		instructions+="You may have up to "+MAX_INCORRECT+" strikes before you lose.\n";
+		instructions+="The word I am considering is " + hidden.length() + " letters long.\nGuess a letter:";
+		out.println(instructions);
 		String guess = in.readLine().trim().toUpperCase();
 		while (true) {
 			if (guess.length() == 1) {
@@ -49,6 +51,7 @@ public class Hangman extends AbstractGame implements Servable {
 				break;
 			} else if (numIncorrect > MAX_INCORRECT) {
 				out.println(buildLoseMessage());
+				break;
 			} else {
 				out.println(buildProgressMessage(guess));
 			}
@@ -64,16 +67,19 @@ public class Hangman extends AbstractGame implements Servable {
 
 	private String buildProgressMessage(String guess) {
 		if (hidden.contains(guess)) return "Yes, there is at least one " + guess + " in the word.";
-		return "Sorry, there is no "+guess+" in the word.";
+		return "Sorry, there is no "+guess+" in the word. -"+numIncorrect;
 	}
 
 	private String buildCongratulationsMessage() {
-		// TODO Auto-generated method stub
 		return "You guessed it!  The word was " + hidden;
 	}
 
 	private void checkWord(String guess) {
-		// TODO Auto-generated method stub
+		if (guess.equals(hidden)) {
+			solutionSoFar = hidden;
+		} else {
+			numIncorrect = MAX_INCORRECT+1;
+		}
 
 	}
 
