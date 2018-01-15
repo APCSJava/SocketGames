@@ -82,50 +82,27 @@ public class GameTracker {
 	}
 
 	/**
-	 * Checks that a submitted string can be safely converted to an integer.
-	 * 
-	 * @param s
-	 *            the string to be tested
-	 * @return true if s can be parsed to integer; false, otherwise
-	 */
-	public static boolean checkValidInteger(String s) {
-		try {
-			int i = Integer.parseInt(s);
-			if (i < 0)
-				return false;
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Examines user selection and returns either a String holding a menu, a new
-	 * instance of the requested game, or null if neither of the above makes sense.
+	 * Examines user selection and returns either a new instance of the requested
+	 * game, the menu, or an exception if the argument could not be parsed.
 	 * 
 	 * @param userSelection
 	 *            string representing the user's choice
-	 * @return an object representing a menu string, a game instance or null
+	 * @return a menu string, a game instance or an exception
 	 */
 	public static Object handleUserSelection(String userSelection) {
-		Object o = null;
-		if (GameTracker.checkValidInteger(userSelection)) {
-			try {
-				o = gameList.get(Integer.parseInt(userSelection)).newInstance();
-			} catch (InstantiationException e) {
-				o = "Unable to instantiate requested instance "+userSelection;
-				GameServer.LOGGER.severe((String) o);
-			} catch (NumberFormatException | IllegalAccessException e) {
-				o = "Unable to figure out the number: "+userSelection;
-				GameServer.LOGGER.warning((String) o);
-			} catch (IndexOutOfBoundsException e) {
-				o = "Not a valid game: "+userSelection;
-				GameServer.LOGGER.warning((String) o);
-			}
-		} else {
-			o = gameMenu;
+		if (userSelection.equals("")) return gameMenu;
+		try {
+			return gameList.get(Integer.parseInt(userSelection)).newInstance();
+		} catch (NumberFormatException e) {
+			return new Exception("Unable to process " + userSelection + " as a number.");
+		} catch (InstantiationException | IllegalAccessException e) {
+			String msg = "Unable to instantiate choice " + userSelection
+					+ ".  Does a public, no-argument constructor exist?";
+			GameServer.LOGGER.severe(msg);
+			return new Exception("An instantiation exception occurred.");
+		} catch (IndexOutOfBoundsException e) {
+			return new Exception("That game is not on the list.");
 		}
-		return o;
 	}
 
 	/**
