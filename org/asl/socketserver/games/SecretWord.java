@@ -1,4 +1,5 @@
 package org.asl.socketserver.games;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,23 +28,28 @@ public class SecretWord extends AbstractGame implements Servable {
 	@Override
 	public void serve(BufferedReader input, PrintWriter output)
 			throws IOException {
-		output.println("Welcome to the Secret Word game.");
-		output.println(prompt);
+		output.println(
+				"Welcome to the Secret Word game.\n" + prompt);
 		String userInput = input.readLine().trim();
 		while (!userInput.equals("q") && numGuesses < GUESS_LIMIT) {
 			numGuesses++;
 			if (userInput.equals(secret)) {
-				output.println(getRandomMessage(kudos));
-				output.println("Enter your intials to join the high score board!");
+				StringBuilder sb = new StringBuilder(
+						getRandomMessage(kudos));
+				sb.append(
+						"\nEnter your intials to join the high score board!");
+				output.println(sb.toString());
 				String inits = input.readLine().trim();
-				if (getBestScore()!=null) {
-					setBestScore(getBestScore().getScore()+1, inits);
-				} else setBestScore(1, inits);
+				if (getBestScore() != null) {
+					setBestScore(getBestScore().getScore() + 1,
+							inits);
+				} else
+					setBestScore(1, inits);
 				return; // end the serve method, thus ending the game
 			} else {
 				output.println("You said '" + userInput
-						+ "' but that is not the secret word.");
-				output.println(prompt);
+						+ "' but that is not the secret word.\n"
+						+ prompt);
 				userInput = input.readLine().trim();
 			}
 		}
