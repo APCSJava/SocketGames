@@ -5,7 +5,11 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /***
  * Accepts incoming network connection requests and dispatches them onto
@@ -17,10 +21,23 @@ import java.util.logging.Logger;
  */
 public class GameServer {
 
-	final static Logger LOGGER = Logger
-			.getLogger(GameServer.class.getName());
+	final static Logger LOGGER; // destination for error messages
 	final static int DEFAULT_PORT_NUM = 0; // if not specified, choose random
 	final static int DEFAULT_MAX_USERS = 10; // if not specified, allow 10
+
+	static {
+		LOGGER = Logger.getLogger(GameServer.class.getName());
+		String datedFile = LocalDateTime.now().toString();
+		try {
+			FileHandler fh = new FileHandler(datedFile+".log");
+			LOGGER.addHandler(fh);
+			fh.setFormatter(new SimpleFormatter());
+		} catch (SecurityException e) {
+			LOGGER.warning(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.warning(e.getMessage());
+		}
+	}
 
 	/**
 	 * Opens a server port to listen for incoming network requests. When a request
@@ -44,6 +61,8 @@ public class GameServer {
 			maxConnections = Integer.parseInt(args[1]);
 		} catch (ArrayIndexOutOfBoundsException
 				| NumberFormatException e) {
+			LOGGER.info("Command line arguments not available.  Using defaults.");
+			
 		} finally {
 		}
 		String refuseMessage = "Server limit of " + maxConnections
