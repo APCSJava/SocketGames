@@ -64,7 +64,7 @@ public class GameThread implements Runnable {
 					out.println(
 							"An error occurred while attempting to start the game.");
 				} else {
-					out.println(choice + " is not a valid option.");
+					out.println((String) o);
 				}
 				out.println("Press Enter/Return to continue.");
 				br.readLine(); // user is ready to continue

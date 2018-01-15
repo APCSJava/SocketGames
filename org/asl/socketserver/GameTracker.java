@@ -112,12 +112,15 @@ public class GameTracker {
 		if (GameTracker.checkValidInteger(userSelection)) {
 			try {
 				o = gameList.get(Integer.parseInt(userSelection)).newInstance();
-			} catch (NumberFormatException | InstantiationException | IllegalAccessException e) {
-				// game not instantiated -- leave object null
-				GameServer.LOGGER.warning(e.toString());
+			} catch (InstantiationException e) {
+				o = "Unable to instantiate requested instance "+userSelection;
+				GameServer.LOGGER.severe((String) o);
+			} catch (NumberFormatException | IllegalAccessException e) {
+				o = "Unable to figure out the number: "+userSelection;
+				GameServer.LOGGER.warning((String) o);
 			} catch (IndexOutOfBoundsException e) {
-				// chose a game not on the list
-				GameServer.LOGGER.warning(e.toString());
+				o = "Not a valid game: "+userSelection;
+				GameServer.LOGGER.warning((String) o);
 			}
 		} else {
 			o = gameMenu;
