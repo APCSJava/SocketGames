@@ -38,8 +38,11 @@ public class GameThread implements Runnable {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		try (PrintWriter out = new EchoWriter(socket.getOutputStream(), true);
-				BufferedReader br = new EchoReader(new InputStreamReader(socket.getInputStream()))) {
+		try (PrintWriter out = new EchoWriter(
+				socket.getOutputStream(), true);
+				BufferedReader br = new EchoReader(
+						new InputStreamReader(
+								socket.getInputStream()))) {
 			out.println(); // provide some white space before menu
 			while (true) {
 				Thread.sleep(SCROLL_DELAY);
@@ -49,11 +52,13 @@ public class GameThread implements Runnable {
 					break;
 				Object o = GameTracker.handleUserSelection(choice);
 				if (o instanceof Servable) {
-					out.println(GameTracker.getGameInfo((Class<Servable>) o.getClass()));
+					out.println(GameTracker.getGameInfo(
+							(Class<Servable>) o.getClass()));
 					out.println(); // whitespace)
 					((Servable) o).serve(br, out);
 					Thread.sleep(SCROLL_DELAY);
-					out.println("\nThe game is over.  Press Enter to continue.");
+					out.println(
+							"\nGAME OVER.  Press Enter to continue.");
 					br.readLine(); // provide opportunity for them to see msg
 				} else if (o instanceof Exception) {
 					Exception e = (Exception) o;
@@ -62,20 +67,26 @@ public class GameThread implements Runnable {
 					br.readLine(); // user is ready to continue
 				}
 			}
-			GameServer.LOGGER.info("Connection with " + socket.getInetAddress() + " closed normally.");
+			GameServer.LOGGER
+					.info("GOODBYE " + socket.getInetAddress()
+							+ ". Connection closed normally.");
 
 		} catch (IOException |
 
 				NullPointerException e1) {
-			GameServer.LOGGER.warning(socket.getInetAddress() + " ended connection abruptly.");
+			GameServer.LOGGER
+					.warning("UH-OH " + socket.getInetAddress()
+							+ ".  Connection closed abruptly.");
 		} catch (InterruptedException e) {
 			// Likely, because thread was interrupted while sleeping
-			GameServer.LOGGER.warning("Thread interrupted while sleeping." + e);
+			GameServer.LOGGER.warning(
+					"Thread interrupted while sleeping." + e);
 		} finally {
 			try {
 				socket.close();
 			} catch (IOException e) {
-				GameServer.LOGGER.info("GameThread attempting to close a closed socket");
+				GameServer.LOGGER.info(
+						"GameThread attempting to close a closed socket");
 			}
 		}
 	}
@@ -95,9 +106,10 @@ public class GameThread implements Runnable {
 		public void println(String s) {
 			super.println(s);
 			if (!s.trim().equals("")) {
-				String first60 = "Sending --> " + socket.getInetAddress() + " "
-						+ s.replace("\n", " ").substring(0, Math.min(60, s.length()));
-				GameServer.LOGGER.info(first60);
+				String logString = socket.getInetAddress()
+						+ " --> " + s.replace("\n", " ");
+				GameServer.LOGGER.info(logString.substring(0,
+						Math.min(80, logString.length())));
 			}
 		}
 
@@ -120,9 +132,10 @@ public class GameThread implements Runnable {
 			try {
 				String s = super.readLine();
 				if (!s.trim().equals("")) {
-					String first60 = "Received <-- " + socket.getInetAddress() + " "
-							+ s.replace("\n", " ").substring(0, Math.min(60, s.length()));
-					GameServer.LOGGER.info(first60);
+					String logString = socket.getInetAddress()
+							+ " <-- " + s.replace("\n", " ");
+					GameServer.LOGGER.info(logString.substring(0,
+							Math.min(80, logString.length())));
 				}
 				return s;
 			} catch (IOException e) {
