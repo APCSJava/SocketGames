@@ -26,16 +26,6 @@ public class GameServer {
 
 	static {
 		LOGGER = Logger.getLogger(GameServer.class.getName());
-		String datedFile = LocalDateTime.now().toString();
-		try {
-			FileHandler fh = new FileHandler(datedFile+".log");
-			LOGGER.addHandler(fh);
-			fh.setFormatter(new SimpleFormatter());
-		} catch (SecurityException e) {
-			LOGGER.warning(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.warning(e.getMessage());
-		}
 	}
 
 	/**
@@ -55,16 +45,18 @@ public class GameServer {
 	public static void main(String[] args) throws IOException {
 		int desiredPort = DEFAULT_PORT_NUM;
 		int maxConnections = DEFAULT_MAX_USERS;
+		boolean createLogFile = false;
 		try {
 			desiredPort = Integer.parseInt(args[0]);
 			maxConnections = Integer.parseInt(args[1]);
+			createLogFile = Boolean.parseBoolean(args[2]);
 		} catch (ArrayIndexOutOfBoundsException
 				| NumberFormatException e) {
-			LOGGER.info("Command line arguments not available.  Using defaults.");
-			
-		} finally {
-		}
-		String refuseMessage = "Server limit of " + maxConnections
+			LOGGER.info(
+					"Command line arguments missing or faulty.  Launching with program defaults.");
+		} 
+		if (createLogFile) attachLogFileHandler();
+		String refuseNewConnectionMessage = "The server limit of " + maxConnections
 				+ ((maxConnections == 1) ? " connection"
 						: " connections")
 				+ " has been reached.  Please try again, later.";
@@ -81,27 +73,39 @@ public class GameServer {
 				Socket socket = socketRequestListener.accept();
 				InetAddress remoteMachine = socket.getInetAddress();
 				// String remoteHost = remoteMachine.getHostName();
-				LOGGER.info("Incoming request: " + remoteMachine);
+				LOGGER.info("Incoming connection request from " + remoteMachine);
 
 				int numActiveSockets = Thread.activeCount() - 1;
 				if (numActiveSockets < maxConnections) {
 					new Thread(new GameThread(socket)).start();
 					numActiveSockets++;
-					LOGGER.info("Accepted " + remoteMachine
-							+ ".  Current connections: "
+					LOGGER.info("HELLO " + remoteMachine
+							+ ".  Number of current connections: "
 							+ numActiveSockets);
 				} else {
 					PrintWriter out = new PrintWriter(
 							socket.getOutputStream());
-					out.println(refuseMessage);
+					out.println(refuseNewConnectionMessage);
 					out.close();
 					socket.close();
-					LOGGER.warning("Refused " + remoteMachine
-							+ ".  Current connections: "
+					LOGGER.warning("SORRY " + remoteMachine
+							+ ".  Number of current connections: "
 							+ numActiveSockets);
 				}
 			}
 		}
 	}
 
+	private static void attachLogFileHandler() {
+		String datedFile = LocalDateTime.now().toString();
+		try {
+			FileHandler fh = new FileHandler(datedFile + ".log");
+			LOGGER.addHandler(fh);
+			fh.setFormatter(new SimpleFormatter());
+		} catch (SecurityException e) {
+			LOGGER.warning(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.warning(e.getMessage());
+		}
+	}
 }
