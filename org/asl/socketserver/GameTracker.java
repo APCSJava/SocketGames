@@ -42,9 +42,7 @@ public class GameTracker {
 	 * @return an array of files
 	 */
 	private static File[] findClassFilesInPackage() {
-		// File directory = new File(".");
-		// preceding line does not work when files split into different package folders
-		File directory = new File(GameTracker.class.getResource("/org/asl/socketserver/games/").getFile());
+		File directory = new File(GameTracker.class.getResource("games").getFile());
 		File[] files = directory.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.endsWith("class");
