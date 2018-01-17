@@ -148,7 +148,11 @@ public class GameTracker {
 				}
 			}
 		}
-		GameServer.LOGGER.info("GameTracker detected the following servable classes " + servableClasses);
+		String classesFound = "GameTracker detected the following servable classes:\n";
+		for (Class<? extends Servable> c : servableClasses) {
+			classesFound+="\t"+c.getSimpleName()+"\n";
+		}
+		GameServer.LOGGER.info(classesFound);
 		return servableClasses;
 	}
 

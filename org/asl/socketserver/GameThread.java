@@ -52,6 +52,10 @@ public class GameThread implements Runnable {
 					break;
 				Object o = GameTracker.handleUserSelection(choice);
 				if (o instanceof Servable) {
+					GameServer.LOGGER.info(
+							"GAME ON. " + socket.getInetAddress()
+									+ " is playing "
+									+ o.getClass().getSimpleName());
 					out.println(GameTracker.getGameInfo(
 							(Class<Servable>) o.getClass()));
 					out.println(); // whitespace)
@@ -68,14 +72,14 @@ public class GameThread implements Runnable {
 				}
 			}
 			GameServer.LOGGER
-					.info("GOODBYE " + socket.getInetAddress()
+					.info("GOODBYE. " + socket.getInetAddress()
 							+ ". Connection closed normally.");
 
 		} catch (IOException |
 
 				NullPointerException e1) {
 			GameServer.LOGGER
-					.warning("UH-OH " + socket.getInetAddress()
+					.warning("UH-OH. " + socket.getInetAddress()
 							+ ".  Connection closed abruptly.");
 		} catch (InterruptedException e) {
 			// Likely, because thread was interrupted while sleeping
@@ -106,8 +110,8 @@ public class GameThread implements Runnable {
 		public void println(String s) {
 			super.println(s);
 			if (!s.trim().equals("")) {
-				String logString = socket.getInetAddress()
-						+ " --> " + s.replace("\n", " ");
+				String logString = socket.getInetAddress() + " --> "
+						+ s.replace("\n", " ");
 				GameServer.LOGGER.info(logString.substring(0,
 						Math.min(80, logString.length())));
 			}

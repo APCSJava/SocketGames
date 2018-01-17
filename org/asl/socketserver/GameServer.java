@@ -63,7 +63,7 @@ public class GameServer {
 
 		try (ServerSocket socketRequestListener = new ServerSocket(
 				desiredPort)) {
-			LOGGER.info("Server started on port: "
+			LOGGER.info("GameServer started on port: "
 					+ socketRequestListener.getLocalPort()
 					+ ".  Maximum simultaneous users: "
 					+ maxConnections);
