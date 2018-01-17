@@ -1,5 +1,9 @@
 package org.asl.socketserver.games;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 /*
 A version of the arcade game Awari
 By Graham and Kippy
@@ -11,10 +15,6 @@ import java.util.Random;
 import org.asl.socketserver.AbstractGame;
 import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 @MenuInfo(authors = {
 "Graham Brantley and Kippy" }, version = "Spring, 2018", title = "Awari", description = "Bean Game.")

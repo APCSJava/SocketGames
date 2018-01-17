@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.asl.socketserver.AbstractGame;
-import org.asl.socketserver.BestScore;
 import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
