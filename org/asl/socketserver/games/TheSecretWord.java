@@ -17,7 +17,7 @@ import org.asl.socketserver.Servable;
  */
 @MenuInfo(authors = {
 		"Kent Collins" }, version = "Fall, 2017", title = "The Secret Word", description = "Guess the secret word and win!")
-public class SecretWord extends AbstractGame implements Servable {
+public class TheSecretWord extends AbstractGame implements Servable {
 
 	private static final int GUESS_LIMIT = 5;
 	private final String secret = "the secret word";
