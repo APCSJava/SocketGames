@@ -110,4 +110,5 @@ public class GameServer {
 	}
 	
 	//TODO write a custom Formatter for the written log
+	// String.format("%8s%15s%65s", opCode, ipAddress, msg);
 }
