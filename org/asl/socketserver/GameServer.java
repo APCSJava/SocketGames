@@ -108,4 +108,6 @@ public class GameServer {
 			LOGGER.warning(e.getMessage());
 		}
 	}
+	
+	//TODO write a custom Formatter for the written log
 }

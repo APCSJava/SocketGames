@@ -353,7 +353,7 @@ public class GameTracker {
 			}
 		} catch (NoSuchFileException e) {
 			// oh, well -- no high scores, I guess...
-			GameServer.LOGGER.warning("Best scores file not found.");
+			GameServer.LOGGER.warning("Best scores file not found.  Will create a fresh one.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
