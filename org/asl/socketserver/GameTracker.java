@@ -42,7 +42,8 @@ public class GameTracker {
 	 * @return an array of files
 	 */
 	private static File[] findClassFilesInPackage() {
-		File directory = new File(GameTracker.class.getResource("games").getFile());
+		File directory = new File(
+				GameTracker.class.getResource("games").getFile());
 		File[] files = directory.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.endsWith("class");
@@ -61,13 +62,16 @@ public class GameTracker {
 	 */
 	public static String buildGameListMenu() {
 		// TODO adhere to 80-char column limit
-		String s = String.format("%-8s%-50s%-13s%-3s%n", "=======", "GAME", "BEST SCORE", "INITIALS");
+		String s = String.format("%-8s%-50s%-13s%-3s%n", "=======",
+				"GAME", "BEST SCORE", "INITIALS");
 		int i = 0;
 		for (Class<? extends Servable> c : gameList) {
-			s += String.format("%7d%s%-50s", i++, " ", menuInfo.get(c).title());
+			s += String.format("%7d%s%-50s", i++, " ",
+					menuInfo.get(c).title());
 			if (bestScores.containsKey(c)) {
 				BestScore r = bestScores.get(c);
-				s += String.format("%10d%s%3s", r.getScore(), "    ", r.getHolder());
+				s += String.format("%10d%s%3s", r.getScore(), "    ",
+						r.getHolder());
 			}
 			s += "\n";
 			s += String.format("%12s", " ");
@@ -88,16 +92,21 @@ public class GameTracker {
 	 * @return a menu string, a game instance or an exception
 	 */
 	public static Object handleUserSelection(String userSelection) {
-		if (userSelection.equals("")) return gameMenu;
+		if (userSelection.equals(""))
+			return gameMenu;
 		try {
-			return gameList.get(Integer.parseInt(userSelection)).newInstance();
+			return gameList.get(Integer.parseInt(userSelection))
+					.newInstance();
 		} catch (NumberFormatException e) {
-			return new Exception("Unable to process " + userSelection + " as a number.");
+			return new Exception("Unable to process " + userSelection
+					+ " as a number.");
 		} catch (InstantiationException | IllegalAccessException e) {
-			String msg = "Unable to instantiate choice " + userSelection
+			String msg = "Unable to instantiate choice "
+					+ userSelection
 					+ ".  Does a public, no-argument constructor exist?";
 			GameServer.LOGGER.severe(msg);
-			return new Exception("An instantiation exception occurred.");
+			return new Exception(
+					"An instantiation exception occurred.");
 		} catch (IndexOutOfBoundsException e) {
 			return new Exception("That game is not on the list.");
 		}
@@ -131,26 +140,31 @@ public class GameTracker {
 	 *             if the requested class is not found
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List<Class<? extends Servable>> findServableClasses() throws ClassNotFoundException {
+	public static List<Class<? extends Servable>> findServableClasses()
+			throws ClassNotFoundException {
 		List<Class<? extends Servable>> servableClasses = new ArrayList<Class<? extends Servable>>();
 		for (File f : findClassFilesInPackage()) {
 			String nameWithExtension = f.getName();
 			int idx = nameWithExtension.lastIndexOf(".class");
-			String searchString = nameWithExtension.substring(0, idx);
-			Class classObj = Class.forName("org.asl.socketserver.games." + searchString);
+			String searchString = nameWithExtension.substring(0,
+					idx);
+			Class classObj = Class.forName(
+					"org.asl.socketserver.games." + searchString);
 			Class[] interfaces = classObj.getInterfaces();
 			if (interfaces.length > 0) {
 				for (Class c : interfaces) {
-					if (Servable.class.isAssignableFrom(c) && !Modifier.isAbstract(classObj.getModifiers())) {
+					if (Servable.class.isAssignableFrom(c)
+							&& !Modifier.isAbstract(
+									classObj.getModifiers())) {
 						servableClasses.add(classObj);
 						break;
 					}
 				}
 			}
 		}
-		String classesFound = "GameTracker detected the following servable classes:\n";
+		String classesFound = "GameTracker detected the following Servable classes:\n";
 		for (Class<? extends Servable> c : servableClasses) {
-			classesFound+="\t"+c.getSimpleName()+"\n";
+			classesFound += "\t" + c.getSimpleName() + "\n";
 		}
 		GameServer.LOGGER.info(classesFound);
 		return servableClasses;
@@ -189,7 +203,8 @@ public class GameTracker {
 
 						@Override
 						public String[] authors() {
-							return new String[] { "No author information" };
+							return new String[] {
+									"No author information" };
 						}
 
 						@Override
@@ -253,7 +268,8 @@ public class GameTracker {
 	 *            a class reference
 	 * @return the current best score; null, if not found
 	 */
-	public static BestScore getBestScore(Class<? extends AbstractGame> someClass) {
+	public static BestScore getBestScore(
+			Class<? extends AbstractGame> someClass) {
 		if (bestScores.containsKey(someClass)) {
 			return bestScores.get(someClass);
 		}
@@ -269,7 +285,9 @@ public class GameTracker {
 	 * @param record
 	 *            a record indicating the best score and initials of who set
 	 */
-	public static void setBestScore(Class<? extends AbstractGame> someClass, BestScore record) {
+	public static void setBestScore(
+			Class<? extends AbstractGame> someClass,
+			BestScore record) {
 		bestScores.put(someClass, record);
 		gameMenu = buildGameListMenu();
 		writeBestScores();
@@ -311,17 +329,31 @@ public class GameTracker {
 			for (String s : words) {
 				String[] data = s.trim().split(",");
 				if (data.length == 3) {
-					Class<? extends AbstractGame> c = (Class<? extends AbstractGame>) Class.forName(data[0]);
-					int i = Integer.parseInt(data[1]);
-					String initials = data[2];
-					bestScores.put(c, new BestScore(i, initials));
+					String requestedClass = data[0];
+					try {
+						Class<? extends AbstractGame> c = (Class<? extends AbstractGame>) Class
+								.forName(data[0]);
+
+						int i = Integer.parseInt(data[1]);
+						String initials = data[2];
+						bestScores.put(c,
+								new BestScore(i, initials));
+					} catch (ClassNotFoundException e) {
+						// class no longer found for a class entry in database
+						GameServer.LOGGER.warning(
+								"While retrieving best scores, unable to locate "
+										+ requestedClass);
+					} catch (NumberFormatException e) {
+						// current best value not an integer
+						GameServer.LOGGER.warning(
+								"While retrieving best scores, could not parse score for "
+										+ requestedClass);
+					}
 				}
 			}
 		} catch (NoSuchFileException e) {
 			// oh, well -- no high scores, I guess...
 			GameServer.LOGGER.warning("Best scores file not found.");
-		} catch (ClassNotFoundException e) {
-			GameServer.LOGGER.warning("Unable to open the best score for a class.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
