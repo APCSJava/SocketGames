@@ -125,7 +125,7 @@ public class GameServer {
 				// collect remainder of message
 				s = s.substring(s.indexOf(" ") + 1);
 
-				return String.format("%-10s %-15s %-65s%n", opcode, ip, " ", s);
+				return String.format("%-10s %-15s%s%-65s%n", opcode, ip, " ", s);
 			} else
 				return s + "\n";
 		}
