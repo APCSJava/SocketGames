@@ -70,19 +70,20 @@ public class GameServer {
 				Socket socket = socketRequestListener.accept();
 				InetAddress remoteMachine = socket.getInetAddress();
 				// String remoteHost = remoteMachine.getHostName();
-				LOGGER.info("Incoming connection request from " + remoteMachine);
+				
+				//LOGGER.info("Incoming connection request from " + remoteMachine);
 
 				int numActiveSockets = Thread.activeCount() - 1;
 				if (numActiveSockets < maxConnections) {
 					new Thread(new GameThread(socket)).start();
 					numActiveSockets++;
-					LOGGER.info("HELLO " + remoteMachine + ".  Number of current connections: " + numActiveSockets);
+					LOGGER.info("HELLO: " + remoteMachine + " Number of current connections: " + numActiveSockets);
 				} else {
 					PrintWriter out = new PrintWriter(socket.getOutputStream());
 					out.println(refuseNewConnectionMessage);
 					out.close();
 					socket.close();
-					LOGGER.warning("SORRY " + remoteMachine + ".  Number of current connections: " + numActiveSockets);
+					LOGGER.warning("SORRY: " + remoteMachine + ".  Number of current connections: " + numActiveSockets);
 				}
 			}
 		}
@@ -104,9 +105,31 @@ public class GameServer {
 	static class ServerLogFormatter extends SimpleFormatter {
 		@Override
 		public String format(LogRecord log) {
-			return log.getMessage()+"\n";
-			// String.format("%8s%15s%65s", opCode, ipAddress, msg);
+			String s = log.getMessage();
+			boolean isCoded = true;
+			int colon = s.indexOf(":");
+			if (colon >= 0) {
+				String preamble = s.substring(0, colon);
+				for (char c : preamble.toCharArray()) {
+					if (Character.isLowerCase(c))
+						isCoded = false;
+				}
+			}
+			if (isCoded || s.indexOf("<--") >= 0 || s.indexOf("-->") >= 0) {
+				// strip and remember opcode
+				String opcode = s.substring(0, s.indexOf(" "));
+				// collect from ip address onwards
+				s = s.substring(s.indexOf("/") + 1);
+				// strip and remember ip address
+				String ip = s.substring(0, s.indexOf(" "));
+				// collect remainder of message
+				s = s.substring(s.indexOf(" ") + 1);
+
+				return String.format("%-10s %-15s %-65s%n", opcode, ip, " ", s);
+			} else
+				return s + "\n";
 		}
+
 	}
-	
+
 }
