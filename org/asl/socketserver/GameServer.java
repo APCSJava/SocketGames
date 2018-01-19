@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.logging.FileHandler;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
@@ -92,7 +93,7 @@ public class GameServer {
 		try {
 			FileHandler fh = new FileHandler(LOG_FILE);
 			LOGGER.addHandler(fh);
-			fh.setFormatter(new SimpleFormatter());
+			fh.setFormatter(new ServerLogFormatter());
 		} catch (SecurityException e) {
 			LOGGER.warning(e.getMessage());
 		} catch (IOException e) {
@@ -100,6 +101,12 @@ public class GameServer {
 		}
 	}
 
-	// TODO write a custom Formatter for the written log
-	// String.format("%8s%15s%65s", opCode, ipAddress, msg);
+	static class ServerLogFormatter extends SimpleFormatter {
+		@Override
+		public String format(LogRecord log) {
+			return log.getMessage()+"\n";
+			// String.format("%8s%15s%65s", opCode, ipAddress, msg);
+		}
+	}
+	
 }
