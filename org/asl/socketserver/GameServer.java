@@ -46,7 +46,7 @@ public class GameServer {
 	public static void main(String[] args) throws IOException {
 		int desiredPort = DEFAULT_PORT_NUM;
 		int maxConnections = DEFAULT_MAX_USERS;
-		boolean createLogFile = false;
+		boolean createLogFile = true;
 		try {
 			desiredPort = Integer.parseInt(args[0]);
 			maxConnections = Integer.parseInt(args[1]);
