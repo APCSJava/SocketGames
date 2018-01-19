@@ -23,6 +23,7 @@ public class GameServer {
 	final static Logger LOGGER; // destination for error messages
 	final static int DEFAULT_PORT_NUM = 0; // if not specified, choose random
 	final static int DEFAULT_MAX_USERS = 10; // if not specified, allow 10
+	final static String LOG_FILE = "server_output.log";
 
 	static {
 		LOGGER = Logger.getLogger(GameServer.class.getName());
@@ -50,23 +51,18 @@ public class GameServer {
 			desiredPort = Integer.parseInt(args[0]);
 			maxConnections = Integer.parseInt(args[1]);
 			createLogFile = Boolean.parseBoolean(args[2]);
-		} catch (ArrayIndexOutOfBoundsException
-				| NumberFormatException e) {
-			LOGGER.info(
-					"Command line arguments missing or faulty.  Launching with program defaults.");
-		} 
-		if (createLogFile) attachLogFileHandler();
+		} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+			LOGGER.info("Command line arguments missing or faulty.  Launching with program defaults.");
+		}
+		if (createLogFile)
+			attachLogFileHandler();
 		String refuseNewConnectionMessage = "The server limit of " + maxConnections
-				+ ((maxConnections == 1) ? " connection"
-						: " connections")
+				+ ((maxConnections == 1) ? " connection" : " connections")
 				+ " has been reached.  Please try again, later.";
 
-		try (ServerSocket socketRequestListener = new ServerSocket(
-				desiredPort)) {
-			LOGGER.info("GameServer started on port: "
-					+ socketRequestListener.getLocalPort()
-					+ ".  Maximum simultaneous users: "
-					+ maxConnections);
+		try (ServerSocket socketRequestListener = new ServerSocket(desiredPort)) {
+			LOGGER.info("GameServer started on port: " + socketRequestListener.getLocalPort()
+					+ ".  Maximum simultaneous users: " + maxConnections);
 			GameTracker.initialize();
 			while (true) {
 				// the following call blocks until a connection is made
@@ -79,27 +75,22 @@ public class GameServer {
 				if (numActiveSockets < maxConnections) {
 					new Thread(new GameThread(socket)).start();
 					numActiveSockets++;
-					LOGGER.info("HELLO " + remoteMachine
-							+ ".  Number of current connections: "
-							+ numActiveSockets);
+					LOGGER.info("HELLO " + remoteMachine + ".  Number of current connections: " + numActiveSockets);
 				} else {
-					PrintWriter out = new PrintWriter(
-							socket.getOutputStream());
+					PrintWriter out = new PrintWriter(socket.getOutputStream());
 					out.println(refuseNewConnectionMessage);
 					out.close();
 					socket.close();
-					LOGGER.warning("SORRY " + remoteMachine
-							+ ".  Number of current connections: "
-							+ numActiveSockets);
+					LOGGER.warning("SORRY " + remoteMachine + ".  Number of current connections: " + numActiveSockets);
 				}
 			}
 		}
 	}
 
 	private static void attachLogFileHandler() {
-		String datedFile = LocalDateTime.now().toString();
+		// String datedFile = LocalDateTime.now().toString()+".log";
 		try {
-			FileHandler fh = new FileHandler(datedFile + ".log");
+			FileHandler fh = new FileHandler(LOG_FILE);
 			LOGGER.addHandler(fh);
 			fh.setFormatter(new SimpleFormatter());
 		} catch (SecurityException e) {
@@ -108,7 +99,7 @@ public class GameServer {
 			LOGGER.warning(e.getMessage());
 		}
 	}
-	
-	//TODO write a custom Formatter for the written log
+
+	// TODO write a custom Formatter for the written log
 	// String.format("%8s%15s%65s", opCode, ipAddress, msg);
 }
