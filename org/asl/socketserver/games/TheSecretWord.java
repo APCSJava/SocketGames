@@ -36,7 +36,7 @@ public class TheSecretWord extends AbstractGame implements Servable {
 				StringBuilder sb = new StringBuilder(
 						getRandomMessage(kudos));
 				sb.append(
-						"\nEnter your intials to join the high score board!");
+						"\nEnter your initials to join the high score board!");
 				output.println(sb.toString());
 				String inits = input.readLine().trim();
 				if (getBestScore() != null) {
