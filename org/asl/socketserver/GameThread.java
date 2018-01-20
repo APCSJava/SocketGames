@@ -114,8 +114,8 @@ public class GameThread implements Runnable {
 		public void println(String s) {
 			super.println(s);
 			if (!s.trim().equals("")) {
-				String logString ="--> "+ socket.getInetAddress()
-						+ s.replace("\n", " ");
+				String logString = "--> " + socket.getInetAddress()
+						+ " " + s.replace("\n", " ");
 				GameServer.LOGGER.info(logString.substring(0,
 						Math.min(80, logString.length())));
 			}
@@ -140,7 +140,8 @@ public class GameThread implements Runnable {
 			try {
 				String s = super.readLine();
 				if (!s.trim().equals("")) {
-					String logString = "<-- " +socket.getInetAddress()
+					String logString = "<-- "
+							+ socket.getInetAddress() + " "
 							+ s.replace("\n", " ");
 					GameServer.LOGGER.info(logString.substring(0,
 							Math.min(80, logString.length())));
