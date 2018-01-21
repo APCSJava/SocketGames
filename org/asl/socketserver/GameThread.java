@@ -52,21 +52,19 @@ public class GameThread implements Runnable {
 					break;
 				Object o = GameTracker.handleUserSelection(choice);
 				if (o instanceof Servable) {
-					GameServer.LOGGER.info(
-							"GAME_ON: " + socket.getInetAddress()
-									+ " is playing "
-									+ o.getClass().getSimpleName());
+					GameServer.LOGGER.info("GAME_ON: "
+							+ socket.getInetAddress() + " "
+							+ o.getClass().getSimpleName());
 					out.println(GameTracker.getGameInfo(
 							(Class<Servable>) o.getClass()));
 					out.println(); // whitespace)
 					((Servable) o).serve(br, out);
 					Thread.sleep(SCROLL_DELAY);
-					GameServer.LOGGER.info(
-							"GAME_OVER: " + socket.getInetAddress()
-									+ " has finished "
-									+ o.getClass().getSimpleName());
+					GameServer.LOGGER.info("GAME_OVER: "
+							+ socket.getInetAddress() + " "
+							+ o.getClass().getSimpleName());
 					out.println(
-							"\nGame Over.  Press Enter to continue.");
+							"\nGame over.  Press Enter/Return to continue.");
 					br.readLine(); // provide opportunity for them to see msg
 				} else if (o instanceof Exception) {
 					Exception e = (Exception) o;
@@ -114,10 +112,11 @@ public class GameThread implements Runnable {
 		public void println(String s) {
 			super.println(s);
 			if (!s.trim().equals("")) {
-				String logString = "--> " + socket.getInetAddress()
-						+ " " + s.replace("\n", " ");
-				GameServer.LOGGER.info(logString.substring(0,
-						Math.min(80, logString.length())));
+				String logString = s;
+				logString = logString.replace("\n", " ");
+				logString = logString.replace("\t", " ");
+				String prefix = "--> " + socket.getInetAddress() + " ";
+				GameServer.LOGGER.info(prefix + logString);
 			}
 		}
 
@@ -140,11 +139,11 @@ public class GameThread implements Runnable {
 			try {
 				String s = super.readLine();
 				if (!s.trim().equals("")) {
-					String logString = "<-- "
-							+ socket.getInetAddress() + " "
-							+ s.replace("\n", " ");
-					GameServer.LOGGER.info(logString.substring(0,
-							Math.min(80, logString.length())));
+					String logString = s;
+					logString = logString.replace("\n", " ");
+					logString = logString.replace("\t", " ");
+					String prefix = "<-- " + socket.getInetAddress() + " ";
+					GameServer.LOGGER.info(prefix + logString);
 				}
 				return s;
 			} catch (IOException e) {
