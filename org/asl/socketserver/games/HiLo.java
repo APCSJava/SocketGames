@@ -30,7 +30,16 @@ public class HiLo extends AbstractGame implements Servable{
 		 target = num;
 	 }
 	 
-	 
+	 public boolean isInteger(String str) {
+			
+			for(int i = 0; i<str.length(); i++) {
+				if(!(str.charAt(i)>=48&&str.charAt(i)<=57)) {
+					return false;
+				}
+			}
+			
+			return true;
+		}
 	 
 	 
 	 public void serve(BufferedReader input, PrintWriter output) throws IOException {
@@ -48,6 +57,12 @@ public class HiLo extends AbstractGame implements Servable{
 		    for(int i = 0; i < 6; i++){
 		      output.println("Your guess: ");
 		      String name = input.readLine();
+		      
+		      while(!isInteger(name)) {
+		    	  		output.println("You must enter an integer");
+		    	  		name = input.readLine();
+		      }
+		      
 		      int guess = Integer.parseInt(name);
 		      
 		      if(noWin==true){
