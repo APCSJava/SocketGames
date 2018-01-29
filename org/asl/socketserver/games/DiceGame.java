@@ -9,7 +9,7 @@ import org.asl.socketserver.MenuInfo;
 import java.util.Scanner;
 
 @MenuInfo(authors = {
-"Lindsay" }, version = "Winter, 2018", title = "DICE", description = "Mastermind meets Dice.")
+"Lindsay and Omar" }, version = "Winter, 2018", title = "DICE", description = "Mastermind meets Dice.")
 
 public class DiceGame implements Servable {
 	private String answer;
