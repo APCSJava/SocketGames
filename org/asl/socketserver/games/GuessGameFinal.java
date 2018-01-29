@@ -9,7 +9,7 @@ import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
 @MenuInfo(authors = {
-"Naz Ozturk" }, version = "Winter, 2018", title = "Guessing Game", description = "A guessing game for a number between 1  and a limit of your choice.")
+"Naz Ozturk and lorenzo" }, version = "Winter, 2018", title = "Guessing Game", description = "A guessing game for a number between 1  and a limit of your choice.")
 
 
 public class GuessGameFinal implements Servable {

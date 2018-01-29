@@ -9,7 +9,7 @@ import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
 @MenuInfo(authors = {
-"Naz Ozturk" }, version = "Winter, 2018", title = "Rock Paper Scissors", description = "A game of Rock Paper Scissors between you and the computer.")
+"Naz Ozturk and lorenzo" }, version = "Winter, 2018", title = "Rock Paper Scissors", description = "A game of Rock Paper Scissors between you and the computer.")
 
 public class RPSFinal implements Servable{
 //final code for rock paper scissors project
