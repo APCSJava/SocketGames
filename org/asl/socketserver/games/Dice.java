@@ -8,7 +8,7 @@ import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
 @MenuInfo(authors = {
-"Lauren Brantley and Christina Leonard" }, version = "Winter, 2018", title = "Dice", description = "Throw those DICE!!!")
+"Lauren Brantley & Christina Leonard" }, version = "Winter, 2018", title = "Dice", description = "Throw those DICE!!!")
 
 public class Dice implements Servable{
 		
