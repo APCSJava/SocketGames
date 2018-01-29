@@ -8,7 +8,7 @@ import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
 @MenuInfo(authors = {
-"Tomas Belinky, Grace Gerwe" }, version = "January, 2018", title = "Hangman", description = "Classic Hangman Game.")
+"Tomas Belinky and Grace Gerwe" }, version = "January, 2018", title = "Hangman", description = "Classic Hangman Game.")
 
 public class Hangman implements Servable{
 	

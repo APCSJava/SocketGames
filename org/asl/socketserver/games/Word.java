@@ -7,6 +7,8 @@ public class Word {
 	private int length;
 	private int lives = 10;
 
+	//a
+	
 	public Word() {
 		word = generateWord().toCharArray();
 		length = word.length;
