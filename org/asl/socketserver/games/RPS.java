@@ -9,7 +9,7 @@ import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 
 @MenuInfo(authors = {
-"Lauren Brantley and Christina Leonard" }, version = "Winter, 2018", title = "Rock, Paper, Scissors", description = "The classic wonderful game of Rock, Paper, Scissors")
+"Lauren Brantley & Christina Leonard" }, version = "Winter, 2018", title = "Rock, Paper, Scissors", description = "The classic wonderful game of Rock, Paper, Scissors")
 
 public class RPS implements Servable {
 
