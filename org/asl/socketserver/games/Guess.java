@@ -8,7 +8,7 @@ import java.util.Scanner;
 import org.asl.socketserver.MenuInfo;
 import org.asl.socketserver.Servable;
 @MenuInfo(authors = {
-"Alex Collins" }, version = "Fall, 2017", title = "Hidden Word", description = "Mastermind meets Hangman.")
+"Alex Dowd" }, version = "Winter, 2018", title = "Guess", description = "Guess the number.")
 
 public class Guess implements Servable {
 	public static void main(String[] args) {
